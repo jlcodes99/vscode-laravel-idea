@@ -1,0 +1,48 @@
+# Source files
+src/**
+.vscode/**
+.gitignore
+.git/**
+
+# Build artifacts
+*.vsix
+*.tgz
+
+# Test files
+test/**
+test-*.php
+
+# Documentation that's not needed in package
+INSTALL.md
+NAMESPACE_UPGRADE.md
+build.sh
+
+# Node.js
+npm-debug.log
+yarn-error.log
+
+# TypeScript
+tsconfig.json
+
+# IDE files
+.idea/**
+*.swp
+*.swo
+*~
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+logs
+*.log
+
+# Temporary files
+tmp/**
+temp/**
