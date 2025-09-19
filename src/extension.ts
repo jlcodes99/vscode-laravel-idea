@@ -6,7 +6,7 @@ import * as glob from 'glob';
 /**
  * Laravel development enhancement plugin with namespace-aware navigation
  * 
- * Author: lijie
+ * Author: jlcodes
  * Date: 2025/01/18
  */
 export function activate(context: vscode.ExtensionContext) {
@@ -40,7 +40,7 @@ export function activate(context: vscode.ExtensionContext) {
 /**
  * Laravel定义提供者类（正向跳转：路由到控制器）
  * 
- * Author: lijie
+ * Author: jlcodes
  * Date: 2025/01/18
  */
 class LaravelDefinitionProvider implements vscode.DefinitionProvider {
@@ -53,7 +53,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param token 取消令牌
      * @returns 定义位置数组
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     provideDefinition(
@@ -97,7 +97,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param middlewareNameWithParams 带参数的中间件名称
      * @returns 解析后的中间件信息
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private parseMiddlewareName(middlewareNameWithParams: string): {name: string, parameters: string[]} {
@@ -114,7 +114,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param fileName 文件名
      * @returns 是否为路由文件
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private isRouteFile(fileName: string): boolean {
@@ -127,7 +127,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param fileName 文件名
      * @returns 是否为 Kernel.php 文件
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private isKernelFile(fileName: string): boolean {
@@ -141,7 +141,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param character 字符位置
      * @returns 路由信息对象或null
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private extractRouteInfo(text: string, character: number): RouteInfo | null {
@@ -210,7 +210,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param character 字符位置
      * @returns 中间件信息对象或null
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private extractMiddlewareInfo(text: string, character: number): MiddlewareInfo | null {
@@ -268,7 +268,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param context 上下文文本
      * @returns 是否可能是中间件
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private isLikelyMiddleware(name: string, context: string): boolean {
@@ -321,7 +321,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param character 字符位置
      * @returns 中间件信息对象或null
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private extractKernelMiddlewareInfo(text: string, character: number): MiddlewareInfo | null {
@@ -365,7 +365,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param routeInfo 路由信息
      * @returns 定义位置或null
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private async findControllerDefinitionWithNamespace(routeInfo: RouteInfo): Promise<vscode.Location | null> {
@@ -420,7 +420,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param routeInfo 路由信息
      * @returns 命名空间字符串
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private async extractRouteNamespaceContext(routeInfo: RouteInfo): Promise<string> {
@@ -458,7 +458,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param routeInfo 路由信息
      * @returns 命名空间字符串
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private async findNamespaceForRoute(filePath: string, routeInfo: RouteInfo): Promise<string> {
@@ -537,7 +537,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param routeNamespace 路由命名空间
      * @returns 位置对象或null
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private async findTargetInFileWithNamespace(filePath: string, routeInfo: RouteInfo, routeNamespace?: string): Promise<vscode.Location | null> {
@@ -608,7 +608,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param content 文件内容
      * @returns 命名空间字符串
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private extractNamespaceFromFile(content: string): string {
@@ -622,7 +622,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param filePath 文件路径
      * @returns 控制器名称
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private getControllerNameFromPath(filePath: string): string {
@@ -638,7 +638,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param routeNamespace 路由命名空间
      * @returns 是否匹配
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private isMatchingControllerWithNamespace(routeController: string, fileController: string, fileNamespace: string, routeNamespace?: string): boolean {
@@ -675,7 +675,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param middlewareInfo 中间件信息
      * @returns 定义位置或null
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private async findMiddlewareDefinition(middlewareInfo: MiddlewareInfo): Promise<vscode.Location | null> {
@@ -739,7 +739,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param middlewareInfo 中间件信息
      * @returns 路由位置数组
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private async findRouteUsesMiddleware(middlewareInfo: MiddlewareInfo): Promise<vscode.Location[]> {
@@ -777,7 +777,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param middlewareName 中间件名称
      * @returns 路由位置数组
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private async findMiddlewareUsageInRouteFile(filePath: string, middlewareName: string): Promise<vscode.Location[]> {
@@ -812,7 +812,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
      * @param middlewareName 中间件名称
      * @returns 是否包含中间件
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private lineContainsMiddleware(line: string, middlewareName: string): boolean {
@@ -837,7 +837,7 @@ class LaravelDefinitionProvider implements vscode.DefinitionProvider {
 /**
  * Laravel反向定义提供者类（反向跳转：控制器到路由）
  * 
- * Author: lijie
+ * Author: jlcodes
  * Date: 2025/01/18
  */
 class LaravelReverseDefinitionProvider implements vscode.DefinitionProvider {
@@ -850,7 +850,7 @@ class LaravelReverseDefinitionProvider implements vscode.DefinitionProvider {
      * @param token 取消令牌
      * @returns 定义位置数组
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     async provideDefinition(
@@ -889,7 +889,7 @@ class LaravelReverseDefinitionProvider implements vscode.DefinitionProvider {
      * @param fileName 文件名
      * @returns 是否为控制器文件
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private isControllerFile(fileName: string): boolean {
@@ -904,7 +904,7 @@ class LaravelReverseDefinitionProvider implements vscode.DefinitionProvider {
      * @param document 文档对象
      * @returns 控制器信息或null
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private extractControllerInfo(text: string, character: number, document: vscode.TextDocument): ControllerInfo | null {
@@ -946,7 +946,7 @@ class LaravelReverseDefinitionProvider implements vscode.DefinitionProvider {
      * @param document 文档对象
      * @returns 命名空间字符串
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private extractNamespaceFromDocument(document: vscode.TextDocument): string {
@@ -961,7 +961,7 @@ class LaravelReverseDefinitionProvider implements vscode.DefinitionProvider {
      * @param document 文档对象
      * @returns 类名字符串
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private getClassNameFromDocument(document: vscode.TextDocument): string {
@@ -977,7 +977,7 @@ class LaravelReverseDefinitionProvider implements vscode.DefinitionProvider {
      * @param controllerFilePath 控制器文件路径
      * @returns 路由位置数组
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private async findAllRouteDefinitionsWithNamespace(controllerInfo: ControllerInfo, controllerFilePath: string): Promise<vscode.Location[]> {
@@ -1016,7 +1016,7 @@ class LaravelReverseDefinitionProvider implements vscode.DefinitionProvider {
      * @param controllerFilePath 控制器文件路径
      * @returns 路由位置数组
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private async findRoutesInFileWithNamespace(filePath: string, controllerInfo: ControllerInfo, controllerFilePath: string): Promise<vscode.Location[]> {
@@ -1094,7 +1094,7 @@ class LaravelReverseDefinitionProvider implements vscode.DefinitionProvider {
      * @param controllerFilePath 控制器文件路径
      * @returns 命名空间字符串
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private inferNamespaceFromControllerPath(controllerFilePath: string): string {
@@ -1121,7 +1121,7 @@ class LaravelReverseDefinitionProvider implements vscode.DefinitionProvider {
      * @param groupStack 当前的分组栈
      * @returns 是否匹配
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private isMatchingRouteForControllerWithNamespace(line: string, className: string, expectedNamespace: string, groupStack: Array<{depth: number, namespace?: string}>): boolean {
@@ -1158,7 +1158,7 @@ class LaravelReverseDefinitionProvider implements vscode.DefinitionProvider {
      * @param groupStack 当前的分组栈
      * @returns 是否匹配
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private isMatchingRouteForMethodWithNamespace(line: string, methodName: string, className: string, expectedNamespace: string, groupStack: Array<{depth: number, namespace?: string}>): boolean {
@@ -1189,7 +1189,7 @@ class LaravelReverseDefinitionProvider implements vscode.DefinitionProvider {
 /**
  * Laravel悬浮提示提供者类
  * 
- * Author: lijie
+ * Author: jlcodes
  * Date: 2025/01/18
  */
 class LaravelHoverProvider implements vscode.HoverProvider {
@@ -1202,7 +1202,7 @@ class LaravelHoverProvider implements vscode.HoverProvider {
      * @param token 取消令牌
      * @returns 悬浮提示或null
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     provideHover(
@@ -1265,7 +1265,7 @@ class LaravelHoverProvider implements vscode.HoverProvider {
     /**
      * 提取路由信息（与DefinitionProvider中的方法相同）
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private extractRouteInfo(text: string, character: number): RouteInfo | null {
@@ -1329,7 +1329,7 @@ class LaravelHoverProvider implements vscode.HoverProvider {
      * @param fileName 文件名
      * @returns 是否为路由文件
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private isRouteFile(fileName: string): boolean {
@@ -1342,7 +1342,7 @@ class LaravelHoverProvider implements vscode.HoverProvider {
      * @param fileName 文件名
      * @returns 是否为 Kernel.php 文件
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private isKernelFile(fileName: string): boolean {
@@ -1356,7 +1356,7 @@ class LaravelHoverProvider implements vscode.HoverProvider {
      * @param character 字符位置
      * @returns 中间件信息对象或null
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private extractMiddlewareInfo(text: string, character: number): MiddlewareInfo | null {
@@ -1414,7 +1414,7 @@ class LaravelHoverProvider implements vscode.HoverProvider {
      * @param context 上下文文本
      * @returns 是否可能是中间件
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private isLikelyMiddleware(name: string, context: string): boolean {
@@ -1466,7 +1466,7 @@ class LaravelHoverProvider implements vscode.HoverProvider {
      * @param middlewareNameWithParams 带参数的中间件名称
      * @returns 解析后的中间件信息
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private parseMiddlewareName(middlewareNameWithParams: string): {name: string, parameters: string[]} {
@@ -1484,7 +1484,7 @@ class LaravelHoverProvider implements vscode.HoverProvider {
      * @param character 字符位置
      * @returns 中间件信息对象或null
      * 
-     * Author: lijie
+     * Author: jlcodes
      * Date: 2025/01/18
      */
     private extractKernelMiddlewareInfo(text: string, character: number): MiddlewareInfo | null {
@@ -1524,7 +1524,7 @@ class LaravelHoverProvider implements vscode.HoverProvider {
 /**
  * 路由信息接口
  * 
- * Author: lijie
+ * Author: jlcodes
  * Date: 2025/01/18
  */
 interface RouteInfo {
@@ -1538,7 +1538,7 @@ interface RouteInfo {
 /**
  * 控制器信息接口
  * 
- * Author: lijie
+ * Author: jlcodes
  * Date: 2025/01/18
  */
 interface ControllerInfo {
@@ -1551,7 +1551,7 @@ interface ControllerInfo {
 /**
  * 中间件信息接口
  * 
- * Author: lijie
+ * Author: jlcodes
  * Date: 2025/01/18
  */
 interface MiddlewareInfo {
@@ -1564,7 +1564,7 @@ interface MiddlewareInfo {
 /**
  * Plugin deactivation function
  * 
- * Author: lijie
+ * Author: jlcodes
  * Date: 2025/01/18
  */
 export function deactivate() {

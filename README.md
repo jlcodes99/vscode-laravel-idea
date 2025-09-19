@@ -1,8 +1,8 @@
 # 🚀 Learvel Idea
 
-[![Version](https://img.shields.io/visual-studio-marketplace/v/lijie.learvel-idea?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=lijie.learvel-idea)
-[![Downloads](https://img.shields.io/visual-studio-marketplace/d/lijie.learvel-idea?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=lijie.learvel-idea)
-[![Rating](https://img.shields.io/visual-studio-marketplace/r/lijie.learvel-idea?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=lijie.learvel-idea)
+[![Version](https://img.shields.io/visual-studio-marketplace/v/jlcodes.learvel-idea?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=jlcodes.learvel-idea)
+[![Downloads](https://img.shields.io/visual-studio-marketplace/d/jlcodes.learvel-idea?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=jlcodes.learvel-idea)
+[![Rating](https://img.shields.io/visual-studio-marketplace/r/jlcodes.learvel-idea?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=jlcodes.learvel-idea)
 [![License](https://img.shields.io/github/license/jlcodes99/vscode-learvel-idea?style=flat-square)](LICENSE)
 
 <div align="center">
@@ -37,7 +37,7 @@
 
 Or install via command line:
 ```bash
-code --install-extension lijie.learvel-idea
+code --install-extension jlcodes.learvel-idea
 ```
 
 ### 📖 Usage
@@ -159,7 +159,7 @@ This project is licensed under the [MIT License](LICENSE).
 
 或通过命令行安装：
 ```bash
-code --install-extension lijie.learvel-idea
+code --install-extension jlcodes.learvel-idea
 ```
 
 ### 📖 使用方法

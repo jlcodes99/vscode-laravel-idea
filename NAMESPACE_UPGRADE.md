@@ -1,4 +1,4 @@
-# Laravel Router Navigator - 命名空间精确匹配升级
+# Learvel Idea - 命名空间精确匹配升级
 
 ## 🚀 主要改进
 
@@ -72,8 +72,7 @@ public function login() {  // Alt+点击应该跳转到 Anjieli namespace 的路
 
 ### 1. 安装更新的插件
 ```bash
-cd /private/var/www/leixiaoan-api/vscode-laravel-router-extension
-code --install-extension laravel-router-navigator-1.0.0.vsix
+code --install-extension jlcodes.learvel-idea
 ```
 
 ### 2. 测试精确跳转
@@ -117,7 +116,7 @@ code --install-extension laravel-router-navigator-1.0.0.vsix
 
 1. **重新编译**: `npm run compile`
 2. **重新打包**: `./build.sh`
-3. **重新安装**: `code --install-extension laravel-router-navigator-1.0.0.vsix`
+3. **重新安装**: `code --install-extension jlcodes.learvel-idea`
 4. **重启VSCode**: 确保新版本插件生效
 5. **测试功能**: 使用上述测试案例验证功能
 
@@ -125,4 +124,4 @@ code --install-extension laravel-router-navigator-1.0.0.vsix
 
 **更新时间**: 2025年9月18日  
 **版本**: v1.0.0 - 命名空间精确匹配版  
-**作者**: 李杰
+**作者**: jlcodes

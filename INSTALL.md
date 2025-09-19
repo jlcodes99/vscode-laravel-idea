@@ -1,12 +1,13 @@
-# Laravel Idea VSCode 插件安装与使用指南
+# Learvel Idea VSCode 插件安装与使用指南
 
 ## 🚀 快速安装
 
 ### 方法一：开发模式安装（推荐用于测试）
 
-1. **打开插件目录**
+1. **克隆项目**
    ```bash
-   cd /private/var/www/leixiaoan-api/vscode-laravel-router-extension
+   git clone https://github.com/jlcodes99/vscode-learvel-idea.git
+   cd vscode-learvel-idea
    ```
 
 2. **安装依赖并编译**
@@ -29,13 +30,18 @@
 
 2. **打包插件**
    ```bash
-   cd /private/var/www/leixiaoan-api/vscode-laravel-router-extension
-   ./build.sh
+   cd vscode-learvel-idea
+   vsce package
    ```
 
 3. **安装插件包**
    ```bash
-   code --install-extension laravel-idea-vscode-1.0.0.vsix
+   code --install-extension jlcodes.learvel-idea
+   ```
+   
+   或者安装本地打包的文件：
+   ```bash
+   code --install-extension learvel-idea-1.0.0.vsix
    ```
 
 ## 💡 使用方法
@@ -82,9 +88,9 @@ Route::post('users', 'UserController@store');
 
 ```json
 {
-  "laravelIdeaVscode.appPath": "app",
-  "laravelIdeaVscode.controllerPath": "app/Api/Controllers",
-  "laravelIdeaVscode.routePath": "routes"
+  "learvelIdea.appPath": "app",
+  "learvelIdea.controllerPath": "app/Api/Controllers",
+  "learvelIdea.routePath": "routes"
 }
 ```
 
@@ -172,6 +178,6 @@ $api->post('set-default', 'ErpAnjieliConsignmentAccountController@setDefault');
 
 ---
 
-**作者**: lijie  
-**项目**: leixiaoan-api  
-**日期**: 2025/01/18
+**作者**: jlcodes  
+**项目**: vscode-learvel-idea  
+**许可**: MIT License
