@@ -1,8 +1,8 @@
 {
   "name": "learvel-idea",
   "displayName": "Learvel Idea",
-  "description": "Laravel development enhancement plugin with controller navigation, method jumping, and PHPStorm-style keybindings for Laravel projects",
-  "version": "1.0.0",
+  "description": "Laravel通用跳转扩展 - 提供路由、中间件、命令的智能导航功能 / Laravel Universal Jump extension - Provides intelligent navigation for routes, middleware, and commands",
+  "version": "1.1.0",
   "publisher": "jlcodes",
   "icon": "icons/test.png",
   "repository": {
@@ -46,27 +46,27 @@
         "learvelIdea.appPath": {
           "type": "string",
           "default": "app",
-          "description": "Laravel application directory path"
+          "description": "Laravel应用目录路径 / Laravel application directory path"
         },
         "learvelIdea.controllerPath": {
           "type": "string",
           "default": "app/Api/Controllers",
-          "description": "Controller directory path"
+          "description": "控制器目录路径 / Controller directory path"
         },
         "learvelIdea.routePath": {
           "type": "string",
           "default": "routes",
-          "description": "Route files directory path"
+          "description": "路由文件目录路径 / Route files directory path"
         },
         "learvelIdea.enablePhpStormKeybindings": {
           "type": "boolean",
           "default": false,
-          "description": "Enable PHPStorm-style keybindings (basic version)"
+          "description": "启用PHPStorm风格快捷键（基础版本）/ Enable PHPStorm-style keybindings (basic version)"
         },
         "learvelIdea.enablePhpStormAdvancedKeybindings": {
           "type": "boolean",
           "default": false,
-          "description": "Enable PHPStorm-style keybindings (advanced version - may conflict with VSCode defaults)"
+          "description": "启用PHPStorm风格快捷键（高级版本 - 可能与VSCode默认快捷键冲突）/ Enable PHPStorm-style keybindings (advanced version - may conflict with VSCode defaults)"
         }
       }
     },

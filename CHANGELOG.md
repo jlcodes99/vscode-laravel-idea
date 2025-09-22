@@ -1,59 +1,45 @@
-# Change Log
+# 更新日志 / Changelog
+
+**Learvel Idea** 扩展的所有重要更改都将记录在此文件中。
 
 All notable changes to the **Learvel Idea** extension will be documented in this file.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+## [1.1.0] - 2025-09-22
 
-## [1.0.0] - 2025-01-19
+### 🎉 首次发布 / Initial Release
 
-### 🎉 Initial Release
+#### ✨ 功能特性 / Features
+- **路由导航**: 在路由定义和控制器方法之间跳转
+- **中间件导航**: 点击中间件名称跳转到定义
+- **命令导航**: 在定时任务和命令类之间导航
+- **命名空间支持**: 精确处理嵌套路由组和命名空间
+- **参数支持**: 支持带参数的中间件和命令
+- **双向导航**: 双向跳转 - 从定义到使用，也可以反向
+- **实时更新**: 文件更改时自动刷新缓存
+- **多文件支持**: 处理所有Laravel路由文件 (`api.php`, `web.php`, 等)
 
-- **Smart Navigation**: Navigate from routes to controllers and vice versa with namespace-aware precision
-- **Middleware Support**: Jump to middleware definitions and find their usage locations  
-- **PHPStorm Keybindings**: Optional PHPStorm-style keyboard shortcuts for familiar workflow
-- **Hover Information**: Rich hover tooltips showing controller and method information
-- **Reverse Navigation**: Jump from controller methods back to their route definitions
-- **Multi-namespace Support**: Handles complex Laravel project structures with multiple namespaces
+- **Route Navigation**: Jump between route definitions and controller methods
+- **Middleware Navigation**: Click middleware names to jump to definitions
+- **Command Navigation**: Navigate between scheduled tasks and command classes
+- **Namespace Support**: Accurate handling of nested route groups and namespaces
+- **Parameter Support**: Works with middleware and commands that have parameters
+- **Bidirectional Navigation**: Jump both ways - from definitions to usage and back
+- **Real-time Updates**: Automatic cache refresh when files change
+- **Multi-file Support**: Handles all Laravel route files (`api.php`, `web.php`, etc.)
 
-### Features
+#### 🔧 命令 / Commands
+- 显示扩展日志 / Show extension logs
+- 清除缓存并重新扫描项目 / Clear cache and rescan project
+- 显示解析统计信息 / Display parsing statistics
 
-#### Core Navigation
-- Alt+Click navigation from routes to controllers
-- Alt+Click navigation from controllers to routes
-- Support for complex namespace structures
-- Precise method-level navigation
+#### 📁 文件支持 / File Support
+- 路由文件 / Route files: `routes/*.php`
+- 控制器 / Controllers: `app/*/Controllers/**/*.php`
+- 中间件 / Middleware: `app/Http/Middleware/**/*.php`
+- 命令 / Commands: `app/Console/Commands/**/*.php`
+- 内核文件 / Kernel files: `app/Http/Kernel.php`, `app/Console/Kernel.php`
 
-#### Middleware Integration
-- Navigate to middleware definitions in Kernel.php
-- Find all routes using specific middleware
-- Support for parameterized middleware
-
-#### Developer Experience
-- Rich hover information with parameter details
-- Multiple navigation options with selection menu
-- Configurable paths for different project structures
-- Optional PHPStorm-style keybindings
-
-#### PHPStorm Keybindings
-- Basic keybindings (safe, no conflicts)
-- Advanced keybindings (optional, may conflict with VSCode defaults)
-- Familiar shortcuts for PHPStorm users
-
-### Configuration
-- `learvelIdea.appPath`: Laravel application directory path
-- `learvelIdea.controllerPath`: Controller directory path  
-- `learvelIdea.routePath`: Route files directory path
-- `learvelIdea.enablePhpStormKeybindings`: Enable basic PHPStorm-style keybindings
-- `learvelIdea.enablePhpStormAdvancedKeybindings`: Enable advanced PHPStorm keybindings
-
-### Technical Details
-- Built with TypeScript for better maintainability
-- Namespace-aware navigation engine
-- Support for Laravel's route grouping and middleware
-- Extensive pattern matching for route definitions
-- Optimized file scanning and caching
-
----
-
-**Note**: This is a complete rewrite and fresh start of the extension, now officially called "Learvel Idea" (previously "Laravel Idea VSCode").
+#### ⚡ 性能 / Performance
+- 智能缓存系统 / Intelligent caching system
+- 文件监控实时更新 / File watcher for real-time updates
+- 优化的解析算法 / Optimized parsing algorithms

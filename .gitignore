@@ -3,4 +3,3 @@ out/
 *.log
 .vscode-test/
 .vscode/
-*.vsix

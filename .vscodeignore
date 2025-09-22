@@ -1,48 +1,25 @@
-# Source files
+# Source files (TypeScript源码不需要打包)
 src/**
+tsconfig.json
+
+# Development files (开发文件)
 .vscode/**
 .gitignore
 .git/**
+build.sh
+test_*.js
 
-# Build artifacts
+# Build artifacts (构建产物)
 *.vsix
 *.tgz
 
-# Test files
-test/**
-test-*.php
-
-# Documentation that's not needed in package
-INSTALL.md
-NAMESPACE_UPGRADE.md
-build.sh
-
-# Node.js
+# Node.js (Node相关)
 npm-debug.log
 yarn-error.log
 
-# TypeScript
-tsconfig.json
-
-# IDE files
-.idea/**
-*.swp
-*.swo
-*~
-
-# OS generated files
+# OS files (系统文件)
 .DS_Store
-.DS_Store?
-._*
-.Spotlight-V100
-.Trashes
-ehthumbs.db
 Thumbs.db
 
-# Logs
-logs
+# Logs (日志文件)
 *.log
-
-# Temporary files
-tmp/**
-temp/**
