@@ -131,7 +131,71 @@ function registerFileWatchers(context: vscode.ExtensionContext, cacheManager: Ca
         }
     });
 
-    context.subscriptions.push(routeWatcher, kernelWatcher);
+    // 监控Console/Commands目录下的脚本文件变更
+    const commandWatcher = vscode.workspace.createFileSystemWatcher(
+        new vscode.RelativePattern(workspaceRoot, 'app/Console/Commands/**/*.php')
+    );
+
+    // 监控命令文件变更
+    commandWatcher.onDidChange(async (uri) => {
+        const fileName = path.basename(uri.fsPath);
+        outputChannel.appendLine(`📝 检测到命令文件变更: ${fileName}`);
+        outputChannel.appendLine('🔄 自动重新缓存命令定义...');
+        
+        try {
+            await cacheManager.initializeCache();
+            outputChannel.appendLine(`✅ 命令缓存已更新 (${fileName})`);
+        } catch (error) {
+            outputChannel.appendLine(`❌ 命令缓存更新失败: ${error}`);
+        }
+    });
+
+    // 监控命令文件创建
+    commandWatcher.onDidCreate(async (uri) => {
+        const fileName = path.basename(uri.fsPath);
+        outputChannel.appendLine(`➕ 检测到新命令文件: ${fileName}`);
+        outputChannel.appendLine('🔄 自动重新缓存命令定义...');
+        
+        try {
+            await cacheManager.initializeCache();
+            outputChannel.appendLine(`✅ 命令缓存已更新 (新增${fileName})`);
+        } catch (error) {
+            outputChannel.appendLine(`❌ 命令缓存更新失败: ${error}`);
+        }
+    });
+
+    // 监控命令文件删除
+    commandWatcher.onDidDelete(async (uri) => {
+        const fileName = path.basename(uri.fsPath);
+        outputChannel.appendLine(`🗑️ 检测到命令文件删除: ${fileName}`);
+        outputChannel.appendLine('🔄 自动重新缓存命令定义...');
+        
+        try {
+            await cacheManager.initializeCache();
+            outputChannel.appendLine(`✅ 命令缓存已更新 (删除${fileName})`);
+        } catch (error) {
+            outputChannel.appendLine(`❌ 命令缓存更新失败: ${error}`);
+        }
+    });
+
+    // 监控Console/Kernel.php文件变更
+    const consoleKernelWatcher = vscode.workspace.createFileSystemWatcher(
+        new vscode.RelativePattern(workspaceRoot, 'app/Console/Kernel.php')
+    );
+    
+    consoleKernelWatcher.onDidChange(async (uri) => {
+        outputChannel.appendLine('📝 检测到Console/Kernel.php变更');
+        outputChannel.appendLine('🔄 重新缓存定时任务定义...');
+        
+        try {
+            await cacheManager.initializeCache();
+            outputChannel.appendLine('✅ 定时任务缓存已更新');
+        } catch (error) {
+            outputChannel.appendLine(`❌ 定时任务缓存更新失败: ${error}`);
+        }
+    });
+
+    context.subscriptions.push(routeWatcher, kernelWatcher, commandWatcher, consoleKernelWatcher);
 }
 
 // ======================== 命令注册 ========================
