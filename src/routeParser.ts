@@ -70,7 +70,6 @@ export class LaravelRouteParser {
                     if (isIndependentRouteGroup) {
                         // Route::group表示新的顶级路由组，清空之前的栈
                         if (namespaceStack.length > 0) {
-                        this.log(`🔄 重置命名空间栈`, { line: i + 1 });
                         }
                         namespaceStack.length = 0;
                         indentLevelStack.length = 0;
@@ -81,7 +80,6 @@ export class LaravelRouteParser {
                     if (namespace) {
                         namespaceStack.push(namespace);
                         indentLevelStack.push(indentLevel);
-                        this.log(`📦 推入命名空间: ${namespace}`, { line: i + 1 });
                     }
                 }
                 
@@ -94,7 +92,6 @@ export class LaravelRouteParser {
                         if (indentLevel === expectedIndentLevel) {
                             const poppedNamespace = namespaceStack.pop();
                             const poppedIndentLevel = indentLevelStack.pop();
-                            this.log(`📤 弹出命名空间: ${poppedNamespace}`, { line: i + 1 });
                         }
                     } else if (namespaceStack.length > 0) {
                         this.log(`⚠️ 栈状态异常`, {

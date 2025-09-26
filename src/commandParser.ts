@@ -130,11 +130,6 @@ export class LaravelCommandParser {
                         type: 'schedule'
                     });
                     
-                    this.log(`📦 发现定时任务`, {
-                        commandName: commandName,
-                        fullSignature: fullCommandSignature,
-                        line: lineNumber + 1
-                    });
                 }
             }
         }
@@ -175,22 +170,15 @@ export class LaravelCommandParser {
             return definitions;
         }
 
-        this.log('🔍 开始扫描Commands目录');
-        
         const commandFiles: string[] = [];
         LaravelCommandParser.findCommandFilesRecursively(commandsDir, commandFiles);
-        
-        this.log(`📁 找到Command文件`, { count: commandFiles.length });
         
         for (const commandFile of commandFiles) {
             const commandDef = LaravelCommandParser.parseCommandClass(commandFile);
             if (commandDef) {
                 definitions.set(commandDef.commandName, commandDef);
-                this.log(`✅ 发现Command: ${commandDef.commandName} → ${commandDef.className}`);
             }
         }
-        
-        this.log('🎉 Commands扫描完成', { definitionCount: definitions.size });
         
         return definitions;
     }
@@ -257,14 +245,6 @@ export class LaravelCommandParser {
             if (className && commandSignature) {
                 // 提取纯命令名（去除参数和选项）
                 const commandName = this.extractPureCommandName(commandSignature);
-                
-                this.log(`✅ 发现Command类`, {
-                    className: className,
-                    commandName: commandName,
-                    file: path.basename(filePath),
-                    classLine: classLine + 1,
-                    signatureLine: signatureLine + 1
-                });
                 
                 return {
                     commandName: commandName,

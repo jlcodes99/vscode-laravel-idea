@@ -49,6 +49,17 @@ A powerful Laravel development extension for Visual Studio Code that provides in
 - **Smart Conversion**: Automatically handles command name to class name conversion (kebab-case → PascalCase)
 - **Bidirectional Search**: Supports jumping from schedule to command class and reverse lookup
 
+### ⚙️ 配置导航 / Configuration Navigation
+- **配置 ↔ 使用位置**: 点击配置键跳转到所有使用该配置的代码位置
+- **智能过滤**: 自动跳过被注释的配置调用，只跳转到实际生效的代码
+- **双向跳转**: 从配置文件跳转到使用位置，也可以从代码跳转回配置定义
+- **实时扫描**: 自动扫描项目中的配置使用情况并更新索引
+
+- **Config ↔ Usage**: Click on configuration keys to jump to all code locations using that config
+- **Smart Filtering**: Automatically skips commented configuration calls, only jumps to active code
+- **Bidirectional Jump**: Jump from config files to usage locations and back to config definitions
+- **Real-time Scanning**: Automatically scans project for config usage and updates index
+
 ### 🚀 高级特性 / Advanced Features
 - **实时监控**: 自动监控文件变化并更新缓存
 - **智能缓存**: 高效的解析结果缓存，提升性能
@@ -405,6 +416,37 @@ $schedule->command('sync:bs:share:page:data')->hourly();
 $schedule->command('sync:material-tech-data all 1')->everyMinute();
 ```
 
+### 配置导航 / Configuration Navigation
+
+#### 配置文件跳转到使用位置
+```php
+// 在 config/aliyun.php 中 - 点击配置键跳转到使用位置
+// In config/aliyun.php - Click on config keys to jump to usage locations
+return [
+    'access_key_id' => env('ALIYUN_ACCESS_KEY_ID', ''), // 点击 'access_key_id' 查找使用位置
+    'access_key_secret' => env('ALIYUN_ACCESS_KEY_SECRET', ''), // 点击 'access_key_secret' 查找使用位置
+    'oss' => [
+        'region' => env('ALIYUN_OSS_REGION', 'oss-cn-beijing'), // 点击 'region' 查找使用位置
+        'bucket' => env('ALIYUN_OSS_BUCKET', ''), // 点击 'bucket' 查找使用位置
+    ],
+];
+```
+
+#### 代码中配置调用跳转
+```php
+// 在任意PHP文件中 - 点击配置键跳转到配置定义
+// In any PHP file - Click on config keys to jump to config definition
+
+// 点击 'aliyun.access_key_id' 跳转到配置文件
+$accessKeyId = config('aliyun.access_key_id');
+
+// 点击 'aliyun.oss.region' 跳转到配置文件
+$region = config('aliyun.oss.region');
+
+// 点击 'aliyun.access_key_secret' 跳转到配置文件
+$secret = config('aliyun.access_key_secret');
+```
+
 ## ⚙️ 命令 / Commands
 
 - `Laravel Jump: Show Logs` - 查看扩展活动日志 / View extension activity logs
@@ -465,6 +507,7 @@ The extension works out of the box with standard Laravel projects. It automatica
 - **控制器 / Controllers**: `app/Api/Controllers/**/*.php`, `app/Http/Controllers/**/*.php`
 - **中间件 / Middleware**: `app/Http/Middleware/**/*.php`
 - **命令 / Commands**: `app/Console/Commands/**/*.php`
+- **配置文件 / Config Files**: `config/**/*.php`
 - **内核文件 / Kernel Files**: `app/Http/Kernel.php`, `app/Console/Kernel.php`
 
 ## 🐛 故障排除 / Troubleshooting

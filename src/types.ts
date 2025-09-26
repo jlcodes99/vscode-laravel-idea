@@ -42,6 +42,8 @@ export interface LaravelCache {
     middlewareDefinitions: Map<string, MiddlewareDefinition>;
     commands: Map<string, ParsedCommand[]>;
     commandDefinitions: Map<string, CommandDefinition>;
+    configItems: ConfigItem[];
+    configReferences: ConfigReference[];
     lastUpdate: number;
 }
 
@@ -75,4 +77,30 @@ export interface CommandDefinition {
     file: string;           // Command类文件路径
     line: number;           // 类定义所在行
     signatureLine?: number; // $signature属性所在行
+}
+
+export interface ConfigItem {
+    key: string;            // 配置键名：如 doudian.settle_start_time
+    fileName: string;       // 配置文件名：如 app
+    value: string;          // 配置值
+    file: string;           // 配置文件完整路径
+    line: number;           // 所在行号
+    keyStart: number;       // 键名开始位置
+    keyEnd: number;         // 键名结束位置
+    valueStart: number;     // 值开始位置
+}
+
+export interface ConfigReference {
+    configKey: string;      // 引用的配置键：如 app.doudian.settle_start_time
+    file: string;           // 引用文件路径
+    // 注意：移除了具体的行号和位置信息，跳转时实时查找
+}
+
+export interface ConfigDefinition {
+    configKey: string;      // 配置键名
+    fileName: string;       // 配置文件名
+    file: string;           // 配置文件路径
+    line: number;           // 定义所在行
+    keyStart: number;       // 键名开始位置
+    keyEnd: number;         // 键名结束位置
 }

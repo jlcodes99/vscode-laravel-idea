@@ -4,6 +4,44 @@
 
 All notable changes to the **Learvel Idea** extension will be documented in this file.
 
+## [1.1.2] - 2025-09-26
+
+### 🔧 改进 / Improvements
+
+#### ✨ 配置导航智能过滤 / Configuration Navigation Smart Filtering
+- **智能注释过滤**: 配置跳转功能现在会自动跳过被注释的配置调用
+- **多种注释格式支持**: 支持识别 `//`、`#`、`/* */`、`*` 等多种注释格式
+- **提高跳转准确性**: 只跳转到实际生效的配置使用位置，避免跳转到无效的注释代码
+- **实时扫描优化**: 优化配置引用扫描算法，提升性能和准确性
+
+- **Smart Comment Filtering**: Configuration navigation now automatically skips commented config calls
+- **Multiple Comment Format Support**: Supports recognition of `//`, `#`, `/* */`, `*` and other comment formats
+- **Improved Jump Accuracy**: Only jumps to active configuration usage locations, avoiding jumps to invalid commented code
+- **Real-time Scanning Optimization**: Optimized config reference scanning algorithm for better performance and accuracy
+
+#### 📋 示例场景 / Example Scenarios
+```php
+// ✅ 有效调用 - 会被跳转到 / Valid calls - will be jumped to
+$accessKeyId = config('aliyun.access_key_id');
+
+// ❌ 注释调用 - 会被跳过 / Commented calls - will be skipped
+// $accessKeyId = config('aliyun.access_key_id');
+# $region = config('aliyun.oss.region');
+/* $secret = config('aliyun.access_key_secret'); */
+* $docConfig = config('aliyun.sms.access_key_id');
+```
+
+### 🔧 技术改进 / Technical Improvements
+- 优化 `configParser.ts` 中的 `isCommentedLine()` 方法
+- 改进 `scanFileForConfigReferences()` 和 `findConfigReferencesInFile()` 方法
+- 增强正则表达式匹配准确性
+- 提升代码导航的整体用户体验
+
+- Optimized `isCommentedLine()` method in `configParser.ts`
+- Improved `scanFileForConfigReferences()` and `findConfigReferencesInFile()` methods
+- Enhanced regex matching accuracy
+- Improved overall user experience for code navigation
+
 ## [1.1.0] - 2025-09-22
 
 ### 🎉 首次发布 / Initial Release

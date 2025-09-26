@@ -16,6 +16,7 @@ import * as vscode from 'vscode';
 import { RouteInfo, ControllerInfo, LaravelCache } from './types';
 import { LaravelMiddlewareParser, LaravelKernelParser } from './middlewareParser';
 import { LaravelCommandParser, LaravelConsoleKernelParser } from './commandParser';
+import { LaravelConfigParser } from './configParser';
 import { CacheManager } from './cacheManager';
 
 export class LaravelJumpProvider implements vscode.DefinitionProvider {
@@ -61,7 +62,8 @@ export class LaravelJumpProvider implements vscode.DefinitionProvider {
             isRouteFile: this.isRouteFile(document.fileName),
             isControllerFile: this.isControllerFile(document.fileName), 
             isCommandFile: this.isCommandFile(document.fileName),
-            isConsoleKernelFile: this.isConsoleKernelFile(document.fileName)
+            isConsoleKernelFile: this.isConsoleKernelFile(document.fileName),
+            isConfigFile: this.isConfigFile(document.fileName)
         });
 
         try {
@@ -73,6 +75,8 @@ export class LaravelJumpProvider implements vscode.DefinitionProvider {
                 return await this.jumpFromCommand(document, position);
             } else if (this.isConsoleKernelFile(document.fileName)) {
                 return await this.jumpFromConsoleKernel(document, position);
+            } else if (this.isConfigFile(document.fileName)) {
+                return await this.jumpFromConfig(document, position);
             }
 
             this.log('❌ 未识别的文件类型', { filePath: document.fileName });
@@ -744,5 +748,176 @@ export class LaravelJumpProvider implements vscode.DefinitionProvider {
     
     private isConsoleKernelFile(filePath: string): boolean {
         return filePath.includes('/Console/Kernel.php') && filePath.endsWith('.php');
+    }
+    
+    private isConfigFile(filePath: string): boolean {
+        return filePath.includes('/config/') && filePath.endsWith('.php');
+    }
+
+    /**
+     * 从配置文件跳转到引用处 - 实时查找版本
+     */
+    private async jumpFromConfig(document: vscode.TextDocument, position: vscode.Position): Promise<vscode.Location[] | null> {
+        const fileName = path.basename(document.fileName, '.php');
+        const line = document.lineAt(position.line);
+        
+        // 解析当前点击的配置项信息
+        const configInfo = this.parseConfigAtPosition(line.text, position.character, fileName);
+        if (!configInfo) {
+            this.log('⚠️ 未能解析配置项信息');
+            return null;
+        }
+        
+        this.log('🔍 配置文件跳转分析（实时模式）', {
+            configKey: configInfo.configKey,
+            fileName: fileName,
+            line: position.line + 1
+        });
+        
+        // 从缓存中获取包含该配置键的文件列表
+        const cache = this.cacheManager.getCache();
+        const configReferences = LaravelConfigParser.findConfigReferences(cache.configReferences, configInfo.configKey);
+        
+        if (configReferences.length > 0) {
+            const locations: vscode.Location[] = [];
+            
+            // 对每个引用文件进行实时查找
+            for (const ref of configReferences) {
+                this.log('🔄 实时搜索文件', { 
+                    file: path.basename(ref.file),
+                    configKey: configInfo.configKey 
+                });
+                
+                // 实时查找该配置键在文件中的所有位置
+                const fileLocations = LaravelConfigParser.findConfigReferencesInFile(ref.file, configInfo.configKey);
+                
+                // 转换为VS Code Location对象
+                for (const loc of fileLocations) {
+                    const location = new vscode.Location(
+                        vscode.Uri.file(ref.file),
+                        this.createFullLineSelection(ref.file, loc.line)
+                    );
+                    locations.push(location);
+                }
+                
+                this.log('📍 文件中找到引用位置', {
+                    file: path.basename(ref.file),
+                    locationCount: fileLocations.length,
+                    lines: fileLocations.map(loc => loc.line + 1)
+                });
+            }
+            
+            this.log('🎉 配置跳转成功（实时模式）', {
+                configKey: configInfo.configKey,
+                fileCount: configReferences.length,
+                totalLocationCount: locations.length
+            });
+            
+            return locations.length > 0 ? locations : null;
+        } else {
+            this.log('❌ 配置跳转失败 - 未找到引用文件', {
+                configKey: configInfo.configKey,
+                availableReferences: cache.configReferences.slice(0, 10).map(ref => ref.configKey)
+            });
+            return null;
+        }
+    }
+    
+    /**
+     * 解析配置文件中的配置项位置信息
+     */
+    private parseConfigAtPosition(lineText: string, character: number, fileName: string): { configKey: string } | null {
+        // 匹配配置项的键值对
+        const keyValueMatch = this.matchConfigKeyValue(lineText);
+        if (!keyValueMatch) {
+            return null;
+        }
+        
+        const { key, keyStart, keyEnd } = keyValueMatch;
+        
+        // 确认点击位置在键名上
+        if (character >= keyStart && character <= keyEnd) {
+            // 分析配置文件的嵌套结构，构建完整的配置键名
+            const nestedPath = this.analyzeNestedConfigPath(vscode.window.activeTextEditor!.document, vscode.window.activeTextEditor!.selection.active.line, key);
+            const configKey = `${fileName}.${nestedPath}`;
+            return { configKey };
+        }
+        
+        return null;
+    }
+    
+    /**
+     * 分析配置文件的嵌套结构，构建完整的配置路径
+     */
+    private analyzeNestedConfigPath(document: vscode.TextDocument, currentLine: number, currentKey: string): string {
+        const pathParts: string[] = [];
+        let indentLevel = this.getLineIndentLevel(document.lineAt(currentLine).text);
+        
+        // 向上扫描，找到所有父级配置键
+        for (let line = currentLine - 1; line >= 0; line--) {
+            const lineText = document.lineAt(line).text.trim();
+            const lineIndent = this.getLineIndentLevel(document.lineAt(line).text);
+            
+            // 如果遇到缩进更小的行，可能是父级配置
+            if (lineIndent < indentLevel && lineText.includes('=>')) {
+                const keyMatch = lineText.match(/['"]([^'"]+)['"](?:\s*=>)/);
+                if (keyMatch) {
+                    pathParts.unshift(keyMatch[1]);
+                    indentLevel = lineIndent;
+                }
+            }
+            
+            // 如果到达顶层数组定义，停止扫描
+            if (lineIndent === 0 && (lineText.includes('return [') || lineText.includes('= ['))) {
+                break;
+            }
+        }
+        
+        // 添加当前键
+        pathParts.push(currentKey);
+        
+        return pathParts.join('.');
+    }
+    
+    /**
+     * 获取行的缩进级别
+     */
+    private getLineIndentLevel(line: string): number {
+        const match = line.match(/^(\s*)/);
+        return match ? match[1].length : 0;
+    }
+    
+    /**
+     * 匹配配置文件中的键值对
+     */
+    private matchConfigKeyValue(line: string): { 
+        key: string, 
+        keyStart: number, 
+        keyEnd: number 
+    } | null {
+        // 匹配键值对的各种格式
+        const patterns = [
+            // 'key' => 'value'
+            /'([^']+)'\s*=>\s*(.+)/,
+            // "key" => "value"  
+            /"([^"]+)"\s*=>\s*(.+)/
+        ];
+        
+        for (const pattern of patterns) {
+            const match = line.match(pattern);
+            if (match) {
+                const key = match[1];
+                
+                // 查找键在行中的位置
+                const keyStart = line.indexOf(`'${key}'`) !== -1 ? 
+                    line.indexOf(`'${key}'`) + 1 : 
+                    line.indexOf(`"${key}"`) + 1;
+                const keyEnd = keyStart + key.length;
+                
+                return { key, keyStart, keyEnd };
+            }
+        }
+        
+        return null;
     }
 }

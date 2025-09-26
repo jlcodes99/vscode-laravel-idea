@@ -17,12 +17,14 @@ import { LaravelCache } from './types';
 import { LaravelRouteParser } from './routeParser';
 import { LaravelMiddlewareParser, LaravelKernelParser } from './middlewareParser';
 import { LaravelCommandParser, LaravelConsoleKernelParser } from './commandParser';
+import { LaravelConfigParser } from './configParser';
 
 export class CacheManager {
     private static instance: CacheManager;
     private outputChannel!: vscode.OutputChannel;
     private workspaceRoot!: string;
     private cache!: LaravelCache;
+    private configFileWatcher?: vscode.FileSystemWatcher;
     
     static getInstance(): CacheManager {
         if (!CacheManager.instance) {
@@ -39,6 +41,7 @@ export class CacheManager {
         LaravelKernelParser.setOutputChannel(channel);
         LaravelCommandParser.setOutputChannel(channel);
         LaravelConsoleKernelParser.setOutputChannel(channel);
+        LaravelConfigParser.setOutputChannel(channel);
     }
     
     setWorkspaceRoot(root: string): void {
@@ -46,6 +49,7 @@ export class CacheManager {
         LaravelKernelParser.setWorkspaceRoot(root);
         LaravelCommandParser.setWorkspaceRoot(root);
         LaravelConsoleKernelParser.setWorkspaceRoot(root);
+        LaravelConfigParser.setWorkspaceRoot(root);
     }
     
     getCache(): LaravelCache {
@@ -72,6 +76,8 @@ export class CacheManager {
             middlewareDefinitions: new Map(),
             commands: new Map(),
             commandDefinitions: new Map(),
+            configItems: [],
+            configReferences: [],
             lastUpdate: Date.now()
         };
         
@@ -110,6 +116,20 @@ export class CacheManager {
             const commandDefinitions = LaravelCommandParser.discoverCommandClasses();
             this.cache.commandDefinitions = commandDefinitions;
             
+            // 5. 解析配置文件
+            const configFiles = await LaravelConfigParser.discoverConfigFiles();
+            let totalConfigItems = 0;
+            
+            for (const configFile of configFiles) {
+                const configItems = LaravelConfigParser.parseConfigFile(configFile);
+                this.cache.configItems.push(...configItems);
+                totalConfigItems += configItems.length;
+            }
+            
+            // 6. 扫描配置引用
+            const configReferences = await LaravelConfigParser.scanConfigReferences();
+            this.cache.configReferences = configReferences;
+            
             const duration = Date.now() - startTime;
             
             this.log('🎉 缓存初始化完成', {
@@ -119,6 +139,9 @@ export class CacheManager {
                 middlewareDefinitions: middlewareDefinitions.size,
                 scheduleCommands: scheduleCommands.length,
                 commandDefinitions: commandDefinitions.size,
+                configFiles: configFiles.length,
+                totalConfigItems: totalConfigItems,
+                configReferences: configReferences.length,
                 duration: `${duration}ms`
             });
             
@@ -128,11 +151,92 @@ export class CacheManager {
                 middlewareDefinitions: middlewareDefinitions.size,
                 scheduleCommands: scheduleCommands.length,
                 commandClasses: commandDefinitions.size,
+                configFiles: configFiles.length,
+                configItems: totalConfigItems,
+                configReferences: configReferences.length,
+                duration: `${duration}ms`
+            });
+            
+            // 设置配置文件变更监听
+            this.setupConfigFileWatcher();
+            
+        } catch (error) {
+            this.log('❌ 缓存初始化失败', { error: String(error) });
+        }
+    }
+    
+    /**
+     * 设置配置文件变更监听器
+     */
+    private setupConfigFileWatcher(): void {
+        if (this.configFileWatcher) {
+            this.configFileWatcher.dispose();
+        }
+        
+        // 监听 config/*.php 文件的变更
+        const configPattern = path.join(this.workspaceRoot, 'config', '*.php').replace(/\\/g, '/');
+        this.configFileWatcher = vscode.workspace.createFileSystemWatcher(configPattern);
+        
+        // 文件变更时重新构建配置缓存
+        const onConfigChange = (uri: vscode.Uri) => {
+            const fileName = path.basename(uri.fsPath);
+            this.log('🔄 配置文件变更检测', { file: fileName });
+            this.rebuildConfigCache();
+        };
+        
+        this.configFileWatcher.onDidChange(onConfigChange);
+        this.configFileWatcher.onDidCreate(onConfigChange);
+        this.configFileWatcher.onDidDelete(onConfigChange);
+        
+        this.log('👁️ 配置文件监听器已启动', { pattern: 'config/*.php' });
+    }
+    
+    /**
+     * 重新构建配置缓存 - 仅重建配置相关的缓存
+     */
+    private async rebuildConfigCache(): Promise<void> {
+        this.log('🔄 开始重建配置缓存');
+        const startTime = Date.now();
+        
+        try {
+            // 重新解析配置文件
+            const configFiles = await LaravelConfigParser.discoverConfigFiles();
+            this.cache.configItems = [];
+            
+            let totalConfigItems = 0;
+            for (const configFile of configFiles) {
+                const configItems = LaravelConfigParser.parseConfigFile(configFile);
+                this.cache.configItems.push(...configItems);
+                totalConfigItems += configItems.length;
+            }
+            
+            // 重新扫描配置引用（只缓存文件和配置键，不缓存位置）
+            const configReferences = await LaravelConfigParser.scanConfigReferences();
+            this.cache.configReferences = configReferences;
+            
+            // 更新缓存时间戳
+            this.cache.lastUpdate = Date.now();
+            
+            const duration = Date.now() - startTime;
+            this.log('🎉 配置缓存重建完成', {
+                configFiles: configFiles.length,
+                totalConfigItems: totalConfigItems,
+                configReferences: configReferences.length,
                 duration: `${duration}ms`
             });
             
         } catch (error) {
-            this.log('❌ 缓存初始化失败', { error: String(error) });
+            this.log('❌ 配置缓存重建失败', { error: String(error) });
+        }
+    }
+    
+    /**
+     * 释放资源
+     */
+    dispose(): void {
+        if (this.configFileWatcher) {
+            this.configFileWatcher.dispose();
+            this.configFileWatcher = undefined;
         }
     }
 

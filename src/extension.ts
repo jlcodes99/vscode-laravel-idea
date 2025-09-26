@@ -195,7 +195,54 @@ function registerFileWatchers(context: vscode.ExtensionContext, cacheManager: Ca
         }
     });
 
-    context.subscriptions.push(routeWatcher, kernelWatcher, commandWatcher, consoleKernelWatcher);
+    // 监控配置文件变更
+    const configWatcher = vscode.workspace.createFileSystemWatcher(
+        new vscode.RelativePattern(workspaceRoot, 'config/**/*.php')
+    );
+
+    // 监控配置文件变更
+    configWatcher.onDidChange(async (uri) => {
+        const fileName = path.basename(uri.fsPath);
+        outputChannel.appendLine(`📝 检测到配置文件变更: ${fileName}`);
+        outputChannel.appendLine('🔄 自动重新缓存配置...');
+        
+        try {
+            await cacheManager.initializeCache();
+            outputChannel.appendLine(`✅ 配置缓存已更新 (${fileName})`);
+        } catch (error) {
+            outputChannel.appendLine(`❌ 配置缓存更新失败: ${error}`);
+        }
+    });
+
+    // 监控配置文件创建
+    configWatcher.onDidCreate(async (uri) => {
+        const fileName = path.basename(uri.fsPath);
+        outputChannel.appendLine(`➕ 检测到新配置文件: ${fileName}`);
+        outputChannel.appendLine('🔄 自动重新缓存配置...');
+        
+        try {
+            await cacheManager.initializeCache();
+            outputChannel.appendLine(`✅ 配置缓存已更新 (新增${fileName})`);
+        } catch (error) {
+            outputChannel.appendLine(`❌ 配置缓存更新失败: ${error}`);
+        }
+    });
+
+    // 监控配置文件删除
+    configWatcher.onDidDelete(async (uri) => {
+        const fileName = path.basename(uri.fsPath);
+        outputChannel.appendLine(`🗑️ 检测到配置文件删除: ${fileName}`);
+        outputChannel.appendLine('🔄 自动重新缓存配置...');
+        
+        try {
+            await cacheManager.initializeCache();
+            outputChannel.appendLine(`✅ 配置缓存已更新 (删除${fileName})`);
+        } catch (error) {
+            outputChannel.appendLine(`❌ 配置缓存更新失败: ${error}`);
+        }
+    });
+
+    context.subscriptions.push(routeWatcher, kernelWatcher, commandWatcher, consoleKernelWatcher, configWatcher);
 }
 
 // ======================== 命令注册 ========================
@@ -239,6 +286,9 @@ function registerCommands(context: vscode.ExtensionContext, cacheManager: CacheM
 🛣️ 总路由数: ${totalRoutes} 个
 🔧 总中间件: ${totalMiddlewares} 个  
 🎯 中间件定义: ${cache.middlewareDefinitions.size} 个
+📋 命令定义: ${cache.commandDefinitions.size} 个
+⚙️ 配置项: ${cache.configItems.length} 个
+🔗 配置引用: ${cache.configReferences.length} 个
 ⏰ 最后更新: ${new Date(cache.lastUpdate).toLocaleString()}`;
             
             vscode.window.showInformationMessage(message);
@@ -250,6 +300,10 @@ function registerCommands(context: vscode.ExtensionContext, cacheManager: CacheM
 // ======================== 插件停用 ========================
 
 export function deactivate() {
+    // 清理缓存管理器的资源
+    const cacheManager = CacheManager.getInstance();
+    cacheManager.dispose();
+    
     if (outputChannel) {
         outputChannel.appendLine('👋 Laravel Universal Jump 停用');
         outputChannel.dispose();
