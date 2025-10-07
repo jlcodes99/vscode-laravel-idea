@@ -58,6 +58,36 @@
           "default": "routes",
           "description": "路由文件目录路径 / Route files directory path"
         },
+        "learvelIdea.routeFilePattern": {
+          "type": "string",
+          "default": "/routes/",
+          "description": "路由文件路径匹配模式 / Route file path pattern (default: /routes/)"
+        },
+        "learvelIdea.controllerFilePattern": {
+          "type": "string",
+          "default": "Controller",
+          "description": "控制器文件名匹配模式 / Controller file name pattern (default: Controller)"
+        },
+        "learvelIdea.commandFilePattern": {
+          "type": "string",
+          "default": "/Console/Commands/",
+          "description": "命令文件路径匹配模式 / Command file path pattern (default: /Console/Commands/)"
+        },
+        "learvelIdea.consoleKernelPattern": {
+          "type": "string",
+          "default": "/Console/Kernel.php",
+          "description": "Console Kernel文件路径匹配模式 / Console Kernel file path pattern (default: /Console/Kernel.php)"
+        },
+        "learvelIdea.httpKernelPattern": {
+          "type": "string",
+          "default": "/Http/Kernel.php",
+          "description": "Http Kernel文件路径匹配模式 / Http Kernel file path pattern (default: /Http/Kernel.php)"
+        },
+        "learvelIdea.configFilePattern": {
+          "type": "string",
+          "default": "/config/",
+          "description": "配置文件路径匹配模式 / Config file path pattern (default: /config/)"
+        },
         "learvelIdea.enablePhpStormKeybindings": {
           "type": "boolean",
           "default": false,
@@ -232,6 +262,12 @@
         "command": "workbench.view.extensions",
         "key": "alt+7",
         "when": "config.learvelIdea.enablePhpStormKeybindings"
+      },
+      {
+        "command": "editor.action.formatDocument",
+        "key": "alt+cmd+l",
+        "mac": "alt+cmd+l",
+        "when": "config.learvelIdea.enablePhpStormAdvancedKeybindings && editorTextFocus && !editorReadonly"
       }
     ]
   },

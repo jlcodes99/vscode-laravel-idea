@@ -1,336 +1,428 @@
-# 🚀 Learvel Idea / Laravel 通用跳转
-
-一个强大的Laravel开发扩展，为Visual Studio Code提供智能导航和代码跳转功能。
-
-A powerful Laravel development extension for Visual Studio Code that provides intelligent navigation and code jumping capabilities.
+# 🚀 Learvel Idea - Laravel 智能导航扩展
 
 [![Version](https://img.shields.io/visual-studio-marketplace/v/jlcodes.learvel-idea?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=jlcodes.learvel-idea)
 [![Downloads](https://img.shields.io/visual-studio-marketplace/d/jlcodes.learvel-idea?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=jlcodes.learvel-idea)
 [![License](https://img.shields.io/github/license/jlcodes99/vscode-learvel-idea?style=flat-square)](LICENSE)
 
-## ✨ 功能特性 / Features
+> **专为 Laravel 开发者打造的智能代码导航工具**  
+> 让路由、中间件、命令、配置之间的跳转变得前所未有的简单！
 
-### 🎯 路由导航 / Route Navigation
-- **路由 ↔ 控制器**: 在路由定义和控制器方法之间跳转
-- **命名空间感知**: 精确处理嵌套路由组和命名空间
-- **双向导航**: 双向导航 - 从路由到控制器，也可以反向跳转
-- **多格式支持**: 支持Route::方法、$api变量、match方法等多种路由定义格式
-- **智能匹配**: 基于命名空间栈的智能控制器匹配
+A powerful Laravel development extension that provides intelligent navigation and code jumping capabilities between routes, middleware, commands, and configurations.
 
-- **Route ↔ Controller**: Jump between route definitions and controller methods
-- **Namespace Aware**: Accurately handles nested route groups and namespaces
-- **Bidirectional**: Navigate both ways - from routes to controllers and back
-- **Multi-format Support**: Supports Route::methods, $api variables, match methods and more
-- **Smart Matching**: Intelligent controller matching based on namespace stack
+---
 
-### 🔧 中间件导航 / Middleware Navigation  
-- **中间件 ↔ 路由**: 在中间件定义和路由使用位置之间双向跳转
-- **使用发现**: 查找中间件在应用中的所有使用位置
-- **双向导航**: 从路由跳转到Kernel.php中的定义，也可以从Kernel.php反跳转到所有使用位置
-- **参数支持**: 支持带参数的中间件（如throttle:200,1,user_id）
-- **多格式支持**: 支持路由组配置、链式调用、排除中间件等多种格式
-- **智能解析**: 自动解析中间件数组和复杂配置
+## 📖 目录 / Table of Contents
 
-- **Middleware ↔ Route**: Bidirectional jump between middleware definitions and route usage locations
-- **Usage Discovery**: Find all usage locations of middleware across your application
-- **Bidirectional Navigation**: Jump from routes to Kernel.php definitions, and reverse jump from Kernel.php to all usage locations
-- **Parameter Support**: Handles middleware with parameters (e.g., throttle:200,1,user_id)
-- **Multi-format Support**: Supports route group config, chained calls, withoutMiddleware and more
-- **Smart Parsing**: Automatically parses middleware arrays and complex configurations
+- [为什么选择 Learvel Idea](#-为什么选择-learvel-idea--why-choose-learvel-idea)
+- [快速开始](#-快速开始--quick-start)
+- [核心功能](#-核心功能--core-features)
+- [使用指南](#-使用指南--usage-guide)
+- [实际案例](#-实际案例--real-world-examples)
+- [技术实现](#-技术实现--technical-details)
+- [常见问题](#-常见问题--troubleshooting)
 
-### ⚡ 命令导航 / Command Navigation
-- **定时任务 ↔ 命令**: 在定时任务和命令类之间跳转
-- **参数支持**: 支持带参数和选项的命令
-- **签名匹配**: 使用Laravel的`$signature`属性进行精确匹配
-- **智能转换**: 自动处理命令名到类名的转换（kebab-case → PascalCase）
-- **双向查找**: 支持从定时任务跳转到命令类，也支持从命令类反跳转到定时任务
+---
 
-- **Schedule ↔ Command**: Jump between scheduled tasks and command classes
-- **Parameter Support**: Works with commands that have parameters and options
-- **Signature Matching**: Uses Laravel's `$signature` property for accurate matching
-- **Smart Conversion**: Automatically handles command name to class name conversion (kebab-case → PascalCase)
-- **Bidirectional Search**: Supports jumping from schedule to command class and reverse lookup
+## 🎯 为什么选择 Learvel Idea / Why Choose Learvel Idea
 
-### ⚙️ 配置导航 / Configuration Navigation
-- **配置 ↔ 使用位置**: 点击配置键跳转到所有使用该配置的代码位置
-- **智能过滤**: 自动跳过被注释的配置调用，只跳转到实际生效的代码
-- **双向跳转**: 从配置文件跳转到使用位置，也可以从代码跳转回配置定义
-- **实时扫描**: 自动扫描项目中的配置使用情况并更新索引
+### 开发痛点 / Development Pain Points
 
-- **Config ↔ Usage**: Click on configuration keys to jump to all code locations using that config
-- **Smart Filtering**: Automatically skips commented configuration calls, only jumps to active code
-- **Bidirectional Jump**: Jump from config files to usage locations and back to config definitions
-- **Real-time Scanning**: Automatically scans project for config usage and updates index
+在大型 Laravel 项目中，你是否经常遇到这些问题？
 
-### 🚀 高级特性 / Advanced Features
-- **实时监控**: 自动监控文件变化并更新缓存
-- **智能缓存**: 高效的解析结果缓存，提升性能
-- **错误处理**: 完善的错误处理和日志记录
-- **多项目支持**: 支持复杂的Laravel项目结构
-- **IDE集成**: 与VS Code完美集成，支持Ctrl+点击快速导航
+Do you often encounter these issues in large Laravel projects?
 
-- **Real-time Monitoring**: Automatically monitors file changes and updates cache
-- **Smart Caching**: Efficient parsing result caching for better performance
-- **Error Handling**: Comprehensive error handling and logging
-- **Multi-project Support**: Supports complex Laravel project structures
-- **IDE Integration**: Perfect integration with VS Code, supports Ctrl+click quick navigation
+- ❌ 路由定义在 `routes/api.php`，控制器在 `app/Api/Controllers/V1/Erp/`，手动查找文件费时费力
+- ❌ 中间件配置散落在多个路由文件中，想找某个中间件的所有使用位置需要全局搜索
+- ❌ 定时任务配置在 `Kernel.php`，命令类在 `Commands/` 目录，两者对应关系不清晰
+- ❌ 配置项在代码中使用 `config('aliyun.oss.bucket')`，想看定义需要手动打开配置文件
 
-## 🎯 使用场景 / Use Cases
+### 解决方案 / Solutions
 
-### 开发效率提升 / Development Efficiency
-- **快速定位**: 从路由快速跳转到控制器方法，无需手动查找文件
-- **代码审查**: 快速了解路由对应的业务逻辑实现
-- **调试支持**: 快速定位中间件和命令的执行位置
-- **重构辅助**: 在重构时快速找到所有相关的路由和控制器
+✅ **一键跳转** - Ctrl+点击即可在路由、控制器、中间件、命令之间自由跳转  
+✅ **双向导航** - 不仅可以从路由跳转到控制器，还能从控制器反向查找所有相关路由  
+✅ **实时解析** - 文件修改后自动更新缓存，无需手动刷新  
+✅ **智能匹配** - 支持复杂的命名空间、嵌套路由组、带参数的中间件等
 
-- **Quick Location**: Jump from routes to controller methods without manual file searching
-- **Code Review**: Quickly understand business logic implementation from routes
-- **Debug Support**: Quickly locate middleware and command execution positions
-- **Refactoring Aid**: Quickly find all related routes and controllers during refactoring
-
-### 大型项目支持 / Large Project Support
-- **复杂路由**: 支持多层嵌套的路由组和命名空间
-- **中间件管理**: 快速定位中间件定义和使用位置
-- **定时任务**: 快速在定时任务和命令类之间跳转
-- **团队协作**: 帮助团队成员快速理解项目结构
-
-- **Complex Routes**: Supports multi-level nested route groups and namespaces
-- **Middleware Management**: Quickly locate middleware definitions and usage
-- **Scheduled Tasks**: Quick jumping between scheduled tasks and command classes
-- **Team Collaboration**: Helps team members quickly understand project structure
+---
 
 ## 🚀 快速开始 / Quick Start
 
-1. **安装** 从VS Code市场安装扩展 / **Install** the extension from VS Code Marketplace
-2. **打开** 你的Laravel项目 / **Open** your Laravel project
-3. **点击** 任何路由、中间件或命令名称跳转到定义 / **Click** on any route, middleware, or command name to jump to its definition
-4. **使用Ctrl+点击** (Mac上Cmd+点击) 快速导航 / **Use Ctrl+Click** (Cmd+Click on Mac) for quick navigation
+### 安装 / Installation
 
-## 📖 使用方法 / Usage
+1. 打开 VS Code，进入扩展市场 (Ctrl+Shift+X)
+2. 搜索 "Learvel Idea"
+3. 点击"安装"按钮
+4. 打开你的 Laravel 项目，即刻享受智能跳转！
 
-### 路由导航 / Route Navigation
+### 立即体验 / Try It Now
 
-#### 基础路由跳转
 ```php
-// 在 routes/api.php 中 - 点击 'UserController@show' 跳转到控制器
-// In routes/api.php - Click on 'UserController@show' to jump to controller
-Route::get('/users/{id}', 'UserController@show');
+// 在 routes/api.php 中，按住 Ctrl 并点击控制器名
+Route::post('/users/create', 'UserController@store');
+//                            👆 点击这里跳转到控制器方法
 
-// 在 UserController.php 中 - 点击方法名查找对应路由
-// In UserController.php - Click on method name to find its routes
-public function show($id) { ... }
+// 在 UserController.php 中，点击方法名查找对应路由
+public function store() { }
+//              👆 点击这里查找所有相关路由
+
+// 在路由中，点击中间件名跳转到定义
+Route::middleware(['auth', 'throttle:60,1'])->group(function () {
+//                  👆                👆
+//            跳转到 Kernel.php   跳转到 Kernel.php
+});
+
+// 在定时任务中，点击命令名跳转到命令类
+$schedule->command('sync:user-data')->daily();
+//                  👆 点击这里跳转到命令类
 ```
 
-#### 复杂路由组跳转（支持命名空间）
+---
+
+## ✨ 核心功能 / Core Features
+
+### 1️⃣ 路由 ↔ 控制器跳转 / Route ↔ Controller Navigation
+
+#### 支持的路由格式 / Supported Route Formats
+
+本扩展支持 Laravel 所有主流路由定义格式：
+
 ```php
-// 在 routes/open.php 中 - 支持嵌套路由组和命名空间
-// In routes/open.php - Supports nested route groups and namespaces
+// ✅ Route:: 静态方法格式 - 标准 Laravel 路由
+Route::get('/users/{id}', 'UserController@show');
+Route::post('/users', 'UserController@store');
+Route::put('/users/{id}', 'UserController@update');
+Route::delete('/users/{id}', 'UserController@destroy');
+
+// ✅ $api 变量格式 - API 路由推荐写法
+$api->get('user-list', 'UserController@list');
+$api->post('user-create', 'UserController@store');
+$api->put('user-update', 'UserController@update');
+$api->delete('user-delete', 'UserController@destroy');
+
+// ✅ match 方法 - 支持多种 HTTP 方法
+Route::match(['get', 'post'], '/path', 'Controller@method');
+$api->match(['get', 'post'], 'path', 'Controller@method');
+
+// ✅ 支持的所有 HTTP 方法
+// get, post, put, delete, patch, options, any, match
+```
+
+#### Controller@action 语法支持 / Controller@action Syntax
+
+**完整支持** `'Controller@method'` 语法格式：
+
+```php
+// 示例 1：简单路由
+$api->post('batch-add-goods', 'GoodsController@batchAddGoods');
+//          👆 路由路径          👆 控制器名  👆 方法名
+//          (无跳转)            (跳转到类)  (跳转到方法)
+
+// 示例 2：嵌套路由组（自动解析命名空间）
 Route::group([
     'namespace' => '\App\Api\Controllers\OpenApi',
     'prefix' => 'v1',
-    'middleware' => ['openApiAuth'],
 ], function (Illuminate\Routing\Router $api) {
-    // 点击 'GoodsController@batchAddGoods' 跳转到控制器
-    // Click on 'GoodsController@batchAddGoods' to jump to controller
-    $api->post('batch-add-goods', 'GoodsController@batchAddGoods');
-    
-    // 点击 'GoodsController@batchUpdateGoods' 跳转到控制器
-    // Click on 'GoodsController@batchUpdateGoods' to jump to controller
-    $api->post('batch-update-goods', 'GoodsController@batchUpdateGoods');
+    $api->post('task-list', 'GoodsController@taskList');
+    //                      👆 自动解析为: \App\Api\Controllers\OpenApi\GoodsController
 });
 ```
 
-#### 控制器反跳转
+#### 双向导航 / Bidirectional Navigation
+
 ```php
-// 在 app/Api/Controllers/OpenApi/GoodsController.php 中
-// In app/Api/Controllers/OpenApi/GoodsController.php
-class GoodsController extends ApiController
+// 👉 从路由跳转到控制器
+// routes/api.php
+Route::post('/users/create', 'UserController@store');
+//                            👆 Ctrl+点击跳转到 UserController::store()
+
+// 👈 从控制器跳转到路由
+// app/Http/Controllers/UserController.php
+class UserController extends Controller
 {
-    // 点击方法名 'batchAddGoods' 查找对应的路由定义
-    // Click on method name 'batchAddGoods' to find corresponding route definition
-    public function batchAddGoods(GoodsRequest $request): JsonResponse
-    {
-        $ret = ServicesMake::OpenApiGoodsService('OpenApi')->batchAddGoods($request->input());
-        return $this->success($ret);
-    }
-    
-    // 点击类名 'GoodsController' 查找所有相关路由
-    // Click on class name 'GoodsController' to find all related routes
+    public function store() { }
+    //     👆 Ctrl+点击查找所有使用此方法的路由
 }
 ```
 
-### 中间件导航 / Middleware Navigation
+#### 智能命名空间解析 / Intelligent Namespace Resolution
 
-#### 路由组中间件跳转
 ```php
-// 在路由文件中 - 点击中间件名称跳转到定义
-// In route files - Click on middleware names to jump to definitions
+// 支持多层嵌套路由组，自动构建完整命名空间
 Route::group([
-    'namespace' => '\App\Api\Controllers\V1',
+    'namespace' => '\App\Api\Controllers\V1',  // 第1层命名空间
     'prefix' => 'v1',
-    'middleware' => ['checkUserLogin', 'throttle:200,1,user_id'], // 点击 'checkUserLogin' 或 'throttle'
 ], function ($api) {
-    // ...
+    $api->group(['namespace' => 'Erp', 'prefix' => 'erp'], function ($api) {  // 第2层
+        $api->group(['namespace' => 'Warehouse', 'prefix' => 'warehouse'], function ($api) {  // 第3层
+            // 最终命名空间: \App\Api\Controllers\V1\Erp\Warehouse
+            $api->post('check/list', 'CheckController@list');
+            //                       👆 跳转到: \App\Api\Controllers\V1\Erp\Warehouse\CheckController
+        });
+    });
 });
 ```
 
-#### 链式中间件跳转
+---
+
+### 2️⃣ 中间件导航 / Middleware Navigation
+
+#### 从路由跳转到中间件定义 / Jump from Routes to Middleware
+
 ```php
-// 支持链式调用的中间件跳转
-// Supports chained middleware navigation
-Route::middleware(['auth', 'throttle:60,1'])->group(function () {
-    // 点击 'auth' 或 'throttle' 跳转到中间件定义
-    // Click on 'auth' or 'throttle' to jump to middleware definitions
+// 在路由文件中
+Route::group([
+    'middleware' => ['checkUserLogin', 'throttle:200,1,user_id'],
+    //               👆 Ctrl+点击       👆 Ctrl+点击
+    //               跳转到 Kernel.php   跳转到 Kernel.php
+], function ($api) {
+    // ...
+});
+
+// 支持链式中间件
+Route::middleware(['auth', 'verified'])
+//                  👆        👆
+//              Ctrl+点击跳转到定义
+    ->group(function () {
+        // ...
 });
 
 // 支持排除中间件
-// Supports withoutMiddleware
-Route::group([...])->withoutMiddleware(['throttle']); // 点击 'throttle' 跳转
+Route::group([...])->withoutMiddleware(['throttle']);
+//                                      👆 Ctrl+点击跳转
 ```
 
-#### 中间件定义反跳转到路由（实时解析）
+#### 从中间件定义跳转到所有使用位置 / Jump from Middleware to All Usage
+
 ```php
-// 在 app/Http/Kernel.php 中 - 点击中间件名称跳转到所有使用该中间件的路由位置
-// In app/Http/Kernel.php - Click on middleware names to jump to all routes using this middleware
+// 在 app/Http/Kernel.php 中
 protected $routeMiddleware = [
-    'checkUserLogin' => CheckUserLoginMiddleware::class,      // 点击 'checkUserLogin' 查找所有使用位置
-    'openApiAuth' => OpenApiAuth::class,                      // 点击 'openApiAuth' 查找所有使用位置
-    'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,  // 点击 'throttle' 查找所有使用位置
-    'xiaoeCheckLoginNew' => XiaoeLoginMiddlewareNew::class,   // 点击 'xiaoeCheckLoginNew' 查找所有使用位置
-    'merchantIdempotency' => IdempotencyMidleware::class,     // 点击 'merchantIdempotency' 查找所有使用位置
+    'checkUserLogin' => CheckUserLoginMiddleware::class,
+    //👆 Ctrl+点击查找所有使用此中间件的路由
+    
+    'openApiAuth' => OpenApiAuth::class,
+    //👆 Ctrl+点击查找所有使用位置
+    
+    'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+    //👆 Ctrl+点击查找所有使用位置（包括带参数的调用）
 ];
-
-// 🚀 实时解析模式：从缓存中获取路由文件列表，但实时读取文件内容进行精准匹配
-// 🚀 Real-time parsing mode: Get route file list from cache, but read file content in real-time for accurate matching
-// 优势：即使路由文件修改后也能精准跳转，无需手动刷新缓存
-// Advantage: Accurate jumps even after route file modifications, no manual cache refresh needed
-
-// 跳转到所有使用该中间件的路由，例如：
-// Jumps to all routes using this middleware, for example:
-Route::group([
-    'middleware' => ['checkUserLogin', 'throttle:200,1'],  // ← 自动跳转到这里
-], function ($api) {
-    // ...
-});
 ```
 
-### 命令导航 / Command Navigation
+#### 实时解析模式 / Real-time Parsing
 
-#### 定时任务跳转到命令类
+**重要特性**：中间件跳转采用实时解析模式，即使路由文件修改后也能精准跳转！
+
+Important: Middleware navigation uses real-time parsing - accurate jumps even after route file modifications!
+
 ```php
-// 在 app/Console/Kernel.php 中 - 点击命令名跳转到类
-// In app/Console/Kernel.php - Click on command name to jump to class
+// 工作原理 / How it works:
+// 1. 从缓存中快速获取路由文件列表
+// 2. 实时读取文件内容进行精准匹配
+// 3. 无需手动刷新缓存，始终保持准确性
+```
+
+---
+
+### 3️⃣ 定时任务 ↔ 命令类跳转 / Schedule ↔ Command Navigation
+
+#### 从定时任务跳转到命令类 / Jump from Schedule to Command
+
+```php
+// 在 app/Console/Kernel.php 中
 protected function schedule(Schedule $schedule)
 {
-    // 点击 'upload:ai-ident-image' 跳转到对应的Command类
-    // Click on 'upload:ai-ident-image' to jump to corresponding Command class
+    // 基础命令
     $schedule->command('upload:ai-ident-image')->daily();
+    //                  👆 Ctrl+点击跳转到 UploadAiIdentImageCommand
     
-    // 点击 'sync:bs:share:page:data' 跳转到对应的Command类
-    // Click on 'sync:bs:share:page:data' to jump to corresponding Command class
-    $schedule->command('sync:bs:share:page:data')->hourly();
-    
-    // 支持带参数的命令
-    // Supports commands with parameters
+    // 带参数的命令
     $schedule->command('update:platform-item-tag-new -r real')->daily();
+    //                  👆 Ctrl+点击跳转到 UpdatePlatformItemTagNewCommand
+    
+    // 复杂命令名
+    $schedule->command('sync:bs:share:page:data')->hourly();
+    //                  👆 Ctrl+点击跳转到 SyncBsSharePageDataCommand
 }
 ```
 
-#### 命令类反跳转到定时任务
-```php
-// 在 app/Console/Commands/ 目录下的命令类中
-// In Command classes under app/Console/Commands/ directory
+#### 从命令类跳转到定时任务 / Jump from Command to Schedule
 
-// 点击类名 'UploadAiIdentImageCommand' 查找对应的定时任务定义
-// Click on class name 'UploadAiIdentImageCommand' to find corresponding schedule definition
+```php
+// 在 app/Console/Commands/UploadAiIdentImageCommand.php 中
 class UploadAiIdentImageCommand extends Command
+//    👆 Ctrl+点击类名查找对应的定时任务定义
 {
     protected $signature = 'upload:ai-ident-image';
     
     public function handle()
     {
         // 命令逻辑
-        // Command logic
-    }
-}
-
-// 点击类名 'SyncBsSharePageDataCommand' 查找对应的定时任务定义
-// Click on class name 'SyncBsSharePageDataCommand' to find corresponding schedule definition
-class SyncBsSharePageDataCommand extends Command
-{
-    protected $signature = 'sync:bs:share:page:data';
-    
-    public function handle()
-    {
-        // 命令逻辑
-        // Command logic
     }
 }
 ```
 
-### 高级功能示例 / Advanced Features
+#### 智能命令名匹配 / Smart Command Name Matching
 
-#### 支持复杂命名空间路由
+扩展会自动处理命令名到类名的转换：
+
+- `upload:ai-ident-image` → `UploadAiIdentImageCommand`
+- `sync:bs:share:page:data` → `SyncBsSharePageDataCommand`
+- `update:platform-item-tag-new` → `UpdatePlatformItemTagNewCommand`
+
+---
+
+### 4️⃣ 配置导航 / Configuration Navigation
+
+#### 从配置文件跳转到使用位置 / Jump from Config to Usage
+
 ```php
-// 支持多层嵌套的路由组
-// Supports multi-level nested route groups
+// 在 config/aliyun.php 中
+return [
+    'access_key_id' => env('ALIYUN_ACCESS_KEY_ID', ''),
+    //👆 Ctrl+点击查找所有使用 config('aliyun.access_key_id') 的位置
+    
+    'oss' => [
+        'region' => env('ALIYUN_OSS_REGION', 'oss-cn-beijing'),
+        //👆 Ctrl+点击查找所有使用 config('aliyun.oss.region') 的位置
+        
+        'bucket' => env('ALIYUN_OSS_BUCKET', ''),
+        //👆 Ctrl+点击查找所有使用位置
+    ],
+];
+```
+
+#### 从代码跳转到配置定义 / Jump from Code to Config
+
+```php
+// 在任意 PHP 文件中
+$accessKeyId = config('aliyun.access_key_id');
+//                     👆 Ctrl+点击跳转到 config/aliyun.php
+
+$region = config('aliyun.oss.region');
+//                👆 Ctrl+点击跳转到配置文件的具体位置
+
+$bucket = config('aliyun.oss.bucket');
+//                👆 Ctrl+点击跳转到配置定义
+```
+
+#### 智能过滤 / Smart Filtering
+
+**自动跳过被注释的配置调用**，只跳转到实际生效的代码：
+
+```php
+// ❌ 被注释的调用会被忽略
+// $key = config('aliyun.access_key_id');
+
+// ✅ 只跳转到未注释的实际调用
+$key = config('aliyun.access_key_id');
+```
+
+---
+
+## 📚 使用指南 / Usage Guide
+
+### 基础操作 / Basic Operations
+
+#### 1. Ctrl+点击跳转 / Ctrl+Click Navigation
+
+**Windows/Linux**: `Ctrl + 鼠标左键点击`  
+**macOS**: `Cmd + 鼠标左键点击`
+
+```php
+// 点击不同位置会有不同的跳转效果
+$api->post('batch-add-goods', 'GoodsController@batchAddGoods');
+//          👆 无跳转              👆 跳转到类定义    👆 跳转到方法定义
+```
+
+#### 2. 查看所有使用位置 / Find All Usages
+
+点击控制器方法名、中间件名、命令类名，扩展会列出所有使用该元素的位置：
+
+```php
+// 在控制器中
+public function batchAddGoods() { }
+//              👆 Ctrl+点击 → 显示所有使用此方法的路由
+
+// 在 Kernel.php 中
+'checkUserLogin' => CheckUserLoginMiddleware::class,
+//👆 Ctrl+点击 → 显示所有使用此中间件的路由
+```
+
+### 高级用法 / Advanced Usage
+
+#### 复杂路由组解析 / Complex Route Group Parsing
+
+```php
+// 扩展能够智能解析多层嵌套的路由组
 Route::group([
     'namespace' => '\App\Api\Controllers\V1',
     'prefix' => 'v1',
     'middleware' => ['checkUserLogin', 'throttle:200,1,user_id'],
 ], function ($api) {
+    $api->group(['namespace' => 'Merchant', 'prefix' => 'merchant'], function ($api) {
     $api->group(['namespace' => 'Erp', 'prefix' => 'erp'], function ($api) {
-        // 点击 'ErpWarehouseCheckController@list' 跳转到控制器
-        // Click on 'ErpWarehouseCheckController@list' to jump to controller
-        $api->post('warehouse-check/list', 'ErpWarehouseCheckController@list');
+            // 自动解析完整命名空间: \App\Api\Controllers\V1\Merchant\Erp
+            $api->post('order/list', 'OrderController@list');
+            //                       👆 精准跳转到: \App\Api\Controllers\V1\Merchant\Erp\OrderController
+        });
     });
 });
 ```
 
-#### 支持多种路由定义格式
+#### 带参数的中间件跳转 / Middleware with Parameters
+
 ```php
-// 支持各种Laravel路由定义格式
-// Supports various Laravel route definition formats
-
-// 标准Route::方法
-Route::get('/users', 'UserController@index');
-Route::post('/users', 'UserController@store');
-
-// $api变量路由
-$api->get('user-list', 'UserController@list');
-$api->post('user-create', 'UserController@create');
-
+// 支持各种带参数的中间件格式
+Route::middleware([
+    'throttle:200,1,user_id',           // ✅ 支持
+    'throttle:200,1,user_id,api_merchant',  // ✅ 支持
+    'cache:300',                        // ✅ 支持
+    'role:admin,editor',                // ✅ 支持
+])->group(function () {
+    // 点击任意中间件名都能正确跳转
+});
 ```
 
-### 实际项目示例 / Real Project Examples
+---
 
-#### 基于雷小安API项目的完整示例
+## 💼 实际案例 / Real World Examples
+
+### 案例 1：雷小安 API 项目路由跳转 / Route Navigation in Leixiaoan API
+
 ```php
-// 1. 开放API路由跳转示例
-// Open API route jump examples
 // 文件: routes/open.php
 Route::group([
     'namespace' => '\App\Api\Controllers\OpenApi',
     'prefix' => 'v1',
-    'middleware' => ['openApiAuth'], // 点击 'openApiAuth' 跳转到中间件定义
+    'middleware' => ['openApiAuth'],  // 👈 点击跳转到中间件定义
 ], function (Illuminate\Routing\Router $api) {
+    
     $api->group(['prefix' => 'goods'], function (Illuminate\Routing\Router $api) {
-        // 点击 'GoodsController@batchAddGoods' 跳转到控制器方法
+        // ✅ 所有以下路由均支持智能跳转
         $api->post('batch-add-goods', 'GoodsController@batchAddGoods');
+        //                            👆 点击跳转到: \App\Api\Controllers\OpenApi\GoodsController::batchAddGoods()
+        
         $api->post('batch-update-goods', 'GoodsController@batchUpdateGoods');
         $api->post('task-list', 'GoodsController@taskList');
         $api->post('goods-list', 'GoodsController@goodsList');
         $api->post('batch-on-sale', 'GoodsController@batchOnSale');
         $api->post('batch-off-sale', 'GoodsController@batchOffSale');
     });
+    
+    $api->group(['prefix' => 'order'], function (Illuminate\Routing\Router $api) {
+        $api->post('create', 'OrderController@create');
+        $api->post('list', 'OrderController@list');
+        $api->post('detail', 'OrderController@detail');
+    });
 });
+```
 
-// 2. 控制器反跳转示例
-// Controller reverse jump examples
+```php
 // 文件: app/Api/Controllers/OpenApi/GoodsController.php
+namespace App\Api\Controllers\OpenApi;
+
 class GoodsController extends ApiController
 {
-    // 点击方法名跳转到对应的路由定义
+    // 👈 点击方法名查找对应路由
     public function batchAddGoods(GoodsRequest $request): JsonResponse
     {
         $ret = ServicesMake::OpenApiGoodsService('OpenApi')->batchAddGoods($request->input());
@@ -343,221 +435,474 @@ class GoodsController extends ApiController
         return $this->success($ret);
     }
 }
+```
 
-// 3. 中间件跳转示例
-// Middleware jump examples
+---
+
+### 案例 2：内部版路由与中间件跳转 / Internal API Routes and Middleware
+
+```php
+// 文件: routes/api.php
+Route::group([
+    'namespace' => '\App\Api\Controllers\V1',
+    'prefix' => 'v1',
+    'middleware' => ['checkUserLogin', 'throttle:200,1,user_id'],
+    //               👆 点击跳转到定义  👆 点击跳转到定义
+], function ($api) {
+    
+    // ERP 仓库管理模块
+    $api->group(['namespace' => 'Erp', 'prefix' => 'erp'], function ($api) {
+        $api->post('warehouse-check/list', 'ErpWarehouseCheckController@list');
+        //                                  👆 跳转到: \App\Api\Controllers\V1\Erp\ErpWarehouseCheckController::list()
+        
+        $api->post('warehouse-check/detail', 'ErpWarehouseCheckController@detail');
+        $api->post('warehouse-check/create', 'ErpWarehouseCheckController@create');
+        $api->post('warehouse-check/update', 'ErpWarehouseCheckController@update');
+    });
+    
+    // 鉴定管理模块
+    $api->group(['namespace' => 'Ident', 'prefix' => 'ident'], function ($api) {
+        $api->post('listing-audit/list', 'ListingAuditController@list');
+        //                                👆 跳转到: \App\Api\Controllers\V1\Ident\ListingAuditController::list()
+        
+        $api->post('listing-audit/detail', 'ListingAuditController@detail');
+        $api->post('listing-audit/audit', 'ListingAuditController@audit');
+    });
+});
+```
+
+```php
 // 文件: app/Http/Kernel.php
 protected $routeMiddleware = [
-    'checkUserLogin' => CheckUserLoginMiddleware::class,         // 点击跳转到所有使用位置
-    'openApiAuth' => OpenApiAuth::class,                         // 点击跳转到所有使用位置
-    'xiaoeCheckLoginNew' => XiaoeLoginMiddlewareNew::class,      // 点击跳转到所有使用位置
-    'merchantIdempotency' => IdempotencyMidleware::class,        // 点击跳转到所有使用位置
-    'staffPermissions' => StaffPermissionsMiddleware::class,     // 点击跳转到所有使用位置
-    'anjieliCheckUserLogin' => AnjieliLoginMiddleware::class,    // 点击跳转到所有使用位置
+    'checkUserLogin' => CheckUserLoginMiddleware::class,
+    //👆 Ctrl+点击 → 查找所有使用此中间件的路由（实时解析，立即显示结果）
+    
+    'openApiAuth' => OpenApiAuth::class,
+    //👆 Ctrl+点击 → 查找 routes/open.php 中的所有使用位置
+    
+    'xiaoeCheckLoginNew' => XiaoeLoginMiddlewareNew::class,
+    //👆 Ctrl+点击 → 查找商家版路由中的所有使用位置
+    
+    'merchantIdempotency' => IdempotencyMidleware::class,
+    'staffPermissions' => StaffPermissionsMiddleware::class,
+    'anjieliCheckUserLogin' => AnjieliLoginMiddleware::class,
 ];
+```
 
-// 会跳转到所有使用该中间件的路由，例如：
-// Will jump to all routes using this middleware, for example:
-Route::group([
-    'middleware' => ['checkUserLogin', 'throttle:200,1,user_id'],  // ← 从 Kernel.php 跳转到这里
-], function ($api) {
-    // 内部版接口
-});
+---
 
-// 4. 定时任务跳转示例
-// Schedule jump examples
+### 案例 3：定时任务与命令类跳转 / Scheduled Tasks and Commands
+
+```php
 // 文件: app/Console/Kernel.php
 protected function schedule(Schedule $schedule)
 {
-    // 点击命令名跳转到对应的Command类
+    // AI 鉴定图片上传任务
     $schedule->command('upload:ai-ident-image')->daily();
+    //                  👆 点击跳转到: app/Console/Commands/UploadAiIdentImageCommand.php
+    
+    // 百思分享页面数据同步
     $schedule->command('sync:bs:share:page:data')->hourly();
+    //                  👆 点击跳转到: app/Console/Commands/SyncBsSharePageDataCommand.php
+    
+    // 平台商品标签更新（带参数）
     $schedule->command('update:platform-item-tag-new -r real')->daily();
+    //                  👆 点击跳转到: app/Console/Commands/UpdatePlatformItemTagNewCommand.php
+    
+    // 材质技术数据同步（带多个参数）
     $schedule->command('sync:material-tech-data all 1')->everyMinute();
+    //                  👆 点击跳转到: app/Console/Commands/SyncMaterialTechDataCommand.php
+    
+    // 订单自动取消任务
+    $schedule->command('order:auto-cancel')->everyFiveMinutes();
+    //                  👆 点击跳转到命令类
 }
+```
 
-// 5. 命令类反跳转示例
-// Command class reverse jump examples
+```php
 // 文件: app/Console/Commands/UploadAiIdentImageCommand.php
+namespace App\Console\Commands;
+
+use Illuminate\Console\Command;
+
 class UploadAiIdentImageCommand extends Command
+//    👆 Ctrl+点击类名 → 查找 Kernel.php 中对应的定时任务
 {
     protected $signature = 'upload:ai-ident-image';
+    protected $description = '上传 AI 鉴定图片';
     
-    // 点击类名查找对应的定时任务定义
     public function handle()
     {
-        // 命令逻辑
-    }
-}
-
-// 文件: app/Console/Commands/SyncBsSharePageDataCommand.php
-class SyncBsSharePageDataCommand extends Command
-{
-    protected $signature = 'sync:bs:share:page:data';
-    
-    // 点击类名查找对应的定时任务定义
-    public function handle()
-    {
-        // 命令逻辑
+        // 命令执行逻辑
+        $this->info('开始上传 AI 鉴定图片...');
+        // ...
     }
 }
 ```
 
-#### 支持的中间件格式示例
+---
+
+### 案例 4：配置文件跳转 / Configuration Navigation
+
 ```php
-// 1. 路由组中间件配置
-Route::group([
-    'middleware' => ['checkUserLogin', 'throttle:200,1,user_id'], // 点击任意中间件名跳转
-], function ($api) {
-    // ...
-});
-
-// 2. 链式中间件调用
-Route::middleware(['auth', 'throttle:60,1'])->group(function () {
-    // 点击 'auth' 或 'throttle' 跳转
-});
-
-// 3. 排除中间件
-Route::group([...])->withoutMiddleware(['throttle']); // 点击 'throttle' 跳转
-
-// 4. 带参数的中间件
-Route::middleware(['throttle:200,1,user_id,api_merchant'])->group(function () {
-    // 点击 'throttle' 跳转到中间件定义
-});
-```
-
-#### 支持的命令格式示例
-```php
-// 1. 基础命令
-$schedule->command('upload:ai-ident-image')->daily();
-
-// 2. 带参数的命令
-$schedule->command('update:platform-item-tag-new -r real')->daily();
-
-// 3. 复杂命令名
-$schedule->command('sync:bs:share:page:data')->hourly();
-
-// 4. 带多个参数的命令
-$schedule->command('sync:material-tech-data all 1')->everyMinute();
-```
-
-### 配置导航 / Configuration Navigation
-
-#### 配置文件跳转到使用位置
-```php
-// 在 config/aliyun.php 中 - 点击配置键跳转到使用位置
-// In config/aliyun.php - Click on config keys to jump to usage locations
+// 文件: config/aliyun.php
 return [
-    'access_key_id' => env('ALIYUN_ACCESS_KEY_ID', ''), // 点击 'access_key_id' 查找使用位置
-    'access_key_secret' => env('ALIYUN_ACCESS_KEY_SECRET', ''), // 点击 'access_key_secret' 查找使用位置
+    'access_key_id' => env('ALIYUN_ACCESS_KEY_ID', ''),
+    //👆 Ctrl+点击 → 查找所有使用 config('aliyun.access_key_id') 的位置
+    
+    'access_key_secret' => env('ALIYUN_ACCESS_KEY_SECRET', ''),
+    //👆 Ctrl+点击 → 查找所有使用位置
+    
     'oss' => [
-        'region' => env('ALIYUN_OSS_REGION', 'oss-cn-beijing'), // 点击 'region' 查找使用位置
-        'bucket' => env('ALIYUN_OSS_BUCKET', ''), // 点击 'bucket' 查找使用位置
+        'region' => env('ALIYUN_OSS_REGION', 'oss-cn-beijing'),
+        //👆 Ctrl+点击 → 查找所有使用 config('aliyun.oss.region') 的位置
+        
+        'bucket' => env('ALIYUN_OSS_BUCKET', ''),
+        //👆 Ctrl+点击 → 查找所有使用位置
+        
+        'endpoint' => env('ALIYUN_OSS_ENDPOINT', ''),
+        'cdn_domain' => env('ALIYUN_OSS_CDN_DOMAIN', ''),
+    ],
+    
+    'vod' => [
+        'region' => env('ALIYUN_VOD_REGION', 'cn-shanghai'),
+        'template_group_id' => env('ALIYUN_VOD_TEMPLATE_GROUP_ID', ''),
     ],
 ];
 ```
 
-#### 代码中配置调用跳转
 ```php
-// 在任意PHP文件中 - 点击配置键跳转到配置定义
-// In any PHP file - Click on config keys to jump to config definition
+// 文件: app/Services/Aliyun/OssService.php
+namespace App\Services\Aliyun;
 
-// 点击 'aliyun.access_key_id' 跳转到配置文件
-$accessKeyId = config('aliyun.access_key_id');
-
-// 点击 'aliyun.oss.region' 跳转到配置文件
-$region = config('aliyun.oss.region');
-
-// 点击 'aliyun.access_key_secret' 跳转到配置文件
-$secret = config('aliyun.access_key_secret');
+class OssService
+{
+    public function __construct()
+    {
+        // 👈 Ctrl+点击配置键跳转到配置文件
+        $this->accessKeyId = config('aliyun.access_key_id');
+        //                          👆 跳转到 config/aliyun.php 的第3行
+        
+        $this->accessKeySecret = config('aliyun.access_key_secret');
+        //                              👆 跳转到 config/aliyun.php 的第4行
+        
+        $this->region = config('aliyun.oss.region');
+        //                     👆 跳转到 config/aliyun.php 的第7行
+        
+        $this->bucket = config('aliyun.oss.bucket');
+        //                     👆 跳转到 config/aliyun.php 的第10行
+    }
+}
 ```
-
-## ⚙️ 命令 / Commands
-
-- `Laravel Jump: Show Logs` - 查看扩展活动日志 / View extension activity logs
-- `Laravel Jump: Clear Cache` - 清除解析的路由/中间件缓存 / Clear parsed route/middleware cache
-- `Laravel Jump: Rescan Project` - 强制重新扫描所有Laravel文件 / Force rescan of all Laravel files
-- `Laravel Jump: Show Statistics` - 显示解析统计信息 / Display parsing statistics
-
-## 🔧 技术实现 / Technical Implementation
-
-### 核心架构 / Core Architecture
-- **智能解析器**: 基于正则表达式的智能代码解析，支持复杂Laravel语法
-- **命名空间栈**: 精确管理嵌套路由组的命名空间，确保跳转准确性
-- **缓存系统**: 高效的解析结果缓存，支持实时更新和增量更新
-- **文件监控**: 基于VS Code API的文件变化监控，自动更新缓存
-
-- **Smart Parser**: Regex-based intelligent code parsing supporting complex Laravel syntax
-- **Namespace Stack**: Precise management of nested route group namespaces for accurate jumping
-- **Caching System**: Efficient parsing result caching with real-time and incremental updates
-- **File Monitoring**: VS Code API-based file change monitoring with automatic cache updates
-
-### 解析能力 / Parsing Capabilities
-- **路由解析**: 支持Route::方法、$api变量、match方法等多种路由定义格式
-- **中间件解析**: 支持路由组配置、链式调用、排除中间件等多种中间件格式
-- **命令解析**: 支持定时任务到命令类的精确匹配，基于$signature属性
-- **命名空间解析**: 智能处理绝对命名空间和相对命名空间的转换
-
-- **Route Parsing**: Supports Route::methods, $api variables, match methods and various route definition formats
-- **Middleware Parsing**: Supports route group config, chained calls, withoutMiddleware and various middleware formats
-- **Command Parsing**: Supports precise matching from scheduled tasks to command classes based on $signature property
-- **Namespace Parsing**: Intelligently handles absolute and relative namespace conversions
-
-### 性能优化 / Performance Optimization
-- **增量更新**: 只更新变化的文件，避免全量重新解析
-- **智能缓存**: 基于文件修改时间的智能缓存策略
-- **异步处理**: 非阻塞的文件解析和缓存更新
-- **内存管理**: 高效的缓存数据结构，最小化内存占用
-
-- **Incremental Updates**: Only updates changed files, avoiding full re-parsing
-- **Smart Caching**: Intelligent caching strategy based on file modification time
-- **Async Processing**: Non-blocking file parsing and cache updates
-- **Memory Management**: Efficient cache data structures with minimal memory usage
-
-## 🔧 配置 / Configuration
-
-扩展开箱即用，适用于标准Laravel项目。它会自动：
-
-The extension works out of the box with standard Laravel projects. It automatically:
-
-- 检测Laravel项目结构 / Detects Laravel project structure
-- 解析路由文件 (`routes/*.php`) / Parses route files (`routes/*.php`)
-- 扫描中间件定义 (`app/Http/Kernel.php`) / Scans middleware definitions (`app/Http/Kernel.php`)
-- 发现命令类 (`app/Console/Commands/`) / Discovers command classes (`app/Console/Commands/`)
-- 监控文件变化实时更新 / Monitors file changes for real-time updates
-
-## 📁 支持的文件类型 / Supported File Types
-
-- **路由 / Routes**: `routes/api.php`, `routes/web.php`, `routes/app.php`, etc.
-- **控制器 / Controllers**: `app/Api/Controllers/**/*.php`, `app/Http/Controllers/**/*.php`
-- **中间件 / Middleware**: `app/Http/Middleware/**/*.php`
-- **命令 / Commands**: `app/Console/Commands/**/*.php`
-- **配置文件 / Config Files**: `config/**/*.php`
-- **内核文件 / Kernel Files**: `app/Http/Kernel.php`, `app/Console/Kernel.php`
-
-## 🐛 故障排除 / Troubleshooting
-
-**导航不工作？ / Navigation not working?**
-1. 确保你在Laravel项目中 / Ensure you're in a Laravel project
-2. 尝试 `Laravel Jump: Rescan Project` 命令 / Try `Laravel Jump: Rescan Project` command
-3. 使用 `Laravel Jump: Show Logs` 查看日志 / Check logs with `Laravel Jump: Show Logs`
-
-**性能问题？ / Performance issues?**
-1. 使用 `Laravel Jump: Clear Cache` 刷新 / Use `Laravel Jump: Clear Cache` to refresh
-2. 检查 `Laravel Jump: Show Statistics` 查看缓存状态 / Check `Laravel Jump: Show Statistics` for cache status
-
-## 📝 许可证 / License
-
-本项目基于MIT许可证 - 查看 [LICENSE](LICENSE) 文件了解详情。
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🤝 贡献 / Contributing
-
-欢迎贡献！请随时提交问题和拉取请求。
-
-Contributions are welcome! Please feel free to submit issues and pull requests.
 
 ---
 
-**为Laravel开发者用心制作 ❤️ / Made with ❤️ for Laravel developers**
+## ⚙️ 扩展命令 / Extension Commands
+
+打开命令面板（Ctrl+Shift+P / Cmd+Shift+P）输入以下命令：
+
+| 命令 / Command | 说明 / Description |
+|----------------|-------------------|
+| `Laravel Jump: Show Logs` | 查看扩展活动日志，用于调试和问题排查 |
+| `Laravel Jump: Clear Cache` | 清除所有解析缓存，强制重新解析 |
+| `Laravel Jump: Rescan Project` | 重新扫描整个项目的 Laravel 文件 |
+| `Laravel Jump: Show Statistics` | 显示解析统计信息（路由数、中间件数、命令数等） |
+
+---
+
+## ⚙️ 配置选项 / Configuration
+
+扩展提供了丰富的配置选项，可以根据项目实际情况进行调整。
+
+### 路径匹配配置 / Path Pattern Configuration
+
+打开 VS Code 设置（File > Preferences > Settings），搜索 "Learvel Idea"，可以配置以下选项：
+
+| 配置项 / Setting | 默认值 / Default | 说明 / Description |
+|-----------------|------------------|-------------------|
+| `learvelIdea.routeFilePattern` | `/routes/` | 路由文件路径匹配模式 |
+| `learvelIdea.controllerFilePattern` | `Controller` | 控制器文件名匹配模式 |
+| `learvelIdea.commandFilePattern` | `/Console/Commands/` | 命令文件路径匹配模式 |
+| `learvelIdea.consoleKernelPattern` | `/Console/Kernel.php` | Console Kernel 文件路径 |
+| `learvelIdea.httpKernelPattern` | `/Http/Kernel.php` | Http Kernel 文件路径 |
+| `learvelIdea.configFilePattern` | `/config/` | 配置文件路径匹配模式 |
+
+### 项目目录配置 / Directory Configuration
+
+| 配置项 / Setting | 默认值 / Default | 说明 / Description |
+|-----------------|------------------|-------------------|
+| `learvelIdea.appPath` | `app` | Laravel 应用目录路径 |
+| `learvelIdea.controllerPath` | `app/Api/Controllers` | 控制器目录路径 |
+| `learvelIdea.routePath` | `routes` | 路由文件目录路径 |
+
+### 快捷键配置 / Keybinding Configuration
+
+| 配置项 / Setting | 默认值 / Default | 说明 / Description |
+|-----------------|------------------|-------------------|
+| `learvelIdea.enablePhpStormKeybindings` | `false` | 启用 PHPStorm 风格快捷键（基础版本） |
+| `learvelIdea.enablePhpStormAdvancedKeybindings` | `false` | 启用 PHPStorm 风格快捷键（高级版本） |
+
+**PHPStorm 风格快捷键（高级版本）包含：**
+- `Option+Cmd+L` (Mac) / `Alt+Ctrl+L` (Windows/Linux) - 格式化代码
+- `Ctrl+D` - 复制当前行
+- `Ctrl+Y` - 删除当前行
+- 更多快捷键...
+
+### 配置示例 / Configuration Example
+
+如果您的项目结构不同于标准 Laravel，可以自定义路径模式：
+
+```json
+{
+  "learvelIdea.routeFilePattern": "/custom-routes/",
+  "learvelIdea.controllerFilePattern": "MyController",
+  "learvelIdea.controllerPath": "app/MyApp/Controllers"
+}
+```
+
+---
+
+## 🔧 技术实现 / Technical Details
+
+### 核心架构 / Core Architecture
+
+```
+┌─────────────────────────────────────────────────────────┐
+│                    Learvel Idea Extension                │
+├─────────────────────────────────────────────────────────┤
+│                                                          │
+│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
+│  │ Route Parser │  │  Middleware  │  │   Command    │  │
+│  │              │  │    Parser    │  │    Parser    │  │
+│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘  │
+│         │                 │                  │          │
+│         └─────────────────┼──────────────────┘          │
+│                           │                             │
+│                  ┌────────▼────────┐                    │
+│                  │  Namespace Stack │                    │
+│                  │  (命名空间栈管理)  │                    │
+│                  └────────┬────────┘                    │
+│                           │                             │
+│                  ┌────────▼────────┐                    │
+│                  │  Cache System   │                    │
+│                  │  (缓存系统)      │                    │
+│                  └────────┬────────┘                    │
+│                           │                             │
+│                  ┌────────▼────────┐                    │
+│                  │  File Monitor   │                    │
+│                  │  (文件监控)      │                    │
+│                  └─────────────────┘                    │
+│                                                          │
+└─────────────────────────────────────────────────────────┘
+```
+
+### 解析能力 / Parsing Capabilities
+
+#### 1. 路由解析 / Route Parsing
+
+- ✅ 支持 `Route::get/post/put/delete/patch/options/any/match` 格式
+- ✅ 支持 `$api->get/post/put/delete/patch/options/any/match` 格式
+- ✅ 完整支持 `'Controller@method'` 语法
+- ✅ 智能解析多层嵌套路由组
+- ✅ 自动构建完整命名空间路径
+- ✅ 精准定位控制器类和方法
+
+#### 2. 中间件解析 / Middleware Parsing
+
+- ✅ 支持路由组中间件配置（`'middleware' => ['auth']`）
+- ✅ 支持链式中间件调用（`->middleware(['auth'])`）
+- ✅ 支持排除中间件（`->withoutMiddleware(['throttle'])`）
+- ✅ 支持带参数的中间件（`'throttle:200,1,user_id'`）
+- ✅ 实时解析模式，无需手动刷新缓存
+
+#### 3. 命令解析 / Command Parsing
+
+- ✅ 基于 `$signature` 属性精确匹配
+- ✅ 自动处理命令名到类名的转换（kebab-case → PascalCase）
+- ✅ 支持带参数和选项的命令
+- ✅ 支持复杂的命令名格式（如 `sync:bs:share:page:data`）
+
+#### 4. 配置解析 / Config Parsing
+
+- ✅ 支持多级配置键（如 `aliyun.oss.bucket`）
+- ✅ 智能过滤被注释的配置调用
+- ✅ 双向跳转（配置 ↔ 使用位置）
+- ✅ 实时扫描和索引更新
+
+### 性能优化 / Performance Optimization
+
+#### 智能缓存策略 / Smart Caching
+
+```typescript
+// 缓存结构示例
+{
+  routes: {
+    filePath: string,
+    lastModified: number,
+    routes: RouteDefinition[]
+  },
+  middleware: {
+    filePath: string,
+    lastModified: number,
+    definitions: MiddlewareDefinition[]
+  },
+  commands: {
+    filePath: string,
+    lastModified: number,
+    commands: CommandDefinition[]
+  }
+}
+```
+
+#### 增量更新 / Incremental Updates
+
+- **文件监控**: 监听 `routes/`, `app/Api/Controllers/`, `app/Console/` 等目录的文件变化
+- **智能更新**: 只更新修改的文件，避免全量重新解析
+- **性能优先**: 异步处理文件解析，不阻塞 UI
+
+#### 内存管理 / Memory Management
+
+- 使用高效的数据结构存储解析结果
+- 自动清理过期缓存
+- 最小化内存占用
+
+---
+
+## 📁 支持的文件类型 / Supported File Types
+
+| 文件类型 / File Type | 路径模式 / Path Pattern | 说明 / Description |
+|---------------------|------------------------|-------------------|
+| **路由文件** | `routes/*.php` | API 路由、Web 路由、自定义路由等 |
+| **控制器** | `app/Api/Controllers/**/*.php`<br>`app/Http/Controllers/**/*.php` | 所有控制器文件，支持多层目录 |
+| **中间件** | `app/Http/Middleware/**/*.php` | 自定义中间件 |
+| **命令** | `app/Console/Commands/**/*.php` | Artisan 命令类 |
+| **配置文件** | `config/**/*.php` | 所有配置文件 |
+| **内核文件** | `app/Http/Kernel.php`<br>`app/Console/Kernel.php` | HTTP 内核和控制台内核 |
+
+---
+
+## ❓ 常见问题 / Troubleshooting
+
+### 问题 1: 点击跳转没有反应 / Navigation Not Working
+
+**可能原因 / Possible Causes:**
+- ❌ 不是 Laravel 项目
+- ❌ 缓存未初始化
+- ❌ 文件路径不正确
+
+**解决方案 / Solutions:**
+
+1. 确认项目根目录有 `artisan` 文件
+2. 打开命令面板，执行 `Laravel Jump: Rescan Project` 重新扫描
+3. 执行 `Laravel Jump: Show Logs` 查看错误日志
+4. 检查文件路径是否符合 Laravel 标准结构
+
+### 问题 2: 中间件跳转显示位置不准确 / Middleware Jump Location Inaccurate
+
+**解决方案 / Solutions:**
+
+中间件跳转采用**实时解析模式**，理论上始终准确。如果出现问题：
+
+1. 执行 `Laravel Jump: Clear Cache` 清除缓存
+2. 执行 `Laravel Jump: Rescan Project` 重新扫描
+3. 检查路由文件语法是否正确
+
+### 问题 3: 扩展运行缓慢 / Extension Running Slow
+
+**可能原因 / Possible Causes:**
+- ❌ 项目文件过多
+- ❌ 缓存数据量过大
+- ❌ 频繁的文件变化
+
+**解决方案 / Solutions:**
+
+1. 执行 `Laravel Jump: Clear Cache` 清除缓存
+2. 关闭不需要的文件监控（通过 VS Code 设置）
+3. 检查 `Laravel Jump: Show Statistics` 查看解析统计
+
+### 问题 4: 命名空间解析错误 / Namespace Resolution Error
+
+**解决方案 / Solutions:**
+
+1. 检查路由组的 `namespace` 配置是否正确
+2. 确认控制器文件的命名空间与实际目录结构一致
+3. 执行 `Laravel Jump: Rescan Project` 重新扫描
+
+---
+
+## 🛠️ 开发路线图 / Roadmap
+
+### 已完成 / Completed
+- ✅ 路由 ↔ 控制器双向跳转
+- ✅ 中间件导航（实时解析）
+- ✅ 定时任务 ↔ 命令类跳转
+- ✅ 配置文件导航
+- ✅ 智能命名空间解析
+- ✅ Controller@action 语法支持
+- ✅ 多层嵌套路由组支持
+
+### 计划中 / Planned
+- 🔄 模型关联关系跳转
+- 🔄 视图文件跳转
+- 🔄 事件监听器跳转
+- 🔄 服务提供者跳转
+- 🔄 Eloquent 查询构建器智能提示
+- 🔄 Blade 模板语法支持
+
+---
+
+## 🤝 贡献 / Contributing
+
+欢迎贡献代码、报告问题或提出建议！
+
+Contributions, issues, and feature requests are welcome!
+
+### 贡献指南 / Contribution Guidelines
+
+1. Fork 本项目
+2. 创建功能分支 (`git checkout -b feature/AmazingFeature`)
+3. 提交更改 (`git commit -m 'Add some AmazingFeature'`)
+4. 推送到分支 (`git push origin feature/AmazingFeature`)
+5. 提交 Pull Request
+
+### 报告问题 / Report Issues
+
+在 [GitHub Issues](https://github.com/jlcodes99/vscode-learvel-idea/issues) 提交问题时，请提供：
+
+- VS Code 版本
+- 扩展版本
+- Laravel 版本
+- 问题描述和复现步骤
+- 相关代码示例
+
+---
+
+## 📜 许可证 / License
+
+本项目基于 [MIT License](LICENSE) 开源。
+
+This project is licensed under the MIT License.
+
+---
+
+## 💖 致谢 / Acknowledgments
+
+感谢所有使用和支持 Learvel Idea 的开发者！
+
+Thanks to all developers who use and support Learvel Idea!
+
+**如果这个扩展对你有帮助，请在 [VS Code 市场](https://marketplace.visualstudio.com/items?itemName=jlcodes.learvel-idea) 给个五星好评 ⭐️**
+
+**If this extension helps you, please give it a 5-star rating on the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=jlcodes.learvel-idea) ⭐️**
+
+---
+
+<div align="center">
+
+**为 Laravel 开发者用心制作 ❤️**
+
+**Made with ❤️ for Laravel Developers**
+
+[官网](https://github.com/jlcodes99/vscode-learvel-idea) • [文档](https://github.com/jlcodes99/vscode-learvel-idea/wiki) • [问题反馈](https://github.com/jlcodes99/vscode-learvel-idea/issues)
+
+</div>

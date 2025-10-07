@@ -14,6 +14,7 @@ import * as vscode from 'vscode';
 import * as path from 'path';
 import { CacheManager } from './cacheManager';
 import { LaravelJumpProvider } from './jumpProvider';
+import { LaravelHoverProvider } from './hoverProvider';
 
 // ======================== 全局变量 ========================
 
@@ -49,6 +50,12 @@ export async function activate(context: vscode.ExtensionContext) {
         const jumpProvider = new LaravelJumpProvider(outputChannel, workspaceRoot);
         context.subscriptions.push(
             vscode.languages.registerDefinitionProvider('php', jumpProvider)
+        );
+
+        // 注册悬停预览提供者
+        const hoverProvider = new LaravelHoverProvider(outputChannel, workspaceRoot);
+        context.subscriptions.push(
+            vscode.languages.registerHoverProvider('php', hoverProvider)
         );
 
         // 注册文件监控
