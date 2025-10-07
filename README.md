@@ -877,6 +877,22 @@ class OssService
 
 ## 🛠️ 开发路线图 / Roadmap
 
+### 💡 关于功能开发 / About Feature Development
+
+> **📝 来自实际开发经验的功能**
+> 
+> 目前扩展的所有功能都源自作者在实际 Laravel 项目开发中遇到的痛点和真实需求。每一个跳转功能的设计，都是为了解决日常开发中频繁遇到的导航问题。
+> 
+> **🚀 持续改进中**
+> 
+> 后续我会根据自己的使用情况和社区反馈，不断完善和新增功能。如果你在使用过程中有任何想法、建议或需求，欢迎在 [GitHub Issues](https://github.com/jlcodes99/vscode-learvel-idea/issues) 留言反馈！
+> 
+> **💬 Feature Development Philosophy**
+> 
+> All current features are born from real pain points encountered during actual Laravel development. Each navigation feature is designed to solve frequent navigation challenges in daily coding.
+> 
+> I will continue to improve and add features based on my own usage and community feedback. If you have any ideas, suggestions, or feature requests, feel free to share them on [GitHub Issues](https://github.com/jlcodes99/vscode-learvel-idea/issues)!
+
 ### 已完成 / Completed
 - ✅ 路由 ↔ 控制器双向跳转
 - ✅ 中间件导航（实时解析）
@@ -893,6 +909,12 @@ class OssService
 - 🔄 服务提供者跳转
 - 🔄 Eloquent 查询构建器智能提示
 - 🔄 Blade 模板语法支持
+
+### 💭 你的想法很重要 / Your Ideas Matter
+
+如果你希望看到某个功能，或者在开发中遇到了什么痛点，请不要犹豫，直接在 GitHub 上告诉我！你的反馈将直接影响扩展的发展方向。
+
+If you want to see a specific feature or encounter any pain points during development, don't hesitate to let me know on GitHub! Your feedback will directly influence the extension's development direction.
 
 ---
 
