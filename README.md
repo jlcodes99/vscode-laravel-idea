@@ -1,11 +1,11 @@
-# 🚀 Learvel Idea - Laravel 智能导航扩展
+# Learvel Idea - Laravel 智能导航扩展
 
 [![Version](https://img.shields.io/visual-studio-marketplace/v/jlcodes.learvel-idea?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=jlcodes.learvel-idea)
 [![Downloads](https://img.shields.io/visual-studio-marketplace/d/jlcodes.learvel-idea?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=jlcodes.learvel-idea)
 [![License](https://img.shields.io/github/license/jlcodes99/vscode-learvel-idea?style=flat-square)](LICENSE)
 
 > **专为 Laravel 开发者打造的智能代码导航工具**  
-> 让路由、中间件、命令、配置之间的跳转变得前所未有的简单！
+> 简化路由、中间件、命令、配置之间的跳转操作
 
 A powerful Laravel development extension that provides intelligent navigation and code jumping capabilities between routes, middleware, commands, and configurations.
 
@@ -15,13 +15,13 @@ A powerful Laravel development extension that provides intelligent navigation an
 
 > **💡 建议与 [PHP Tools](https://marketplace.visualstudio.com/items?itemName=DEVSENSE.phptools-vscode) 插件配合使用**  
 > 
-> **Learvel Idea** 专注于 Laravel 框架特性的智能导航，是对 PHP Tools 在 Laravel 框架支持上的完美补充。  
-> **两者组合使用，打造 VS Code 最强 Laravel 开发环境！** 🚀
+> **Learvel Idea** 专注于 Laravel 框架特性的智能导航，是对 PHP Tools 在 Laravel 框架支持上的有效补充。  
+> **两者组合使用，提供更完整的 Laravel 开发体验。**
 > 
 > **Recommended to use with [PHP Tools](https://marketplace.visualstudio.com/items?itemName=DEVSENSE.phptools-vscode)**
 > 
-> **Learvel Idea** focuses on Laravel framework-specific navigation, perfectly complementing PHP Tools.  
-> **Together, they create the ultimate Laravel development experience in VS Code!** 🚀
+> **Learvel Idea** focuses on Laravel framework-specific navigation, effectively complementing PHP Tools.  
+> **Together, they provide a more complete Laravel development experience.**
 
 ---
 
@@ -47,7 +47,7 @@ A powerful Laravel development extension that provides intelligent navigation an
 > - **PHP Tools** 👉 负责 PHP 语言层面（类、方法、变量、命名空间等）
 > - **Learvel Idea** 👉 专注 Laravel 框架层面（路由、中间件、命令、配置等）
 > 
-> **两者配合，才是 VS Code 下最强的 Laravel 开发组合！**
+> **两者配合，提供更完整的 Laravel 开发体验。**
 
 ### 开发痛点 / Development Pain Points
 
@@ -66,11 +66,11 @@ Even with PHP Tools, do you still encounter these Laravel framework-specific iss
 ✅ **双向导航** - 不仅可以从路由跳转到控制器，还能从控制器反向查找所有相关路由  
 ✅ **实时解析** - 文件修改后自动更新缓存，无需手动刷新  
 ✅ **智能匹配** - 支持复杂的命名空间、嵌套路由组、带参数的中间件等  
-✅ **无缝集成** - 与 PHP Tools 完美配合，互不干扰，共同提供完整开发体验
+✅ **无缝集成** - 与 PHP Tools 有效配合，互不干扰，共同提供完整开发体验
 
 ---
 
-## 🚀 快速开始 / Quick Start
+## 快速开始 / Quick Start
 
 ### 💡 重要提示 / Important Notice
 
@@ -78,14 +78,14 @@ Even with PHP Tools, do you still encounter these Laravel framework-specific iss
 > 
 > **本扩展专为 Laravel 框架优化，强烈建议配合 [PHP Tools](https://marketplace.visualstudio.com/items?itemName=DEVSENSE.phptools-vscode) 插件使用！**
 > 
-> **Learvel Idea** 专注于 Laravel 特有的路由、中间件、命令等框架层面的智能跳转，完美补充了 PHP Tools 在 Laravel 框架特性上的不足。两者配合使用，将为你提供最完整的 Laravel 开发体验：
+> **Learvel Idea** 专注于 Laravel 特有的路由、中间件、命令等框架层面的智能跳转，有效补充了 PHP Tools 在 Laravel 框架特性上的不足。两者配合使用，将为你提供更完整的 Laravel 开发体验：
 > 
 > - ✅ **PHP Tools**: 提供 PHP 语言的智能感知、代码补全、类跳转、重构等基础能力
 > - ✅ **Learvel Idea**: 提供 Laravel 框架的路由跳转、中间件导航、命令跳转、配置导航等专属功能
 > 
 > **This extension is specifically optimized for Laravel framework. We strongly recommend using it together with [PHP Tools](https://marketplace.visualstudio.com/items?itemName=DEVSENSE.phptools-vscode)!**
 > 
-> **Learvel Idea** focuses on Laravel-specific intelligent navigation for routes, middleware, commands, etc., perfectly complementing PHP Tools' capabilities. Together, they provide the most complete Laravel development experience:
+> **Learvel Idea** focuses on Laravel-specific intelligent navigation for routes, middleware, commands, etc., effectively complementing PHP Tools' capabilities. Together, they provide a more complete Laravel development experience:
 > 
 > - ✅ **PHP Tools**: PHP language intelligence, code completion, class navigation, refactoring, etc.
 > - ✅ **Learvel Idea**: Laravel framework-specific route navigation, middleware jumps, command jumps, config navigation, etc.
