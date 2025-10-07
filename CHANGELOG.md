@@ -4,6 +4,58 @@
 
 All notable changes to the **Learvel Idea** extension will be documented in this file.
 
+## [1.1.3] - 2025-10-07
+
+### ✨ 新功能 / New Features
+
+#### 🔧 中间件反向跳转 / Middleware Reverse Jump
+- **中间件 → 路由**: 从 `app/Http/Kernel.php` 中的中间件定义跳转到所有使用该中间件的路由位置
+- **全面搜索**: 自动查找项目中所有使用该中间件的路由、路由组、链式调用等位置
+- **双向导航增强**: 完善了中间件的双向导航能力，现在支持：
+  - ✅ 路由 → Kernel.php 中间件定义（已有功能）
+  - ✅ Kernel.php 中间件定义 → 路由使用位置（新增功能）
+
+- **Middleware → Routes**: Jump from middleware definitions in `app/Http/Kernel.php` to all route locations using that middleware
+- **Comprehensive Search**: Automatically finds all locations using the middleware including routes, route groups, and chained calls
+- **Enhanced Bidirectional Navigation**: Improved bidirectional navigation for middleware, now supports:
+  - ✅ Route → Kernel.php middleware definition (existing feature)
+  - ✅ Kernel.php middleware definition → Route usage locations (new feature)
+
+#### 📋 使用示例 / Usage Examples
+```php
+// 在 app/Http/Kernel.php 中
+// In app/Http/Kernel.php
+protected $routeMiddleware = [
+    'checkUserLogin' => CheckUserLoginMiddleware::class,  // 点击 'checkUserLogin' 跳转到所有使用位置
+    'throttle' => ThrottleRequests::class,                // 点击 'throttle' 跳转到所有使用位置
+];
+
+// 自动跳转到所有使用该中间件的位置：
+// Automatically jumps to all locations using this middleware:
+
+// 路由组中间件
+Route::group(['middleware' => ['checkUserLogin']], function () { });
+
+// 链式中间件
+Route::middleware(['throttle:200,1'])->group(function () { });
+
+// 排除中间件
+Route::group([...])->withoutMiddleware(['throttle']);
+```
+
+### 🔧 技术改进 / Technical Improvements
+- 新增 `isHttpKernelFile()` 方法检测 HTTP Kernel 文件
+- 新增 `jumpFromHttpKernel()` 方法处理中间件反向跳转逻辑
+- 新增 `parseHttpKernelMiddlewareAtPosition()` 方法解析点击的中间件定义
+- 利用现有的中间件缓存 (`cache.middlewares`) 实现高效的反向查找
+- 支持同时跳转到多个使用位置，并高亮显示整行代码
+
+- Added `isHttpKernelFile()` method to detect HTTP Kernel files
+- Added `jumpFromHttpKernel()` method to handle middleware reverse jump logic
+- Added `parseHttpKernelMiddlewareAtPosition()` method to parse clicked middleware definitions
+- Utilizes existing middleware cache (`cache.middlewares`) for efficient reverse lookup
+- Supports jumping to multiple usage locations simultaneously with full line highlighting
+
 ## [1.1.2] - 2025-09-26
 
 ### 🔧 改进 / Improvements

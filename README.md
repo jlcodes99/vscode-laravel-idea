@@ -24,14 +24,16 @@ A powerful Laravel development extension for Visual Studio Code that provides in
 - **Smart Matching**: Intelligent controller matching based on namespace stack
 
 ### 🔧 中间件导航 / Middleware Navigation  
-- **中间件跳转**: 点击中间件名称跳转到定义
-- **使用发现**: 查找中间件在应用中的使用位置
+- **中间件 ↔ 路由**: 在中间件定义和路由使用位置之间双向跳转
+- **使用发现**: 查找中间件在应用中的所有使用位置
+- **双向导航**: 从路由跳转到Kernel.php中的定义，也可以从Kernel.php反跳转到所有使用位置
 - **参数支持**: 支持带参数的中间件（如throttle:200,1,user_id）
 - **多格式支持**: 支持路由组配置、链式调用、排除中间件等多种格式
 - **智能解析**: 自动解析中间件数组和复杂配置
 
-- **Middleware Jump**: Click on middleware names to jump to their definitions
-- **Usage Discovery**: Find where middleware is used across your application
+- **Middleware ↔ Route**: Bidirectional jump between middleware definitions and route usage locations
+- **Usage Discovery**: Find all usage locations of middleware across your application
+- **Bidirectional Navigation**: Jump from routes to Kernel.php definitions, and reverse jump from Kernel.php to all usage locations
 - **Parameter Support**: Handles middleware with parameters (e.g., throttle:200,1,user_id)
 - **Multi-format Support**: Supports route group config, chained calls, withoutMiddleware and more
 - **Smart Parsing**: Automatically parses middleware arrays and complex configurations
@@ -186,15 +188,30 @@ Route::middleware(['auth', 'throttle:60,1'])->group(function () {
 Route::group([...])->withoutMiddleware(['throttle']); // 点击 'throttle' 跳转
 ```
 
-#### 中间件定义跳转
+#### 中间件定义反跳转到路由（实时解析）
 ```php
-// 在 app/Http/Kernel.php 中 - 点击中间件名称跳转到使用位置
-// In app/Http/Kernel.php - Click on middleware names to find usage locations
+// 在 app/Http/Kernel.php 中 - 点击中间件名称跳转到所有使用该中间件的路由位置
+// In app/Http/Kernel.php - Click on middleware names to jump to all routes using this middleware
 protected $routeMiddleware = [
-    'checkUserLogin' => \App\Http\Middleware\CheckUserLogin::class,
-    'openApiAuth' => \App\Http\Middleware\OpenApiAuth::class,
-    'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
+    'checkUserLogin' => CheckUserLoginMiddleware::class,      // 点击 'checkUserLogin' 查找所有使用位置
+    'openApiAuth' => OpenApiAuth::class,                      // 点击 'openApiAuth' 查找所有使用位置
+    'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,  // 点击 'throttle' 查找所有使用位置
+    'xiaoeCheckLoginNew' => XiaoeLoginMiddlewareNew::class,   // 点击 'xiaoeCheckLoginNew' 查找所有使用位置
+    'merchantIdempotency' => IdempotencyMidleware::class,     // 点击 'merchantIdempotency' 查找所有使用位置
 ];
+
+// 🚀 实时解析模式：从缓存中获取路由文件列表，但实时读取文件内容进行精准匹配
+// 🚀 Real-time parsing mode: Get route file list from cache, but read file content in real-time for accurate matching
+// 优势：即使路由文件修改后也能精准跳转，无需手动刷新缓存
+// Advantage: Accurate jumps even after route file modifications, no manual cache refresh needed
+
+// 跳转到所有使用该中间件的路由，例如：
+// Jumps to all routes using this middleware, for example:
+Route::group([
+    'middleware' => ['checkUserLogin', 'throttle:200,1'],  // ← 自动跳转到这里
+], function ($api) {
+    // ...
+});
 ```
 
 ### 命令导航 / Command Navigation
@@ -331,13 +348,21 @@ class GoodsController extends ApiController
 // Middleware jump examples
 // 文件: app/Http/Kernel.php
 protected $routeMiddleware = [
-    'checkUserLogin' => \App\Http\Middleware\CheckUserLogin::class,
-    'openApiAuth' => \App\Http\Middleware\OpenApiAuth::class,
-    'xiaoeCheckLoginNew' => \App\Http\Middleware\XiaoeCheckLoginNew::class,
-    'merchantIdempotency' => \App\Http\Middleware\MerchantIdempotency::class,
-    'staffPermissions' => \App\Http\Middleware\StaffPermissions::class,
-    'anjieliCheckUserLogin' => \App\Http\Middleware\AnjieliCheckUserLogin::class,
+    'checkUserLogin' => CheckUserLoginMiddleware::class,         // 点击跳转到所有使用位置
+    'openApiAuth' => OpenApiAuth::class,                         // 点击跳转到所有使用位置
+    'xiaoeCheckLoginNew' => XiaoeLoginMiddlewareNew::class,      // 点击跳转到所有使用位置
+    'merchantIdempotency' => IdempotencyMidleware::class,        // 点击跳转到所有使用位置
+    'staffPermissions' => StaffPermissionsMiddleware::class,     // 点击跳转到所有使用位置
+    'anjieliCheckUserLogin' => AnjieliLoginMiddleware::class,    // 点击跳转到所有使用位置
 ];
+
+// 会跳转到所有使用该中间件的路由，例如：
+// Will jump to all routes using this middleware, for example:
+Route::group([
+    'middleware' => ['checkUserLogin', 'throttle:200,1,user_id'],  // ← 从 Kernel.php 跳转到这里
+], function ($api) {
+    // 内部版接口
+});
 
 // 4. 定时任务跳转示例
 // Schedule jump examples

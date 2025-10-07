@@ -63,6 +63,7 @@ export class LaravelJumpProvider implements vscode.DefinitionProvider {
             isControllerFile: this.isControllerFile(document.fileName), 
             isCommandFile: this.isCommandFile(document.fileName),
             isConsoleKernelFile: this.isConsoleKernelFile(document.fileName),
+            isHttpKernelFile: this.isHttpKernelFile(document.fileName),
             isConfigFile: this.isConfigFile(document.fileName)
         });
 
@@ -75,6 +76,8 @@ export class LaravelJumpProvider implements vscode.DefinitionProvider {
                 return await this.jumpFromCommand(document, position);
             } else if (this.isConsoleKernelFile(document.fileName)) {
                 return await this.jumpFromConsoleKernel(document, position);
+            } else if (this.isHttpKernelFile(document.fileName)) {
+                return await this.jumpFromHttpKernel(document, position);
             } else if (this.isConfigFile(document.fileName)) {
                 return await this.jumpFromConfig(document, position);
             }
@@ -133,6 +136,163 @@ export class LaravelJumpProvider implements vscode.DefinitionProvider {
             });
             return null;
         }
+    }
+
+    /**
+     * 从Http/Kernel.php跳转到路由中的中间件使用位置
+     * 实时从缓存中解析：利用缓存的路由信息，但实时读取文件内容精准定位
+     */
+    private async jumpFromHttpKernel(document: vscode.TextDocument, position: vscode.Position): Promise<vscode.Location[] | null> {
+        const fileName = path.basename(document.fileName);
+        const line = document.lineAt(position.line);
+        
+        // 解析当前点击的中间件定义信息
+        const middlewareInfo = this.parseHttpKernelMiddlewareAtPosition(line.text, position.character);
+        if (!middlewareInfo) {
+            this.log('⚠️ 未能解析中间件定义信息');
+            return null;
+        }
+        
+        this.log('🔍 Http/Kernel中间件反跳分析（实时解析模式）', {
+            middlewareName: middlewareInfo.middlewareName,
+            line: position.line + 1
+        });
+        
+        // 从缓存获取所有路由文件列表
+        const cache = this.cacheManager.getCache();
+        const locations: vscode.Location[] = [];
+        const processedFiles = new Set<string>();
+        
+        // 收集所有需要检查的路由文件（去重）
+        for (const [routeFile] of cache.routes) {
+            processedFiles.add(routeFile);
+        }
+        
+        this.log('📂 准备实时扫描路由文件', {
+            fileCount: processedFiles.size,
+            middlewareName: middlewareInfo.middlewareName
+        });
+        
+        // 实时扫描每个路由文件，查找中间件使用位置
+        for (const routeFile of processedFiles) {
+            if (!fs.existsSync(routeFile)) {
+                continue;
+            }
+            
+            try {
+                const content = fs.readFileSync(routeFile, 'utf8');
+                const lines = content.split('\n');
+                
+                // 逐行扫描，查找中间件使用
+                for (let i = 0; i < lines.length; i++) {
+                    const lineText = lines[i];
+                    
+                    // 检查是否包含目标中间件
+                    if (this.lineContainsMiddleware(lineText, middlewareInfo.middlewareName)) {
+                        const location = new vscode.Location(
+                            vscode.Uri.file(routeFile),
+                            this.createFullLineSelection(routeFile, i)
+                        );
+                        locations.push(location);
+                        
+                        this.log('📍 实时找到中间件使用位置', {
+                            file: path.basename(routeFile),
+                            line: i + 1,
+                            content: lineText.trim().substring(0, 100)
+                        });
+                    }
+                }
+            } catch (error) {
+                this.log('⚠️ 文件读取失败', {
+                    file: routeFile,
+                    error: String(error)
+                });
+            }
+        }
+        
+        if (locations.length > 0) {
+            this.log('🎉 中间件反跳成功（实时解析）', {
+                middlewareName: middlewareInfo.middlewareName,
+                usageCount: locations.length
+            });
+            return locations;
+        } else {
+            this.log('❌ 中间件反跳失败 - 未找到使用位置', {
+                middlewareName: middlewareInfo.middlewareName
+            });
+            return null;
+        }
+    }
+    
+    /**
+     * 检查某行是否包含指定的中间件
+     * 支持多种格式：
+     * - 'middleware' => ['name']
+     * - ->middleware('name')
+     * - ->withoutMiddleware('name')
+     * - 'name:param'
+     */
+    private lineContainsMiddleware(lineText: string, middlewareName: string): boolean {
+        // 1. 检查数组中的中间件：'middlewareName' 或 "middlewareName"
+        const arrayPattern1 = new RegExp(`['"]${middlewareName}['"]`);
+        if (arrayPattern1.test(lineText)) {
+            return true;
+        }
+        
+        // 2. 检查方法调用：->middleware('middlewareName')
+        const methodPattern = new RegExp(`->middleware\\s*\\(\\s*['"]${middlewareName}['"]`);
+        if (methodPattern.test(lineText)) {
+            return true;
+        }
+        
+        // 3. 检查 withoutMiddleware
+        const withoutPattern = new RegExp(`->withoutMiddleware\\s*\\(\\s*['"]${middlewareName}['"]`);
+        if (withoutPattern.test(lineText)) {
+            return true;
+        }
+        
+        // 4. 检查带参数的中间件：'middlewareName:param'
+        const paramPattern = new RegExp(`['"]${middlewareName}:[^'"]+['"]`);
+        if (paramPattern.test(lineText)) {
+            return true;
+        }
+        
+        return false;
+    }
+    
+    /**
+     * 解析Http/Kernel.php中的中间件定义位置信息
+     */
+    private parseHttpKernelMiddlewareAtPosition(lineText: string, character: number): { middlewareName: string } | null {
+        // 匹配中间件定义的格式：'middlewareName' => MiddlewareClass::class
+        const patterns = [
+            /'([^']+)'\s*=>\s*([^,]+)/,
+            /"([^"]+)"\s*=>\s*([^,]+)/
+        ];
+        
+        for (const pattern of patterns) {
+            const match = lineText.match(pattern);
+            if (match) {
+                const middlewareName = match[1];
+                
+                // 查找中间件名在行中的位置
+                const nameStart = lineText.indexOf(`'${middlewareName}'`) !== -1 ? 
+                    lineText.indexOf(`'${middlewareName}'`) + 1 : 
+                    lineText.indexOf(`"${middlewareName}"`) + 1;
+                const nameEnd = nameStart + middlewareName.length;
+                
+                // 确认点击位置在中间件名称上
+                if (character >= nameStart && character <= nameEnd) {
+                    this.log('🎯 检测到中间件定义', {
+                        middlewareName: middlewareName,
+                        className: match[2].trim()
+                    });
+                    return { middlewareName };
+                }
+            }
+        }
+        
+        return null;
     }
 
     /**
@@ -748,6 +908,10 @@ export class LaravelJumpProvider implements vscode.DefinitionProvider {
     
     private isConsoleKernelFile(filePath: string): boolean {
         return filePath.includes('/Console/Kernel.php') && filePath.endsWith('.php');
+    }
+    
+    private isHttpKernelFile(filePath: string): boolean {
+        return filePath.includes('/Http/Kernel.php') && filePath.endsWith('.php');
     }
     
     private isConfigFile(filePath: string): boolean {
