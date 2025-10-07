@@ -29,11 +29,10 @@ A powerful Laravel development extension that provides intelligent navigation an
 
 - [为什么选择 Learvel Idea](#-为什么选择-learvel-idea--why-choose-learvel-idea)
 - [快速开始](#-快速开始--quick-start)
-- [核心功能](#-核心功能--core-features)
-- [使用指南](#-使用指南--usage-guide)
-- [实际案例](#-实际案例--real-world-examples)
-- [技术实现](#-技术实现--technical-details)
-- [常见问题](#-常见问题--troubleshooting)
+- [关于功能](#-关于功能--about-features)
+- [核心功能与使用](#-核心功能与使用--core-features--usage)
+- [扩展命令](#%EF%B8%8F-扩展命令--extension-commands)
+- [配置选项](#%EF%B8%8F-配置选项--configuration)
 
 ---
 
@@ -123,53 +122,40 @@ $schedule->command('sync:user-data')->daily();
 
 ---
 
-## ✨ 核心功能 / Core Features
+## 💡 关于功能 / About Features
+
+> **📝 这些功能都来自实际开发痛点**
+> 
+> 本扩展的所有功能都是作者在日常 Laravel 开发中遇到的真实痛点。我们深知大型 Laravel 项目中代码导航的困难，因此专注于解决这些实际问题。
+> 
+> **💬 需要其他功能？**  
+> 如果你在使用过程中有任何功能需求或改进建议，欢迎在 [GitHub Issues](https://github.com/jlcodes99/vscode-learvel-idea/issues) 留言反馈！我们会根据使用情况和社区反馈持续优化和添加新功能。
+> 
+> **📝 All features are born from real development pain points**
+> 
+> Every feature in this extension comes from actual challenges the author faced in daily Laravel development. We understand the difficulties of code navigation in large Laravel projects and focus on solving these real problems.
+> 
+> **💬 Need other features?**  
+> If you have any feature requests or suggestions during use, feel free to leave feedback on [GitHub Issues](https://github.com/jlcodes99/vscode-learvel-idea/issues)! We will continue to optimize and add new features based on usage and community feedback.
+
+---
+
+## ✨ 核心功能与使用 / Core Features & Usage
 
 ### 1️⃣ 路由 ↔ 控制器跳转 / Route ↔ Controller Navigation
 
-#### 支持的路由格式 / Supported Route Formats
+#### 基本使用 / Basic Usage
 
-本扩展支持 Laravel 所有主流路由定义格式：
+**支持的路由格式**：Route::、$api-> 等主流格式，完整支持 `Controller@action` 语法。
 
 ```php
-// ✅ Route:: 静态方法格式 - 标准 Laravel 路由
-Route::get('/users/{id}', 'UserController@show');
+// ✅ 标准 Laravel 路由
 Route::post('/users', 'UserController@store');
-Route::put('/users/{id}', 'UserController@update');
-Route::delete('/users/{id}', 'UserController@destroy');
+$api->post('user-list', 'UserController@list');
 
-// ✅ $api 变量格式 - API 路由推荐写法
-$api->get('user-list', 'UserController@list');
-$api->post('user-create', 'UserController@store');
-$api->put('user-update', 'UserController@update');
-$api->delete('user-delete', 'UserController@destroy');
-
-// ✅ match 方法 - 支持多种 HTTP 方法
-Route::match(['get', 'post'], '/path', 'Controller@method');
-$api->match(['get', 'post'], 'path', 'Controller@method');
-
-// ✅ 支持的所有 HTTP 方法
-// get, post, put, delete, patch, options, any, match
-```
-
-#### Controller@action 语法支持 / Controller@action Syntax
-
-**完整支持** `'Controller@method'` 语法格式：
-
-```php
-// 示例 1：简单路由
+// ✅ 点击不同位置有不同效果
 $api->post('batch-add-goods', 'GoodsController@batchAddGoods');
-//          👆 路由路径          👆 控制器名  👆 方法名
-//          (无跳转)            (跳转到类)  (跳转到方法)
-
-// 示例 2：嵌套路由组（自动解析命名空间）
-Route::group([
-    'namespace' => '\App\Api\Controllers\OpenApi',
-    'prefix' => 'v1',
-], function (Illuminate\Routing\Router $api) {
-    $api->post('task-list', 'GoodsController@taskList');
-    //                      👆 自动解析为: \App\Api\Controllers\OpenApi\GoodsController
-});
+//          👆 无跳转          👆 跳转到类  👆 跳转到方法
 ```
 
 #### 双向导航 / Bidirectional Navigation
@@ -211,434 +197,69 @@ Route::group([
 
 ### 2️⃣ 中间件导航 / Middleware Navigation
 
-#### 从路由跳转到中间件定义 / Jump from Routes to Middleware
+**双向跳转**：从路由跳转到中间件定义，或从中间件定义查找所有使用位置。
 
 ```php
-// 在路由文件中
+// 路由中点击中间件名跳转
 Route::group([
     'middleware' => ['checkUserLogin', 'throttle:200,1,user_id'],
-    //               👆 Ctrl+点击       👆 Ctrl+点击
-    //               跳转到 Kernel.php   跳转到 Kernel.php
-], function ($api) {
-    // ...
-});
+    //               👆 Ctrl+点击跳转到 Kernel.php
+], function ($api) { /* ... */ });
 
-// 支持链式中间件
-Route::middleware(['auth', 'verified'])
-//                  👆        👆
-//              Ctrl+点击跳转到定义
-    ->group(function () {
-        // ...
-});
-
-// 支持排除中间件
-Route::group([...])->withoutMiddleware(['throttle']);
-//                                      👆 Ctrl+点击跳转
-```
-
-#### 从中间件定义跳转到所有使用位置 / Jump from Middleware to All Usage
-
-```php
-// 在 app/Http/Kernel.php 中
+// Kernel.php 中点击中间件名查找使用位置
 protected $routeMiddleware = [
     'checkUserLogin' => CheckUserLoginMiddleware::class,
     //👆 Ctrl+点击查找所有使用此中间件的路由
-    
-    'openApiAuth' => OpenApiAuth::class,
-    //👆 Ctrl+点击查找所有使用位置
-    
-    'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
-    //👆 Ctrl+点击查找所有使用位置（包括带参数的调用）
 ];
 ```
 
-#### 实时解析模式 / Real-time Parsing
-
-**重要特性**：中间件跳转采用实时解析模式，即使路由文件修改后也能精准跳转！
-
-Important: Middleware navigation uses real-time parsing - accurate jumps even after route file modifications!
-
-```php
-// 工作原理 / How it works:
-// 1. 从缓存中快速获取路由文件列表
-// 2. 实时读取文件内容进行精准匹配
-// 3. 无需手动刷新缓存，始终保持准确性
-```
+**支持**：链式中间件、withoutMiddleware、带参数的中间件（如 `throttle:200,1`）。采用实时解析，无需刷新缓存。
 
 ---
 
 ### 3️⃣ 定时任务 ↔ 命令类跳转 / Schedule ↔ Command Navigation
 
-#### 从定时任务跳转到命令类 / Jump from Schedule to Command
+**双向跳转**：从定时任务跳转到命令类，或从命令类查找对应的定时任务。
 
 ```php
-// 在 app/Console/Kernel.php 中
-protected function schedule(Schedule $schedule)
-{
-    // 基础命令
-    $schedule->command('upload:ai-ident-image')->daily();
-    //                  👆 Ctrl+点击跳转到 UploadAiIdentImageCommand
-    
-    // 带参数的命令
-    $schedule->command('update:platform-item-tag-new -r real')->daily();
-    //                  👆 Ctrl+点击跳转到 UpdatePlatformItemTagNewCommand
-    
-    // 复杂命令名
-    $schedule->command('sync:bs:share:page:data')->hourly();
-    //                  👆 Ctrl+点击跳转到 SyncBsSharePageDataCommand
-}
-```
+// Kernel.php 中点击命令名跳转到命令类
+$schedule->command('upload:ai-ident-image')->daily();
+//                  👆 Ctrl+点击跳转到 UploadAiIdentImageCommand
 
-#### 从命令类跳转到定时任务 / Jump from Command to Schedule
-
-```php
-// 在 app/Console/Commands/UploadAiIdentImageCommand.php 中
+// 命令类中点击类名查找定时任务
 class UploadAiIdentImageCommand extends Command
-//    👆 Ctrl+点击类名查找对应的定时任务定义
+//    👆 Ctrl+点击查找对应的定时任务
 {
     protected $signature = 'upload:ai-ident-image';
-    
-    public function handle()
-    {
-        // 命令逻辑
-    }
 }
 ```
 
-#### 智能命令名匹配 / Smart Command Name Matching
-
-扩展会自动处理命令名到类名的转换：
-
-- `upload:ai-ident-image` → `UploadAiIdentImageCommand`
-- `sync:bs:share:page:data` → `SyncBsSharePageDataCommand`
-- `update:platform-item-tag-new` → `UpdatePlatformItemTagNewCommand`
+**智能转换**：自动处理命令名到类名的转换（如 `upload:ai-ident-image` → `UploadAiIdentImageCommand`），支持带参数的命令。
 
 ---
 
 ### 4️⃣ 配置导航 / Configuration Navigation
 
-#### 从配置文件跳转到使用位置 / Jump from Config to Usage
+**双向跳转**：从配置文件跳转到使用位置，或从代码跳转到配置定义。
 
 ```php
-// 在 config/aliyun.php 中
+// config/aliyun.php 中点击键名查找使用位置
 return [
     'access_key_id' => env('ALIYUN_ACCESS_KEY_ID', ''),
     //👆 Ctrl+点击查找所有使用 config('aliyun.access_key_id') 的位置
     
     'oss' => [
-        'region' => env('ALIYUN_OSS_REGION', 'oss-cn-beijing'),
-        //👆 Ctrl+点击查找所有使用 config('aliyun.oss.region') 的位置
-        
-        'bucket' => env('ALIYUN_OSS_BUCKET', ''),
-        //👆 Ctrl+点击查找所有使用位置
+        'region' => env('ALIYUN_OSS_REGION', ''),
+        //👆 支持多级配置键
     ],
 ];
-```
 
-#### 从代码跳转到配置定义 / Jump from Code to Config
-
-```php
-// 在任意 PHP 文件中
-$accessKeyId = config('aliyun.access_key_id');
-//                     👆 Ctrl+点击跳转到 config/aliyun.php
-
-$region = config('aliyun.oss.region');
-//                👆 Ctrl+点击跳转到配置文件的具体位置
-
-$bucket = config('aliyun.oss.bucket');
-//                👆 Ctrl+点击跳转到配置定义
-```
-
-#### 智能过滤 / Smart Filtering
-
-**自动跳过被注释的配置调用**，只跳转到实际生效的代码：
-
-```php
-// ❌ 被注释的调用会被忽略
-// $key = config('aliyun.access_key_id');
-
-// ✅ 只跳转到未注释的实际调用
+// 代码中点击配置键跳转到定义
 $key = config('aliyun.access_key_id');
+//              👆 Ctrl+点击跳转到 config/aliyun.php
 ```
 
----
-
-## 📚 使用指南 / Usage Guide
-
-### 基础操作 / Basic Operations
-
-#### 1. Ctrl+点击跳转 / Ctrl+Click Navigation
-
-**Windows/Linux**: `Ctrl + 鼠标左键点击`  
-**macOS**: `Cmd + 鼠标左键点击`
-
-```php
-// 点击不同位置会有不同的跳转效果
-$api->post('batch-add-goods', 'GoodsController@batchAddGoods');
-//          👆 无跳转              👆 跳转到类定义    👆 跳转到方法定义
-```
-
-#### 2. 查看所有使用位置 / Find All Usages
-
-点击控制器方法名、中间件名、命令类名，扩展会列出所有使用该元素的位置：
-
-```php
-// 在控制器中
-public function batchAddGoods() { }
-//              👆 Ctrl+点击 → 显示所有使用此方法的路由
-
-// 在 Kernel.php 中
-'checkUserLogin' => CheckUserLoginMiddleware::class,
-//👆 Ctrl+点击 → 显示所有使用此中间件的路由
-```
-
-### 高级用法 / Advanced Usage
-
-#### 复杂路由组解析 / Complex Route Group Parsing
-
-```php
-// 扩展能够智能解析多层嵌套的路由组
-Route::group([
-    'namespace' => '\App\Api\Controllers\V1',
-    'prefix' => 'v1',
-    'middleware' => ['checkUserLogin', 'throttle:200,1,user_id'],
-], function ($api) {
-    $api->group(['namespace' => 'Merchant', 'prefix' => 'merchant'], function ($api) {
-    $api->group(['namespace' => 'Erp', 'prefix' => 'erp'], function ($api) {
-            // 自动解析完整命名空间: \App\Api\Controllers\V1\Merchant\Erp
-            $api->post('order/list', 'OrderController@list');
-            //                       👆 精准跳转到: \App\Api\Controllers\V1\Merchant\Erp\OrderController
-        });
-    });
-});
-```
-
-#### 带参数的中间件跳转 / Middleware with Parameters
-
-```php
-// 支持各种带参数的中间件格式
-Route::middleware([
-    'throttle:200,1,user_id',           // ✅ 支持
-    'throttle:200,1,user_id,api_merchant',  // ✅ 支持
-    'cache:300',                        // ✅ 支持
-    'role:admin,editor',                // ✅ 支持
-])->group(function () {
-    // 点击任意中间件名都能正确跳转
-});
-```
-
----
-
-## 💼 实际案例 / Real World Examples
-
-### 案例 1：雷小安 API 项目路由跳转 / Route Navigation in Leixiaoan API
-
-```php
-// 文件: routes/open.php
-Route::group([
-    'namespace' => '\App\Api\Controllers\OpenApi',
-    'prefix' => 'v1',
-    'middleware' => ['openApiAuth'],  // 👈 点击跳转到中间件定义
-], function (Illuminate\Routing\Router $api) {
-    
-    $api->group(['prefix' => 'goods'], function (Illuminate\Routing\Router $api) {
-        // ✅ 所有以下路由均支持智能跳转
-        $api->post('batch-add-goods', 'GoodsController@batchAddGoods');
-        //                            👆 点击跳转到: \App\Api\Controllers\OpenApi\GoodsController::batchAddGoods()
-        
-        $api->post('batch-update-goods', 'GoodsController@batchUpdateGoods');
-        $api->post('task-list', 'GoodsController@taskList');
-        $api->post('goods-list', 'GoodsController@goodsList');
-        $api->post('batch-on-sale', 'GoodsController@batchOnSale');
-        $api->post('batch-off-sale', 'GoodsController@batchOffSale');
-    });
-    
-    $api->group(['prefix' => 'order'], function (Illuminate\Routing\Router $api) {
-        $api->post('create', 'OrderController@create');
-        $api->post('list', 'OrderController@list');
-        $api->post('detail', 'OrderController@detail');
-    });
-});
-```
-
-```php
-// 文件: app/Api/Controllers/OpenApi/GoodsController.php
-namespace App\Api\Controllers\OpenApi;
-
-class GoodsController extends ApiController
-{
-    // 👈 点击方法名查找对应路由
-    public function batchAddGoods(GoodsRequest $request): JsonResponse
-    {
-        $ret = ServicesMake::OpenApiGoodsService('OpenApi')->batchAddGoods($request->input());
-        return $this->success($ret);
-    }
-    
-    public function batchUpdateGoods(GoodsRequest $request): JsonResponse
-    {
-        $ret = ServicesMake::OpenApiGoodsService('OpenApi')->batchUpdateGoods($request->input());
-        return $this->success($ret);
-    }
-}
-```
-
----
-
-### 案例 2：内部版路由与中间件跳转 / Internal API Routes and Middleware
-
-```php
-// 文件: routes/api.php
-Route::group([
-    'namespace' => '\App\Api\Controllers\V1',
-    'prefix' => 'v1',
-    'middleware' => ['checkUserLogin', 'throttle:200,1,user_id'],
-    //               👆 点击跳转到定义  👆 点击跳转到定义
-], function ($api) {
-    
-    // ERP 仓库管理模块
-    $api->group(['namespace' => 'Erp', 'prefix' => 'erp'], function ($api) {
-        $api->post('warehouse-check/list', 'ErpWarehouseCheckController@list');
-        //                                  👆 跳转到: \App\Api\Controllers\V1\Erp\ErpWarehouseCheckController::list()
-        
-        $api->post('warehouse-check/detail', 'ErpWarehouseCheckController@detail');
-        $api->post('warehouse-check/create', 'ErpWarehouseCheckController@create');
-        $api->post('warehouse-check/update', 'ErpWarehouseCheckController@update');
-    });
-    
-    // 鉴定管理模块
-    $api->group(['namespace' => 'Ident', 'prefix' => 'ident'], function ($api) {
-        $api->post('listing-audit/list', 'ListingAuditController@list');
-        //                                👆 跳转到: \App\Api\Controllers\V1\Ident\ListingAuditController::list()
-        
-        $api->post('listing-audit/detail', 'ListingAuditController@detail');
-        $api->post('listing-audit/audit', 'ListingAuditController@audit');
-    });
-});
-```
-
-```php
-// 文件: app/Http/Kernel.php
-protected $routeMiddleware = [
-    'checkUserLogin' => CheckUserLoginMiddleware::class,
-    //👆 Ctrl+点击 → 查找所有使用此中间件的路由（实时解析，立即显示结果）
-    
-    'openApiAuth' => OpenApiAuth::class,
-    //👆 Ctrl+点击 → 查找 routes/open.php 中的所有使用位置
-    
-    'xiaoeCheckLoginNew' => XiaoeLoginMiddlewareNew::class,
-    //👆 Ctrl+点击 → 查找商家版路由中的所有使用位置
-    
-    'merchantIdempotency' => IdempotencyMidleware::class,
-    'staffPermissions' => StaffPermissionsMiddleware::class,
-    'anjieliCheckUserLogin' => AnjieliLoginMiddleware::class,
-];
-```
-
----
-
-### 案例 3：定时任务与命令类跳转 / Scheduled Tasks and Commands
-
-```php
-// 文件: app/Console/Kernel.php
-protected function schedule(Schedule $schedule)
-{
-    // AI 鉴定图片上传任务
-    $schedule->command('upload:ai-ident-image')->daily();
-    //                  👆 点击跳转到: app/Console/Commands/UploadAiIdentImageCommand.php
-    
-    // 百思分享页面数据同步
-    $schedule->command('sync:bs:share:page:data')->hourly();
-    //                  👆 点击跳转到: app/Console/Commands/SyncBsSharePageDataCommand.php
-    
-    // 平台商品标签更新（带参数）
-    $schedule->command('update:platform-item-tag-new -r real')->daily();
-    //                  👆 点击跳转到: app/Console/Commands/UpdatePlatformItemTagNewCommand.php
-    
-    // 材质技术数据同步（带多个参数）
-    $schedule->command('sync:material-tech-data all 1')->everyMinute();
-    //                  👆 点击跳转到: app/Console/Commands/SyncMaterialTechDataCommand.php
-    
-    // 订单自动取消任务
-    $schedule->command('order:auto-cancel')->everyFiveMinutes();
-    //                  👆 点击跳转到命令类
-}
-```
-
-```php
-// 文件: app/Console/Commands/UploadAiIdentImageCommand.php
-namespace App\Console\Commands;
-
-use Illuminate\Console\Command;
-
-class UploadAiIdentImageCommand extends Command
-//    👆 Ctrl+点击类名 → 查找 Kernel.php 中对应的定时任务
-{
-    protected $signature = 'upload:ai-ident-image';
-    protected $description = '上传 AI 鉴定图片';
-    
-    public function handle()
-    {
-        // 命令执行逻辑
-        $this->info('开始上传 AI 鉴定图片...');
-        // ...
-    }
-}
-```
-
----
-
-### 案例 4：配置文件跳转 / Configuration Navigation
-
-```php
-// 文件: config/aliyun.php
-return [
-    'access_key_id' => env('ALIYUN_ACCESS_KEY_ID', ''),
-    //👆 Ctrl+点击 → 查找所有使用 config('aliyun.access_key_id') 的位置
-    
-    'access_key_secret' => env('ALIYUN_ACCESS_KEY_SECRET', ''),
-    //👆 Ctrl+点击 → 查找所有使用位置
-    
-    'oss' => [
-        'region' => env('ALIYUN_OSS_REGION', 'oss-cn-beijing'),
-        //👆 Ctrl+点击 → 查找所有使用 config('aliyun.oss.region') 的位置
-        
-        'bucket' => env('ALIYUN_OSS_BUCKET', ''),
-        //👆 Ctrl+点击 → 查找所有使用位置
-        
-        'endpoint' => env('ALIYUN_OSS_ENDPOINT', ''),
-        'cdn_domain' => env('ALIYUN_OSS_CDN_DOMAIN', ''),
-    ],
-    
-    'vod' => [
-        'region' => env('ALIYUN_VOD_REGION', 'cn-shanghai'),
-        'template_group_id' => env('ALIYUN_VOD_TEMPLATE_GROUP_ID', ''),
-    ],
-];
-```
-
-```php
-// 文件: app/Services/Aliyun/OssService.php
-namespace App\Services\Aliyun;
-
-class OssService
-{
-    public function __construct()
-    {
-        // 👈 Ctrl+点击配置键跳转到配置文件
-        $this->accessKeyId = config('aliyun.access_key_id');
-        //                          👆 跳转到 config/aliyun.php 的第3行
-        
-        $this->accessKeySecret = config('aliyun.access_key_secret');
-        //                              👆 跳转到 config/aliyun.php 的第4行
-        
-        $this->region = config('aliyun.oss.region');
-        //                     👆 跳转到 config/aliyun.php 的第7行
-        
-        $this->bucket = config('aliyun.oss.bucket');
-        //                     👆 跳转到 config/aliyun.php 的第10行
-    }
-}
-```
+**智能过滤**：自动跳过被注释的配置调用，只跳转到实际生效的代码。
 
 ---
 
@@ -704,217 +325,6 @@ class OssService
   "learvelIdea.controllerPath": "app/MyApp/Controllers"
 }
 ```
-
----
-
-## 🔧 技术实现 / Technical Details
-
-### 核心架构 / Core Architecture
-
-```
-┌─────────────────────────────────────────────────────────┐
-│                    Learvel Idea Extension                │
-├─────────────────────────────────────────────────────────┤
-│                                                          │
-│  ┌──────────────┐  ┌──────────────┐  ┌──────────────┐  │
-│  │ Route Parser │  │  Middleware  │  │   Command    │  │
-│  │              │  │    Parser    │  │    Parser    │  │
-│  └──────┬───────┘  └──────┬───────┘  └──────┬───────┘  │
-│         │                 │                  │          │
-│         └─────────────────┼──────────────────┘          │
-│                           │                             │
-│                  ┌────────▼────────┐                    │
-│                  │  Namespace Stack │                    │
-│                  │  (命名空间栈管理)  │                    │
-│                  └────────┬────────┘                    │
-│                           │                             │
-│                  ┌────────▼────────┐                    │
-│                  │  Cache System   │                    │
-│                  │  (缓存系统)      │                    │
-│                  └────────┬────────┘                    │
-│                           │                             │
-│                  ┌────────▼────────┐                    │
-│                  │  File Monitor   │                    │
-│                  │  (文件监控)      │                    │
-│                  └─────────────────┘                    │
-│                                                          │
-└─────────────────────────────────────────────────────────┘
-```
-
-### 解析能力 / Parsing Capabilities
-
-#### 1. 路由解析 / Route Parsing
-
-- ✅ 支持 `Route::get/post/put/delete/patch/options/any/match` 格式
-- ✅ 支持 `$api->get/post/put/delete/patch/options/any/match` 格式
-- ✅ 完整支持 `'Controller@method'` 语法
-- ✅ 智能解析多层嵌套路由组
-- ✅ 自动构建完整命名空间路径
-- ✅ 精准定位控制器类和方法
-
-#### 2. 中间件解析 / Middleware Parsing
-
-- ✅ 支持路由组中间件配置（`'middleware' => ['auth']`）
-- ✅ 支持链式中间件调用（`->middleware(['auth'])`）
-- ✅ 支持排除中间件（`->withoutMiddleware(['throttle'])`）
-- ✅ 支持带参数的中间件（`'throttle:200,1,user_id'`）
-- ✅ 实时解析模式，无需手动刷新缓存
-
-#### 3. 命令解析 / Command Parsing
-
-- ✅ 基于 `$signature` 属性精确匹配
-- ✅ 自动处理命令名到类名的转换（kebab-case → PascalCase）
-- ✅ 支持带参数和选项的命令
-- ✅ 支持复杂的命令名格式（如 `sync:bs:share:page:data`）
-
-#### 4. 配置解析 / Config Parsing
-
-- ✅ 支持多级配置键（如 `aliyun.oss.bucket`）
-- ✅ 智能过滤被注释的配置调用
-- ✅ 双向跳转（配置 ↔ 使用位置）
-- ✅ 实时扫描和索引更新
-
-### 性能优化 / Performance Optimization
-
-#### 智能缓存策略 / Smart Caching
-
-```typescript
-// 缓存结构示例
-{
-  routes: {
-    filePath: string,
-    lastModified: number,
-    routes: RouteDefinition[]
-  },
-  middleware: {
-    filePath: string,
-    lastModified: number,
-    definitions: MiddlewareDefinition[]
-  },
-  commands: {
-    filePath: string,
-    lastModified: number,
-    commands: CommandDefinition[]
-  }
-}
-```
-
-#### 增量更新 / Incremental Updates
-
-- **文件监控**: 监听 `routes/`, `app/Api/Controllers/`, `app/Console/` 等目录的文件变化
-- **智能更新**: 只更新修改的文件，避免全量重新解析
-- **性能优先**: 异步处理文件解析，不阻塞 UI
-
-#### 内存管理 / Memory Management
-
-- 使用高效的数据结构存储解析结果
-- 自动清理过期缓存
-- 最小化内存占用
-
----
-
-## 📁 支持的文件类型 / Supported File Types
-
-| 文件类型 / File Type | 路径模式 / Path Pattern | 说明 / Description |
-|---------------------|------------------------|-------------------|
-| **路由文件** | `routes/*.php` | API 路由、Web 路由、自定义路由等 |
-| **控制器** | `app/Api/Controllers/**/*.php`<br>`app/Http/Controllers/**/*.php` | 所有控制器文件，支持多层目录 |
-| **中间件** | `app/Http/Middleware/**/*.php` | 自定义中间件 |
-| **命令** | `app/Console/Commands/**/*.php` | Artisan 命令类 |
-| **配置文件** | `config/**/*.php` | 所有配置文件 |
-| **内核文件** | `app/Http/Kernel.php`<br>`app/Console/Kernel.php` | HTTP 内核和控制台内核 |
-
----
-
-## ❓ 常见问题 / Troubleshooting
-
-### 问题 1: 点击跳转没有反应 / Navigation Not Working
-
-**可能原因 / Possible Causes:**
-- ❌ 不是 Laravel 项目
-- ❌ 缓存未初始化
-- ❌ 文件路径不正确
-
-**解决方案 / Solutions:**
-
-1. 确认项目根目录有 `artisan` 文件
-2. 打开命令面板，执行 `Laravel Jump: Rescan Project` 重新扫描
-3. 执行 `Laravel Jump: Show Logs` 查看错误日志
-4. 检查文件路径是否符合 Laravel 标准结构
-
-### 问题 2: 中间件跳转显示位置不准确 / Middleware Jump Location Inaccurate
-
-**解决方案 / Solutions:**
-
-中间件跳转采用**实时解析模式**，理论上始终准确。如果出现问题：
-
-1. 执行 `Laravel Jump: Clear Cache` 清除缓存
-2. 执行 `Laravel Jump: Rescan Project` 重新扫描
-3. 检查路由文件语法是否正确
-
-### 问题 3: 扩展运行缓慢 / Extension Running Slow
-
-**可能原因 / Possible Causes:**
-- ❌ 项目文件过多
-- ❌ 缓存数据量过大
-- ❌ 频繁的文件变化
-
-**解决方案 / Solutions:**
-
-1. 执行 `Laravel Jump: Clear Cache` 清除缓存
-2. 关闭不需要的文件监控（通过 VS Code 设置）
-3. 检查 `Laravel Jump: Show Statistics` 查看解析统计
-
-### 问题 4: 命名空间解析错误 / Namespace Resolution Error
-
-**解决方案 / Solutions:**
-
-1. 检查路由组的 `namespace` 配置是否正确
-2. 确认控制器文件的命名空间与实际目录结构一致
-3. 执行 `Laravel Jump: Rescan Project` 重新扫描
-
----
-
-## 🛠️ 开发路线图 / Roadmap
-
-### 💡 关于功能开发 / About Feature Development
-
-> **📝 来自实际开发经验的功能**
-> 
-> 目前扩展的所有功能都源自作者在实际 Laravel 项目开发中遇到的痛点和真实需求。每一个跳转功能的设计，都是为了解决日常开发中频繁遇到的导航问题。
-> 
-> **🚀 持续改进中**
-> 
-> 后续我会根据自己的使用情况和社区反馈，不断完善和新增功能。如果你在使用过程中有任何想法、建议或需求，欢迎在 [GitHub Issues](https://github.com/jlcodes99/vscode-learvel-idea/issues) 留言反馈！
-> 
-> **💬 Feature Development Philosophy**
-> 
-> All current features are born from real pain points encountered during actual Laravel development. Each navigation feature is designed to solve frequent navigation challenges in daily coding.
-> 
-> I will continue to improve and add features based on my own usage and community feedback. If you have any ideas, suggestions, or feature requests, feel free to share them on [GitHub Issues](https://github.com/jlcodes99/vscode-learvel-idea/issues)!
-
-### 已完成 / Completed
-- ✅ 路由 ↔ 控制器双向跳转
-- ✅ 中间件导航（实时解析）
-- ✅ 定时任务 ↔ 命令类跳转
-- ✅ 配置文件导航
-- ✅ 智能命名空间解析
-- ✅ Controller@action 语法支持
-- ✅ 多层嵌套路由组支持
-
-### 计划中 / Planned
-- 🔄 模型关联关系跳转
-- 🔄 视图文件跳转
-- 🔄 事件监听器跳转
-- 🔄 服务提供者跳转
-- 🔄 Eloquent 查询构建器智能提示
-- 🔄 Blade 模板语法支持
-
-### 💭 你的想法很重要 / Your Ideas Matter
-
-如果你希望看到某个功能，或者在开发中遇到了什么痛点，请不要犹豫，直接在 GitHub 上告诉我！你的反馈将直接影响扩展的发展方向。
-
-If you want to see a specific feature or encounter any pain points during development, don't hesitate to let me know on GitHub! Your feedback will directly influence the extension's development direction.
 
 ---
 
