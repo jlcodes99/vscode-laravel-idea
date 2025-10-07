@@ -11,6 +11,20 @@ A powerful Laravel development extension that provides intelligent navigation an
 
 ---
 
+### 🔥 最佳实践推荐 / Best Practice
+
+> **💡 建议与 [PHP Tools](https://marketplace.visualstudio.com/items?itemName=DEVSENSE.phptools-vscode) 插件配合使用**  
+> 
+> **Learvel Idea** 专注于 Laravel 框架特性的智能导航，是对 PHP Tools 在 Laravel 框架支持上的完美补充。  
+> **两者组合使用，打造 VS Code 最强 Laravel 开发环境！** 🚀
+> 
+> **Recommended to use with [PHP Tools](https://marketplace.visualstudio.com/items?itemName=DEVSENSE.phptools-vscode)**
+> 
+> **Learvel Idea** focuses on Laravel framework-specific navigation, perfectly complementing PHP Tools.  
+> **Together, they create the ultimate Laravel development experience in VS Code!** 🚀
+
+---
+
 ## 📖 目录 / Table of Contents
 
 - [为什么选择 Learvel Idea](#-为什么选择-learvel-idea--why-choose-learvel-idea)
@@ -25,34 +39,65 @@ A powerful Laravel development extension that provides intelligent navigation an
 
 ## 🎯 为什么选择 Learvel Idea / Why Choose Learvel Idea
 
+### 🎪 完美搭档 / Perfect Partnership
+
+> **💎 专业的事交给专业的工具做**
+> 
+> 在 Laravel 开发中，PHP Tools 提供了优秀的 PHP 语言支持，但对于 Laravel 框架特有的路由、中间件、命令等特性支持有限。**Learvel Idea 正是为了填补这一空白而生！**
+> 
+> - **PHP Tools** 👉 负责 PHP 语言层面（类、方法、变量、命名空间等）
+> - **Learvel Idea** 👉 专注 Laravel 框架层面（路由、中间件、命令、配置等）
+> 
+> **两者配合，才是 VS Code 下最强的 Laravel 开发组合！**
+
 ### 开发痛点 / Development Pain Points
 
-在大型 Laravel 项目中，你是否经常遇到这些问题？
+在大型 Laravel 项目中，即使有了 PHP Tools，你是否仍然遇到这些框架层面的问题？
 
-Do you often encounter these issues in large Laravel projects?
+Even with PHP Tools, do you still encounter these Laravel framework-specific issues?
 
-- ❌ 路由定义在 `routes/api.php`，控制器在 `app/Api/Controllers/V1/Erp/`，手动查找文件费时费力
+- ❌ 路由定义在 `routes/api.php`，控制器在 `app/Api/Controllers/V1/Erp/`，PHP Tools 无法识别字符串形式的路由定义
 - ❌ 中间件配置散落在多个路由文件中，想找某个中间件的所有使用位置需要全局搜索
-- ❌ 定时任务配置在 `Kernel.php`，命令类在 `Commands/` 目录，两者对应关系不清晰
-- ❌ 配置项在代码中使用 `config('aliyun.oss.bucket')`，想看定义需要手动打开配置文件
+- ❌ 定时任务配置在 `Kernel.php`，命令类在 `Commands/` 目录，两者通过字符串关联，无法智能跳转
+- ❌ 配置项在代码中使用 `config('aliyun.oss.bucket')`，PHP Tools 无法解析这种动态配置调用
 
 ### 解决方案 / Solutions
 
 ✅ **一键跳转** - Ctrl+点击即可在路由、控制器、中间件、命令之间自由跳转  
 ✅ **双向导航** - 不仅可以从路由跳转到控制器，还能从控制器反向查找所有相关路由  
 ✅ **实时解析** - 文件修改后自动更新缓存，无需手动刷新  
-✅ **智能匹配** - 支持复杂的命名空间、嵌套路由组、带参数的中间件等
+✅ **智能匹配** - 支持复杂的命名空间、嵌套路由组、带参数的中间件等  
+✅ **无缝集成** - 与 PHP Tools 完美配合，互不干扰，共同提供完整开发体验
 
 ---
 
 ## 🚀 快速开始 / Quick Start
+
+### 💡 重要提示 / Important Notice
+
+> **🔥 推荐配合使用 / Recommended Combo**  
+> 
+> **本扩展专为 Laravel 框架优化，强烈建议配合 [PHP Tools](https://marketplace.visualstudio.com/items?itemName=DEVSENSE.phptools-vscode) 插件使用！**
+> 
+> **Learvel Idea** 专注于 Laravel 特有的路由、中间件、命令等框架层面的智能跳转，完美补充了 PHP Tools 在 Laravel 框架特性上的不足。两者配合使用，将为你提供最完整的 Laravel 开发体验：
+> 
+> - ✅ **PHP Tools**: 提供 PHP 语言的智能感知、代码补全、类跳转、重构等基础能力
+> - ✅ **Learvel Idea**: 提供 Laravel 框架的路由跳转、中间件导航、命令跳转、配置导航等专属功能
+> 
+> **This extension is specifically optimized for Laravel framework. We strongly recommend using it together with [PHP Tools](https://marketplace.visualstudio.com/items?itemName=DEVSENSE.phptools-vscode)!**
+> 
+> **Learvel Idea** focuses on Laravel-specific intelligent navigation for routes, middleware, commands, etc., perfectly complementing PHP Tools' capabilities. Together, they provide the most complete Laravel development experience:
+> 
+> - ✅ **PHP Tools**: PHP language intelligence, code completion, class navigation, refactoring, etc.
+> - ✅ **Learvel Idea**: Laravel framework-specific route navigation, middleware jumps, command jumps, config navigation, etc.
 
 ### 安装 / Installation
 
 1. 打开 VS Code，进入扩展市场 (Ctrl+Shift+X)
 2. 搜索 "Learvel Idea"
 3. 点击"安装"按钮
-4. 打开你的 Laravel 项目，即刻享受智能跳转！
+4. **[推荐]** 同时安装 "PHP Tools" 插件以获得完整开发体验
+5. 打开你的 Laravel 项目，即刻享受智能跳转！
 
 ### 立即体验 / Try It Now
 

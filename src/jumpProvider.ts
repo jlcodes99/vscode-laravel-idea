@@ -1004,20 +1004,15 @@ export class LaravelJumpProvider implements vscode.DefinitionProvider {
                         });
                         
                         return [location];
-                    } else {
-                        // 降级：跳转到配置文件开头
-                        const fallbackLocation = new vscode.Location(
-                            vscode.Uri.file(configPath),
-                            new vscode.Position(0, 0)
-                        );
-                        
-                        this.log('⚠️ 未找到具体配置项，跳转到文件开头', {
-                            configKey: configKey,
-                            configFile: configFileName
-                        });
-                        
-                        return [fallbackLocation];
                     }
+                    
+                    // 如果未找到（例如非数组配置项），返回null表示不处理
+                    this.log('⚠️ 未找到符合条件的配置项，不进行跳转', {
+                        configKey: configKey,
+                        configFile: configFileName
+                    });
+                    
+                    return null;
                 }
             }
         }
@@ -1027,6 +1022,7 @@ export class LaravelJumpProvider implements vscode.DefinitionProvider {
     
     /**
      * 在配置文件中查找具体的配置项
+     * 只支持数组类型的配置项跳转，单值配置由其他插件处理
      */
     private findConfigItemInFile(filePath: string, configItemKey: string): vscode.Location | null {
         try {
@@ -1041,6 +1037,15 @@ export class LaravelJumpProvider implements vscode.DefinitionProvider {
             for (let i = 0; i < lines.length; i++) {
                 const line = lines[i];
                 if (keyPattern.test(line)) {
+                    // 检查配置项的值是否是数组
+                    if (!this.isArrayConfigValue(line, lines, i)) {
+                        this.log('⚠️ 配置项不是数组类型，跳过跳转', { 
+                            configKey: configItemKey,
+                            line: line.trim()
+                        });
+                        return null;
+                    }
+                    
                     // 如果是多层键，尝试继续往下查找
                     if (keyParts.length > 1) {
                         // 简化处理：返回第一层键的位置
@@ -1061,6 +1066,27 @@ export class LaravelJumpProvider implements vscode.DefinitionProvider {
         }
         
         return null;
+    }
+    
+    /**
+     * 检查配置项的值是否是数组
+     */
+    private isArrayConfigValue(currentLine: string, allLines: string[], lineIndex: number): boolean {
+        // 检查当前行是否包含 [
+        if (currentLine.includes('[')) {
+            return true;
+        }
+        
+        // 检查下一行是否是数组开始（多行格式）
+        if (lineIndex + 1 < allLines.length) {
+            const nextLine = allLines[lineIndex + 1].trim();
+            if (nextLine.startsWith('[')) {
+                return true;
+            }
+        }
+        
+        // 不是数组
+        return false;
     }
 
     /**

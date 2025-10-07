@@ -165,6 +165,7 @@ export class LaravelHoverProvider implements vscode.HoverProvider {
     
     /**
      * 在配置文件内容中查找配置项的行号
+     * 只返回数组类型的配置项，单值配置由其他插件处理
      */
     private findConfigItemLine(lines: string[], configItemKey: string): number | null {
         const keyParts = configItemKey.split('.');
@@ -174,11 +175,40 @@ export class LaravelHoverProvider implements vscode.HoverProvider {
         for (let i = 0; i < lines.length; i++) {
             const line = lines[i];
             if (keyPattern.test(line)) {
+                // 检查是否是数组配置项
+                if (!this.isArrayConfigValue(line, lines, i)) {
+                    this.log('⚠️ 配置项不是数组类型，跳过悬停预览', { 
+                        configKey: configItemKey,
+                        line: line.trim()
+                    });
+                    return null;
+                }
                 return i;
             }
         }
         
         return null;
+    }
+    
+    /**
+     * 检查配置项的值是否是数组
+     */
+    private isArrayConfigValue(currentLine: string, allLines: string[], lineIndex: number): boolean {
+        // 检查当前行是否包含 [
+        if (currentLine.includes('[')) {
+            return true;
+        }
+        
+        // 检查下一行是否是数组开始（多行格式）
+        if (lineIndex + 1 < allLines.length) {
+            const nextLine = allLines[lineIndex + 1].trim();
+            if (nextLine.startsWith('[')) {
+                return true;
+            }
+        }
+        
+        // 不是数组
+        return false;
     }
 
     /**
