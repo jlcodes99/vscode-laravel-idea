@@ -25,18 +25,18 @@ let workspaceRoot: string;
 
 export async function activate(context: vscode.ExtensionContext) {
     // 初始化输出通道
-    outputChannel = vscode.window.createOutputChannel('Laravel Universal Jump');
+    outputChannel = vscode.window.createOutputChannel('Laravel Idea');
     
     // 验证工作区
     const workspaceFolder = vscode.workspace.workspaceFolders?.[0];
     if (!workspaceFolder) {
-        outputChannel.appendLine('⚠️ Laravel Universal Jump: 需要打开Laravel项目');
+        outputChannel.appendLine('⚠️ Laravel Idea: 需要打开Laravel项目');
         return;
     }
     
     workspaceRoot = workspaceFolder.uri.fsPath;
 
-    outputChannel.appendLine('🚀 Laravel Universal Jump 启动中...');
+    outputChannel.appendLine('🚀 Laravel Idea 启动中...');
     outputChannel.appendLine(`📁 工作区: ${workspaceRoot}`);
     
     try {
@@ -64,7 +64,7 @@ export async function activate(context: vscode.ExtensionContext) {
         // 注册命令
         registerCommands(context, cacheManager);
         
-        outputChannel.appendLine('✅ Laravel Universal Jump 激活成功');
+        outputChannel.appendLine('✅ Laravel Idea 激活成功');
 
     } catch (error) {
         outputChannel.appendLine(`❌ 激活失败: ${error}`);
@@ -312,7 +312,7 @@ export function deactivate() {
     cacheManager.dispose();
     
     if (outputChannel) {
-        outputChannel.appendLine('👋 Laravel Universal Jump 停用');
+        outputChannel.appendLine('👋 Laravel Idea 停用');
         outputChannel.dispose();
     }
 }

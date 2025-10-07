@@ -145,7 +145,7 @@ export class CacheManager {
                 duration: `${duration}ms`
             });
             
-            this.log('✅ Laravel Universal Jump 激活成功', {
+            this.log('✅ Laravel Idea 激活成功', {
                 totalRoutes: totalRoutes,
                 totalMiddlewares: totalMiddlewares,
                 middlewareDefinitions: middlewareDefinitions.size,

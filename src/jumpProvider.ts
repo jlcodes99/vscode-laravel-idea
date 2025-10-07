@@ -82,7 +82,14 @@ export class LaravelJumpProvider implements vscode.DefinitionProvider {
                 return await this.jumpFromConfig(document, position);
             }
 
-            this.log('❌ 未识别的文件类型', { filePath: document.fileName });
+            // 尝试处理任意PHP文件中的config()调用
+            const line = document.lineAt(position.line);
+            const configJump = await this.jumpToConfigFromAnyFile(line.text, position.character);
+            if (configJump) {
+                return configJump;
+            }
+
+            this.log('❌ 未识别的文件类型或无可跳转内容', { filePath: document.fileName });
             return null;
 
         } catch (error) {
@@ -928,6 +935,132 @@ export class LaravelJumpProvider implements vscode.DefinitionProvider {
         const config = vscode.workspace.getConfiguration('learvelIdea');
         const pattern = config.get<string>('configFilePattern', '/config/');
         return filePath.includes(pattern) && filePath.endsWith('.php');
+    }
+
+    /**
+     * 从任意PHP文件中的config()调用跳转到配置文件
+     */
+    private async jumpToConfigFromAnyFile(lineText: string, character: number): Promise<vscode.Location[] | null> {
+        // 匹配 config('key') 或 config("key")
+        const configPatterns = [
+            /config\s*\(\s*['"]([^'"]+)['"]\s*[,)]/g,
+        ];
+        
+        for (const pattern of configPatterns) {
+            pattern.lastIndex = 0; // 重置正则表达式
+            let match;
+            
+            while ((match = pattern.exec(lineText)) !== null) {
+                const fullMatch = match[0];
+                const configKey = match[1];
+                const matchStart = match.index;
+                const matchEnd = matchStart + fullMatch.length;
+                
+                // 检查点击位置是否在config调用范围内
+                if (character >= matchStart && character <= matchEnd) {
+                    this.log('🔍 检测到config()调用', {
+                        configKey: configKey,
+                        lineText: lineText.trim()
+                    });
+                    
+                    // 解析配置键：doudian.shop_list -> 文件名: doudian, 键名: shop_list
+                    const parts = configKey.split('.');
+                    if (parts.length < 1) {
+                        return null;
+                    }
+                    
+                    const configFileName = parts[0];
+                    const configPath = path.join(this.workspaceRoot, 'config', `${configFileName}.php`);
+                    
+                    if (!fs.existsSync(configPath)) {
+                        this.log('❌ 配置文件不存在', { configPath });
+                        return null;
+                    }
+                    
+                    // 如果只有文件名，跳转到文件开头
+                    if (parts.length === 1) {
+                        const location = new vscode.Location(
+                            vscode.Uri.file(configPath),
+                            new vscode.Position(0, 0)
+                        );
+                        
+                        this.log('🎉 跳转到配置文件', {
+                            configFile: configFileName,
+                            configPath: configPath
+                        });
+                        
+                        return [location];
+                    }
+                    
+                    // 查找具体的配置项位置
+                    const configItemKey = parts.slice(1).join('.');
+                    const location = this.findConfigItemInFile(configPath, configItemKey);
+                    
+                    if (location) {
+                        this.log('🎉 跳转到配置项', {
+                            configKey: configKey,
+                            configFile: configFileName,
+                            configItemKey: configItemKey
+                        });
+                        
+                        return [location];
+                    } else {
+                        // 降级：跳转到配置文件开头
+                        const fallbackLocation = new vscode.Location(
+                            vscode.Uri.file(configPath),
+                            new vscode.Position(0, 0)
+                        );
+                        
+                        this.log('⚠️ 未找到具体配置项，跳转到文件开头', {
+                            configKey: configKey,
+                            configFile: configFileName
+                        });
+                        
+                        return [fallbackLocation];
+                    }
+                }
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * 在配置文件中查找具体的配置项
+     */
+    private findConfigItemInFile(filePath: string, configItemKey: string): vscode.Location | null {
+        try {
+            const content = fs.readFileSync(filePath, 'utf8');
+            const lines = content.split('\n');
+            const keyParts = configItemKey.split('.');
+            
+            // 简单查找：查找第一层键
+            const firstKey = keyParts[0];
+            const keyPattern = new RegExp(`['"]${firstKey}['"]\\s*=>`);
+            
+            for (let i = 0; i < lines.length; i++) {
+                const line = lines[i];
+                if (keyPattern.test(line)) {
+                    // 如果是多层键，尝试继续往下查找
+                    if (keyParts.length > 1) {
+                        // 简化处理：返回第一层键的位置
+                        return new vscode.Location(
+                            vscode.Uri.file(filePath),
+                            this.createFullLineSelection(filePath, i)
+                        );
+                    }
+                    
+                    return new vscode.Location(
+                        vscode.Uri.file(filePath),
+                        this.createFullLineSelection(filePath, i)
+                    );
+                }
+            }
+        } catch (error) {
+            this.log('❌ 查找配置项失败', { error: String(error) });
+        }
+        
+        return null;
     }
 
     /**

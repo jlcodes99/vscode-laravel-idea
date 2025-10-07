@@ -41,13 +41,19 @@ export class LaravelHoverProvider implements vscode.HoverProvider {
         position: vscode.Position,
         token: vscode.CancellationToken
     ): Promise<vscode.Hover | null> {
-        // 只在路由文件中提供悬停预览
+        const line = document.lineAt(position.line);
+        const lineText = line.text;
+        
+        // 在任意PHP文件中尝试检测config()调用
+        const configHover = await this.createConfigHover(lineText, position.character);
+        if (configHover) {
+            return configHover;
+        }
+        
+        // 只在路由文件中提供控制器/方法悬停预览
         if (!this.isRouteFile(document.fileName)) {
             return null;
         }
-
-        const line = document.lineAt(position.line);
-        const lineText = line.text;
         
         // 解析路由中的控制器和方法信息
         const routeInfo = this.parseRouteAtPosition(lineText, position.character);
@@ -81,6 +87,97 @@ export class LaravelHoverProvider implements vscode.HoverProvider {
             return this.createClassHover(filePath, routeInfo.controller);
         }
 
+        return null;
+    }
+
+    /**
+     * 为config()调用创建悬停预览
+     */
+    private async createConfigHover(lineText: string, character: number): Promise<vscode.Hover | null> {
+        // 匹配 config('key') 或 config("key")
+        const configPattern = /config\s*\(\s*['"]([^'"]+)['"]\s*[,)]/g;
+        configPattern.lastIndex = 0;
+        
+        let match;
+        while ((match = configPattern.exec(lineText)) !== null) {
+            const fullMatch = match[0];
+            const configKey = match[1];
+            const matchStart = match.index;
+            const matchEnd = matchStart + fullMatch.length;
+            
+            // 检查鼠标位置是否在config调用范围内
+            if (character >= matchStart && character <= matchEnd) {
+                this.log('🔍 检测到config()悬停', { configKey });
+                
+                // 解析配置键
+                const parts = configKey.split('.');
+                if (parts.length < 1) {
+                    return null;
+                }
+                
+                const configFileName = parts[0];
+                const configPath = path.join(this.workspaceRoot, 'config', `${configFileName}.php`);
+                
+                if (!fs.existsSync(configPath)) {
+                    return null;
+                }
+                
+                // 读取配置文件内容
+                try {
+                    const content = fs.readFileSync(configPath, 'utf8');
+                    const lines = content.split('\n');
+                    
+                    // 查找具体的配置项
+                    if (parts.length > 1) {
+                        const configItemKey = parts.slice(1).join('.');
+                        const itemLine = this.findConfigItemLine(lines, configItemKey);
+                        
+                        if (itemLine !== null && itemLine >= 0 && itemLine < lines.length) {
+                            const codeLine = lines[itemLine].trim();
+                            
+                            const markdown = new vscode.MarkdownString();
+                            markdown.appendCodeblock(codeLine, 'php');
+                            
+                            this.log('✅ 配置项预览生成成功', { configKey, line: itemLine + 1 });
+                            return new vscode.Hover(markdown);
+                        }
+                    }
+                    
+                    // 降级：显示配置文件的第一个有效行（return [）
+                    for (let i = 0; i < Math.min(lines.length, 20); i++) {
+                        const line = lines[i].trim();
+                        if (line.includes('return [') || line.includes('return array(')) {
+                            const markdown = new vscode.MarkdownString();
+                            markdown.appendCodeblock(`// config/${configFileName}.php\n${line}`, 'php');
+                            
+                            this.log('✅ 配置文件预览生成成功', { configFile: configFileName });
+                            return new vscode.Hover(markdown);
+                        }
+                    }
+                } catch (error) {
+                    this.log('❌ 配置预览生成失败', { error: String(error) });
+                }
+            }
+        }
+        
+        return null;
+    }
+    
+    /**
+     * 在配置文件内容中查找配置项的行号
+     */
+    private findConfigItemLine(lines: string[], configItemKey: string): number | null {
+        const keyParts = configItemKey.split('.');
+        const firstKey = keyParts[0];
+        const keyPattern = new RegExp(`['"]${firstKey}['"]\\s*=>`);
+        
+        for (let i = 0; i < lines.length; i++) {
+            const line = lines[i];
+            if (keyPattern.test(line)) {
+                return i;
+            }
+        }
+        
         return null;
     }
 
