@@ -1,8 +1,8 @@
-# Learvel Idea - Laravel 智能导航扩展
+# Laravel Idea - Laravel 智能导航扩展
 
-[![Version](https://img.shields.io/visual-studio-marketplace/v/jlcodes.learvel-idea?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=jlcodes.learvel-idea)
-[![Downloads](https://img.shields.io/visual-studio-marketplace/d/jlcodes.learvel-idea?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=jlcodes.learvel-idea)
-[![License](https://img.shields.io/github/license/jlcodes99/vscode-learvel-idea?style=flat-square)](LICENSE)
+[![Version](https://img.shields.io/visual-studio-marketplace/v/jlcodes.laravel-idea?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=jlcodes.laravel-idea)
+[![Downloads](https://img.shields.io/visual-studio-marketplace/d/jlcodes.laravel-idea?style=flat-square)](https://marketplace.visualstudio.com/items?itemName=jlcodes.laravel-idea)
+[![License](https://img.shields.io/github/license/jlcodes99/vscode-laravel-idea?style=flat-square)](LICENSE)
 
 > **专为 Laravel 开发者打造的智能代码导航工具**  
 > 简化路由、中间件、命令、配置之间的跳转操作
@@ -15,19 +15,19 @@ A powerful Laravel development extension that provides intelligent navigation an
 
 > **💡 建议与 [PHP Tools](https://marketplace.visualstudio.com/items?itemName=DEVSENSE.phptools-vscode) 插件配合使用**  
 > 
-> **Learvel Idea** 专注于 Laravel 框架特性的智能导航，是对 PHP Tools 在 Laravel 框架支持上的有效补充。  
+> **Laravel Idea** 专注于 Laravel 框架特性的智能导航，是对 PHP Tools 在 Laravel 框架支持上的有效补充。  
 > **两者组合使用，提供更完整的 Laravel 开发体验。**
 > 
 > **Recommended to use with [PHP Tools](https://marketplace.visualstudio.com/items?itemName=DEVSENSE.phptools-vscode)**
 > 
-> **Learvel Idea** focuses on Laravel framework-specific navigation, effectively complementing PHP Tools.  
+> **Laravel Idea** focuses on Laravel framework-specific navigation, effectively complementing PHP Tools.  
 > **Together, they provide a more complete Laravel development experience.**
 
 ---
 
 ## 📖 目录 / Table of Contents
 
-- [为什么选择 Learvel Idea](#-为什么选择-learvel-idea--why-choose-learvel-idea)
+- [为什么选择 Laravel Idea](#-为什么选择-laravel-idea--why-choose-laravel-idea)
 - [快速开始](#-快速开始--quick-start)
 - [关于功能](#-关于功能--about-features)
 - [核心功能与使用](#-核心功能与使用--core-features--usage)
@@ -36,16 +36,16 @@ A powerful Laravel development extension that provides intelligent navigation an
 
 ---
 
-## 🎯 为什么选择 Learvel Idea / Why Choose Learvel Idea
+## 🎯 为什么选择 Laravel Idea / Why Choose Laravel Idea
 
 ### 🎪 完美搭档 / Perfect Partnership
 
 > **💎 专业的事交给专业的工具做**
 > 
-> 在 Laravel 开发中，PHP Tools 提供了优秀的 PHP 语言支持，但对于 Laravel 框架特有的路由、中间件、命令等特性支持有限。**Learvel Idea 正是为了填补这一空白而生！**
+> 在 Laravel 开发中，PHP Tools 提供了优秀的 PHP 语言支持，但对于 Laravel 框架特有的路由、中间件、命令等特性支持有限。**Laravel Idea 正是为了填补这一空白而生！**
 > 
 > - **PHP Tools** 👉 负责 PHP 语言层面（类、方法、变量、命名空间等）
-> - **Learvel Idea** 👉 专注 Laravel 框架层面（路由、中间件、命令、配置等）
+> - **Laravel Idea** 👉 专注 Laravel 框架层面（路由、中间件、命令、配置等）
 > 
 > **两者配合，提供更完整的 Laravel 开发体验。**
 
@@ -78,22 +78,22 @@ Even with PHP Tools, do you still encounter these Laravel framework-specific iss
 > 
 > **本扩展专为 Laravel 框架优化，强烈建议配合 [PHP Tools](https://marketplace.visualstudio.com/items?itemName=DEVSENSE.phptools-vscode) 插件使用！**
 > 
-> **Learvel Idea** 专注于 Laravel 特有的路由、中间件、命令等框架层面的智能跳转，有效补充了 PHP Tools 在 Laravel 框架特性上的不足。两者配合使用，将为你提供更完整的 Laravel 开发体验：
+> **Laravel Idea** 专注于 Laravel 特有的路由、中间件、命令等框架层面的智能跳转，有效补充了 PHP Tools 在 Laravel 框架特性上的不足。两者配合使用，将为你提供更完整的 Laravel 开发体验：
 > 
 > - ✅ **PHP Tools**: 提供 PHP 语言的智能感知、代码补全、类跳转、重构等基础能力
-> - ✅ **Learvel Idea**: 提供 Laravel 框架的路由跳转、中间件导航、命令跳转、配置导航等专属功能
+> - ✅ **Laravel Idea**: 提供 Laravel 框架的路由跳转、中间件导航、命令跳转、配置导航等专属功能
 > 
 > **This extension is specifically optimized for Laravel framework. We strongly recommend using it together with [PHP Tools](https://marketplace.visualstudio.com/items?itemName=DEVSENSE.phptools-vscode)!**
 > 
-> **Learvel Idea** focuses on Laravel-specific intelligent navigation for routes, middleware, commands, etc., effectively complementing PHP Tools' capabilities. Together, they provide a more complete Laravel development experience:
+> **Laravel Idea** focuses on Laravel-specific intelligent navigation for routes, middleware, commands, etc., effectively complementing PHP Tools' capabilities. Together, they provide a more complete Laravel development experience:
 > 
 > - ✅ **PHP Tools**: PHP language intelligence, code completion, class navigation, refactoring, etc.
-> - ✅ **Learvel Idea**: Laravel framework-specific route navigation, middleware jumps, command jumps, config navigation, etc.
+> - ✅ **Laravel Idea**: Laravel framework-specific route navigation, middleware jumps, command jumps, config navigation, etc.
 
 ### 安装 / Installation
 
 1. 打开 VS Code，进入扩展市场 (Ctrl+Shift+X)
-2. 搜索 "Learvel Idea"
+2. 搜索 "Laravel Idea"
 3. 点击"安装"按钮
 4. **[推荐]** 同时安装 "PHP Tools" 插件以获得完整开发体验
 5. 打开你的 Laravel 项目，即刻享受智能跳转！
@@ -129,14 +129,14 @@ $schedule->command('sync:user-data')->daily();
 > 本扩展的所有功能都是作者在日常 Laravel 开发中遇到的真实痛点。我们深知大型 Laravel 项目中代码导航的困难，因此专注于解决这些实际问题。
 > 
 > **💬 需要其他功能？**  
-> 如果你在使用过程中有任何功能需求或改进建议，欢迎在 [GitHub Issues](https://github.com/jlcodes99/vscode-learvel-idea/issues) 留言反馈！我们会根据使用情况和社区反馈持续优化和添加新功能。
+> 如果你在使用过程中有任何功能需求或改进建议，欢迎在 [GitHub Issues](https://github.com/jlcodes99/vscode-laravel-idea/issues) 留言反馈！我们会根据使用情况和社区反馈持续优化和添加新功能。
 > 
 > **📝 All features are born from real development pain points**
 > 
 > Every feature in this extension comes from actual challenges the author faced in daily Laravel development. We understand the difficulties of code navigation in large Laravel projects and focus on solving these real problems.
 > 
 > **💬 Need other features?**  
-> If you have any feature requests or suggestions during use, feel free to leave feedback on [GitHub Issues](https://github.com/jlcodes99/vscode-learvel-idea/issues)! We will continue to optimize and add new features based on usage and community feedback.
+> If you have any feature requests or suggestions during use, feel free to leave feedback on [GitHub Issues](https://github.com/jlcodes99/vscode-laravel-idea/issues)! We will continue to optimize and add new features based on usage and community feedback.
 
 ---
 
@@ -282,31 +282,31 @@ $key = config('aliyun.access_key_id');
 
 ### 路径匹配配置 / Path Pattern Configuration
 
-打开 VS Code 设置（File > Preferences > Settings），搜索 "Learvel Idea"，可以配置以下选项：
+打开 VS Code 设置（File > Preferences > Settings），搜索 "Laravel Idea"，可以配置以下选项：
 
 | 配置项 / Setting | 默认值 / Default | 说明 / Description |
 |-----------------|------------------|-------------------|
-| `learvelIdea.routeFilePattern` | `/routes/` | 路由文件路径匹配模式 |
-| `learvelIdea.controllerFilePattern` | `Controller` | 控制器文件名匹配模式 |
-| `learvelIdea.commandFilePattern` | `/Console/Commands/` | 命令文件路径匹配模式 |
-| `learvelIdea.consoleKernelPattern` | `/Console/Kernel.php` | Console Kernel 文件路径 |
-| `learvelIdea.httpKernelPattern` | `/Http/Kernel.php` | Http Kernel 文件路径 |
-| `learvelIdea.configFilePattern` | `/config/` | 配置文件路径匹配模式 |
+| `laravelIdea.routeFilePattern` | `/routes/` | 路由文件路径匹配模式 |
+| `laravelIdea.controllerFilePattern` | `Controller` | 控制器文件名匹配模式 |
+| `laravelIdea.commandFilePattern` | `/Console/Commands/` | 命令文件路径匹配模式 |
+| `laravelIdea.consoleKernelPattern` | `/Console/Kernel.php` | Console Kernel 文件路径 |
+| `laravelIdea.httpKernelPattern` | `/Http/Kernel.php` | Http Kernel 文件路径 |
+| `laravelIdea.configFilePattern` | `/config/` | 配置文件路径匹配模式 |
 
 ### 项目目录配置 / Directory Configuration
 
 | 配置项 / Setting | 默认值 / Default | 说明 / Description |
 |-----------------|------------------|-------------------|
-| `learvelIdea.appPath` | `app` | Laravel 应用目录路径 |
-| `learvelIdea.controllerPath` | `app/Api/Controllers` | 控制器目录路径 |
-| `learvelIdea.routePath` | `routes` | 路由文件目录路径 |
+| `laravelIdea.appPath` | `app` | Laravel 应用目录路径 |
+| `laravelIdea.controllerPath` | `app/Api/Controllers` | 控制器目录路径 |
+| `laravelIdea.routePath` | `routes` | 路由文件目录路径 |
 
 ### 快捷键配置 / Keybinding Configuration
 
 | 配置项 / Setting | 默认值 / Default | 说明 / Description |
 |-----------------|------------------|-------------------|
-| `learvelIdea.enablePhpStormKeybindings` | `false` | 启用 PHPStorm 风格快捷键（基础版本） |
-| `learvelIdea.enablePhpStormAdvancedKeybindings` | `false` | 启用 PHPStorm 风格快捷键（高级版本） |
+| `laravelIdea.enablePhpStormKeybindings` | `false` | 启用 PHPStorm 风格快捷键（基础版本） |
+| `laravelIdea.enablePhpStormAdvancedKeybindings` | `false` | 启用 PHPStorm 风格快捷键（高级版本） |
 
 **PHPStorm 风格快捷键（高级版本）包含：**
 - `Option+Cmd+L` (Mac) / `Alt+Ctrl+L` (Windows/Linux) - 格式化代码
@@ -320,9 +320,9 @@ $key = config('aliyun.access_key_id');
 
 ```json
 {
-  "learvelIdea.routeFilePattern": "/custom-routes/",
-  "learvelIdea.controllerFilePattern": "MyController",
-  "learvelIdea.controllerPath": "app/MyApp/Controllers"
+  "laravelIdea.routeFilePattern": "/custom-routes/",
+  "laravelIdea.controllerFilePattern": "MyController",
+  "laravelIdea.controllerPath": "app/MyApp/Controllers"
 }
 ```
 
@@ -344,7 +344,7 @@ Contributions, issues, and feature requests are welcome!
 
 ### 报告问题 / Report Issues
 
-在 [GitHub Issues](https://github.com/jlcodes99/vscode-learvel-idea/issues) 提交问题时，请提供：
+在 [GitHub Issues](https://github.com/jlcodes99/vscode-laravel-idea/issues) 提交问题时，请提供：
 
 - VS Code 版本
 - 扩展版本
@@ -364,13 +364,13 @@ This project is licensed under the MIT License.
 
 ## 💖 致谢 / Acknowledgments
 
-感谢所有使用和支持 Learvel Idea 的开发者！
+感谢所有使用和支持 Laravel Idea 的开发者！
 
-Thanks to all developers who use and support Learvel Idea!
+Thanks to all developers who use and support Laravel Idea!
 
-**如果这个扩展对你有帮助，请在 [VS Code 市场](https://marketplace.visualstudio.com/items?itemName=jlcodes.learvel-idea) 给个五星好评 ⭐️**
+**如果这个扩展对你有帮助，请在 [VS Code 市场](https://marketplace.visualstudio.com/items?itemName=jlcodes.laravel-idea) 给个五星好评 ⭐️**
 
-**If this extension helps you, please give it a 5-star rating on the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=jlcodes.learvel-idea) ⭐️**
+**If this extension helps you, please give it a 5-star rating on the [VS Code Marketplace](https://marketplace.visualstudio.com/items?itemName=jlcodes.laravel-idea) ⭐️**
 
 ---
 
@@ -380,6 +380,6 @@ Thanks to all developers who use and support Learvel Idea!
 
 **Made with ❤️ for Laravel Developers**
 
-[官网](https://github.com/jlcodes99/vscode-learvel-idea) • [文档](https://github.com/jlcodes99/vscode-learvel-idea/wiki) • [问题反馈](https://github.com/jlcodes99/vscode-learvel-idea/issues)
+[官网](https://github.com/jlcodes99/vscode-laravel-idea) • [文档](https://github.com/jlcodes99/vscode-laravel-idea/wiki) • [问题反馈](https://github.com/jlcodes99/vscode-laravel-idea/issues)
 
 </div>

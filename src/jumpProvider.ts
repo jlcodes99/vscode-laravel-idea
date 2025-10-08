@@ -902,37 +902,37 @@ export class LaravelJumpProvider implements vscode.DefinitionProvider {
     }
 
     private isRouteFile(filePath: string): boolean {
-        const config = vscode.workspace.getConfiguration('learvelIdea');
+        const config = vscode.workspace.getConfiguration('laravelIdea');
         const pattern = config.get<string>('routeFilePattern', '/routes/');
         return filePath.includes(pattern) && filePath.endsWith('.php');
     }
 
     private isControllerFile(filePath: string): boolean {
-        const config = vscode.workspace.getConfiguration('learvelIdea');
+        const config = vscode.workspace.getConfiguration('laravelIdea');
         const pattern = config.get<string>('controllerFilePattern', 'Controller');
         return filePath.includes(pattern) && filePath.endsWith('.php');
     }
     
     private isCommandFile(filePath: string): boolean {
-        const config = vscode.workspace.getConfiguration('learvelIdea');
+        const config = vscode.workspace.getConfiguration('laravelIdea');
         const pattern = config.get<string>('commandFilePattern', '/Console/Commands/');
         return filePath.includes(pattern) && filePath.endsWith('.php');
     }
     
     private isConsoleKernelFile(filePath: string): boolean {
-        const config = vscode.workspace.getConfiguration('learvelIdea');
+        const config = vscode.workspace.getConfiguration('laravelIdea');
         const pattern = config.get<string>('consoleKernelPattern', '/Console/Kernel.php');
         return filePath.includes(pattern) && filePath.endsWith('.php');
     }
     
     private isHttpKernelFile(filePath: string): boolean {
-        const config = vscode.workspace.getConfiguration('learvelIdea');
+        const config = vscode.workspace.getConfiguration('laravelIdea');
         const pattern = config.get<string>('httpKernelPattern', '/Http/Kernel.php');
         return filePath.includes(pattern) && filePath.endsWith('.php');
     }
     
     private isConfigFile(filePath: string): boolean {
-        const config = vscode.workspace.getConfiguration('learvelIdea');
+        const config = vscode.workspace.getConfiguration('laravelIdea');
         const pattern = config.get<string>('configFilePattern', '/config/');
         return filePath.includes(pattern) && filePath.endsWith('.php');
     }

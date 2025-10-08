@@ -448,7 +448,7 @@ export class LaravelHoverProvider implements vscode.HoverProvider {
     }
 
     private isRouteFile(filePath: string): boolean {
-        const config = vscode.workspace.getConfiguration('learvelIdea');
+        const config = vscode.workspace.getConfiguration('laravelIdea');
         const pattern = config.get<string>('routeFilePattern', '/routes/');
         return filePath.includes(pattern) && filePath.endsWith('.php');
     }

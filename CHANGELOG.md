@@ -1,8 +1,8 @@
 # 更新日志 / Changelog
 
-**Learvel Idea** 扩展的所有重要更改都将记录在此文件中。
+**Laravel Idea** 扩展的所有重要更改都将记录在此文件中。
 
-All notable changes to the **Learvel Idea** extension will be documented in this file.
+All notable changes to the **Laravel Idea** extension will be documented in this file.
 
 ## [1.1.3] - 2025-10-07
 

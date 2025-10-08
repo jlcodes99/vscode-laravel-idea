@@ -1,13 +1,13 @@
 {
-  "name": "learvel-idea",
-  "displayName": "Learvel Idea",
+  "name": "laravel-idea",
+  "displayName": "Laravel Idea",
   "description": "Laravel通用跳转扩展 - 提供路由、中间件、命令的智能导航功能 / Laravel Idea extension - Provides intelligent navigation for routes, middleware, and commands",
-  "version": "1.1.51",
+  "version": "1.1.52",
   "publisher": "jlcodes",
   "icon": "icons/test.png",
   "repository": {
     "type": "git",
-    "url": "https://github.com/jlcodes99/vscode-learvel-idea.git"
+    "url": "https://github.com/jlcodes99/vscode-laravel-idea.git"
   },
   "license": "MIT",
   "engines": {
@@ -32,68 +32,68 @@
   "contributes": {
     "commands": [
       {
-        "command": "learvel-idea.gotoController",
+        "command": "laravel-idea.gotoController",
         "title": "Go to Controller"
       },
       {
-        "command": "learvel-idea.gotoRoute",
+        "command": "laravel-idea.gotoRoute",
         "title": "Go to Route"
       }
     ],
     "configuration": {
-      "title": "Learvel Idea",
+      "title": "Laravel Idea",
       "properties": {
-        "learvelIdea.appPath": {
+        "laravelIdea.appPath": {
           "type": "string",
           "default": "app",
           "description": "Laravel应用目录路径 / Laravel application directory path"
         },
-        "learvelIdea.controllerPath": {
+        "laravelIdea.controllerPath": {
           "type": "string",
           "default": "app/Api/Controllers",
           "description": "控制器目录路径 / Controller directory path"
         },
-        "learvelIdea.routePath": {
+        "laravelIdea.routePath": {
           "type": "string",
           "default": "routes",
           "description": "路由文件目录路径 / Route files directory path"
         },
-        "learvelIdea.routeFilePattern": {
+        "laravelIdea.routeFilePattern": {
           "type": "string",
           "default": "/routes/",
           "description": "路由文件路径匹配模式 / Route file path pattern (default: /routes/)"
         },
-        "learvelIdea.controllerFilePattern": {
+        "laravelIdea.controllerFilePattern": {
           "type": "string",
           "default": "Controller",
           "description": "控制器文件名匹配模式 / Controller file name pattern (default: Controller)"
         },
-        "learvelIdea.commandFilePattern": {
+        "laravelIdea.commandFilePattern": {
           "type": "string",
           "default": "/Console/Commands/",
           "description": "命令文件路径匹配模式 / Command file path pattern (default: /Console/Commands/)"
         },
-        "learvelIdea.consoleKernelPattern": {
+        "laravelIdea.consoleKernelPattern": {
           "type": "string",
           "default": "/Console/Kernel.php",
           "description": "Console Kernel文件路径匹配模式 / Console Kernel file path pattern (default: /Console/Kernel.php)"
         },
-        "learvelIdea.httpKernelPattern": {
+        "laravelIdea.httpKernelPattern": {
           "type": "string",
           "default": "/Http/Kernel.php",
           "description": "Http Kernel文件路径匹配模式 / Http Kernel file path pattern (default: /Http/Kernel.php)"
         },
-        "learvelIdea.configFilePattern": {
+        "laravelIdea.configFilePattern": {
           "type": "string",
           "default": "/config/",
           "description": "配置文件路径匹配模式 / Config file path pattern (default: /config/)"
         },
-        "learvelIdea.enablePhpStormKeybindings": {
+        "laravelIdea.enablePhpStormKeybindings": {
           "type": "boolean",
           "default": false,
           "description": "启用PHPStorm风格快捷键（基础版本）/ Enable PHPStorm-style keybindings (basic version)"
         },
-        "learvelIdea.enablePhpStormAdvancedKeybindings": {
+        "laravelIdea.enablePhpStormAdvancedKeybindings": {
           "type": "boolean",
           "default": false,
           "description": "启用PHPStorm风格快捷键（高级版本 - 可能与VSCode默认快捷键冲突）/ Enable PHPStorm-style keybindings (advanced version - may conflict with VSCode defaults)"
@@ -105,169 +105,169 @@
         "command": "workbench.action.quickOpen",
         "key": "ctrl+shift+o",
         "mac": "cmd+shift+o",
-        "when": "config.learvelIdea.enablePhpStormKeybindings"
+        "when": "config.laravelIdea.enablePhpStormKeybindings"
       },
       {
         "command": "editor.action.startFindReplaceAction",
         "key": "ctrl+r",
         "mac": "cmd+r",
-        "when": "config.learvelIdea.enablePhpStormKeybindings && editorFocus"
+        "when": "config.laravelIdea.enablePhpStormKeybindings && editorFocus"
       },
       {
         "command": "workbench.action.replaceInFiles",
         "key": "ctrl+shift+r",
         "mac": "cmd+shift+r",
-        "when": "config.learvelIdea.enablePhpStormKeybindings"
+        "when": "config.laravelIdea.enablePhpStormKeybindings"
       },
       {
         "command": "workbench.view.explorer",
         "key": "alt+1",
-        "when": "config.learvelIdea.enablePhpStormKeybindings"
+        "when": "config.laravelIdea.enablePhpStormKeybindings"
       },
       {
         "command": "workbench.action.terminal.toggleTerminal",
         "key": "alt+9",
-        "when": "config.learvelIdea.enablePhpStormKeybindings"
+        "when": "config.laravelIdea.enablePhpStormKeybindings"
       },
       {
         "command": "workbench.action.gotoLine",
         "key": "ctrl+g",
         "mac": "cmd+g",
-        "when": "config.learvelIdea.enablePhpStormKeybindings"
+        "when": "config.laravelIdea.enablePhpStormKeybindings"
       },
       {
         "command": "workbench.action.findInFiles",
         "key": "ctrl+shift+f",
         "mac": "cmd+shift+f",
-        "when": "config.learvelIdea.enablePhpStormKeybindings"
+        "when": "config.laravelIdea.enablePhpStormKeybindings"
       },
       {
         "command": "workbench.action.quickOpenPreviousRecentlyUsedEditorInGroup",
         "key": "ctrl+e",
         "mac": "cmd+e",
-        "when": "config.learvelIdea.enablePhpStormKeybindings"
+        "when": "config.laravelIdea.enablePhpStormKeybindings"
       },
       {
         "command": "workbench.action.openSettings",
         "key": "ctrl+alt+s",
         "mac": "cmd+comma",
-        "when": "config.learvelIdea.enablePhpStormKeybindings"
+        "when": "config.laravelIdea.enablePhpStormKeybindings"
       },
       {
         "command": "workbench.action.quickOpen",
         "key": "ctrl+n",
         "mac": "cmd+o",
-        "when": "config.learvelIdea.enablePhpStormAdvancedKeybindings"
+        "when": "config.laravelIdea.enablePhpStormAdvancedKeybindings"
       },
       {
         "command": "editor.action.duplicateSelection",
         "key": "ctrl+d",
         "mac": "cmd+d",
-        "when": "config.learvelIdea.enablePhpStormAdvancedKeybindings && editorFocus"
+        "when": "config.laravelIdea.enablePhpStormAdvancedKeybindings && editorFocus"
       },
       {
         "command": "editor.action.deleteLines",
         "key": "ctrl+y",
         "mac": "cmd+backspace",
-        "when": "config.learvelIdea.enablePhpStormAdvancedKeybindings && editorFocus"
+        "when": "config.laravelIdea.enablePhpStormAdvancedKeybindings && editorFocus"
       },
       {
         "command": "editor.action.moveLinesUpAction",
         "key": "ctrl+shift+up",
         "mac": "cmd+shift+up",
-        "when": "config.learvelIdea.enablePhpStormAdvancedKeybindings && editorTextFocus"
+        "when": "config.laravelIdea.enablePhpStormAdvancedKeybindings && editorTextFocus"
       },
       {
         "command": "editor.action.moveLinesDownAction",
         "key": "ctrl+shift+down",
         "mac": "cmd+shift+down",
-        "when": "config.learvelIdea.enablePhpStormAdvancedKeybindings && editorTextFocus"
+        "when": "config.laravelIdea.enablePhpStormAdvancedKeybindings && editorTextFocus"
       },
       {
         "command": "editor.action.commentLine",
         "key": "ctrl+slash",
         "mac": "cmd+slash",
-        "when": "config.learvelIdea.enablePhpStormAdvancedKeybindings && editorTextFocus"
+        "when": "config.laravelIdea.enablePhpStormAdvancedKeybindings && editorTextFocus"
       },
       {
         "command": "editor.action.blockComment",
         "key": "ctrl+shift+slash",
         "mac": "cmd+shift+slash",
-        "when": "config.learvelIdea.enablePhpStormAdvancedKeybindings && editorTextFocus"
+        "when": "config.laravelIdea.enablePhpStormAdvancedKeybindings && editorTextFocus"
       },
       {
         "command": "actions.find",
         "key": "ctrl+f",
         "mac": "cmd+f",
-        "when": "config.learvelIdea.enablePhpStormAdvancedKeybindings && editorFocus"
+        "when": "config.laravelIdea.enablePhpStormAdvancedKeybindings && editorFocus"
       },
       {
         "command": "editor.action.nextMatchFindAction",
         "key": "f3",
-        "when": "config.learvelIdea.enablePhpStormAdvancedKeybindings && editorFocus"
+        "when": "config.laravelIdea.enablePhpStormAdvancedKeybindings && editorFocus"
       },
       {
         "command": "editor.action.previousMatchFindAction",
         "key": "shift+f3",
-        "when": "config.learvelIdea.enablePhpStormAdvancedKeybindings && editorFocus"
+        "when": "config.laravelIdea.enablePhpStormAdvancedKeybindings && editorFocus"
       },
       {
         "command": "workbench.action.toggleMaximizedPanel",
         "key": "ctrl+shift+f12",
         "mac": "cmd+shift+f12",
-        "when": "config.learvelIdea.enablePhpStormAdvancedKeybindings"
+        "when": "config.laravelIdea.enablePhpStormAdvancedKeybindings"
       },
       {
         "command": "workbench.action.quickOpenPreviousRecentlyUsedEditorInGroup",
         "key": "ctrl+tab",
         "mac": "cmd+tab",
-        "when": "config.learvelIdea.enablePhpStormAdvancedKeybindings"
+        "when": "config.laravelIdea.enablePhpStormAdvancedKeybindings"
       },
       {
         "command": "editor.debug.action.toggleBreakpoint",
         "key": "f9",
-        "when": "config.learvelIdea.enablePhpStormKeybindings && debuggersAvailable && editorTextFocus"
+        "when": "config.laravelIdea.enablePhpStormKeybindings && debuggersAvailable && editorTextFocus"
       },
       {
         "command": "workbench.action.debug.stepOver",
         "key": "f8",
-        "when": "config.learvelIdea.enablePhpStormKeybindings && debugState == 'stopped'"
+        "when": "config.laravelIdea.enablePhpStormKeybindings && debugState == 'stopped'"
       },
       {
         "command": "workbench.action.debug.stepInto",
         "key": "f7",
-        "when": "config.learvelIdea.enablePhpStormKeybindings && debugState == 'stopped'"
+        "when": "config.laravelIdea.enablePhpStormKeybindings && debugState == 'stopped'"
       },
       {
         "command": "workbench.action.debug.stepOut",
         "key": "shift+f8",
-        "when": "config.learvelIdea.enablePhpStormKeybindings && debugState == 'stopped'"
+        "when": "config.laravelIdea.enablePhpStormKeybindings && debugState == 'stopped'"
       },
       {
         "command": "workbench.view.search",
         "key": "alt+3",
-        "when": "config.learvelIdea.enablePhpStormKeybindings"
+        "when": "config.laravelIdea.enablePhpStormKeybindings"
       },
       {
         "command": "workbench.view.scm",
         "key": "alt+6",
-        "when": "config.learvelIdea.enablePhpStormKeybindings"
+        "when": "config.laravelIdea.enablePhpStormKeybindings"
       },
       {
         "command": "workbench.view.debug",
         "key": "alt+5",
-        "when": "config.learvelIdea.enablePhpStormKeybindings"
+        "when": "config.laravelIdea.enablePhpStormKeybindings"
       },
       {
         "command": "workbench.view.extensions",
         "key": "alt+7",
-        "when": "config.learvelIdea.enablePhpStormKeybindings"
+        "when": "config.laravelIdea.enablePhpStormKeybindings"
       },
       {
         "command": "editor.action.formatDocument",
         "key": "alt+cmd+l",
         "mac": "alt+cmd+l",
-        "when": "config.learvelIdea.enablePhpStormAdvancedKeybindings && editorTextFocus && !editorReadonly"
+        "when": "config.laravelIdea.enablePhpStormAdvancedKeybindings && editorTextFocus && !editorReadonly"
       }
     ]
   },
