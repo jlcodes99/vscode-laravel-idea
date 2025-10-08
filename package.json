@@ -2,7 +2,7 @@
   "name": "laravel-idea",
   "displayName": "Laravel Idea",
   "description": "Laravel通用跳转扩展 - 提供路由、中间件、命令的智能导航功能 / Laravel Idea extension - Provides intelligent navigation for routes, middleware, and commands",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "publisher": "jlcodes",
   "icon": "icons/test.png",
   "repository": {
@@ -264,10 +264,16 @@
         "when": "config.laravelIdea.enablePhpStormKeybindings"
       },
       {
+        "command": "editor.action.formatSelection",
+        "key": "alt+cmd+l",
+        "mac": "alt+cmd+l",
+        "when": "config.laravelIdea.enablePhpStormAdvancedKeybindings && editorHasSelection && editorTextFocus && !editorReadonly"
+      },
+      {
         "command": "editor.action.formatDocument",
         "key": "alt+cmd+l",
         "mac": "alt+cmd+l",
-        "when": "config.laravelIdea.enablePhpStormAdvancedKeybindings && editorTextFocus && !editorReadonly"
+        "when": "config.laravelIdea.enablePhpStormAdvancedKeybindings && !editorHasSelection && editorTextFocus && !editorReadonly"
       }
     ]
   },

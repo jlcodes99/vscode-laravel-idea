@@ -308,11 +308,47 @@ $key = config('aliyun.access_key_id');
 | `laravelIdea.enablePhpStormKeybindings` | `false` | 启用 PHPStorm 风格快捷键（基础版本） |
 | `laravelIdea.enablePhpStormAdvancedKeybindings` | `false` | 启用 PHPStorm 风格快捷键（高级版本） |
 
-**PHPStorm 风格快捷键（高级版本）包含：**
-- `Option+Cmd+L` (Mac) / `Alt+Ctrl+L` (Windows/Linux) - 格式化代码
-- `Ctrl+D` - 复制当前行
-- `Ctrl+Y` - 删除当前行
-- 更多快捷键...
+#### PHPStorm 风格快捷键（基础版本）
+
+| 快捷键 (Mac) | 快捷键 (Windows/Linux) | 功能 | 说明 |
+|-------------|----------------------|------|------|
+| `Cmd+Shift+O` | `Ctrl+Shift+O` | 快速打开文件 | 打开文件搜索框 |
+| `Cmd+R` | `Ctrl+R` | 当前文件查找替换 | 在当前文件中查找和替换 |
+| `Cmd+Shift+R` | `Ctrl+Shift+R` | 全局查找替换 | 在所有文件中查找和替换 |
+| `Alt+1` | `Alt+1` | 打开文件资源管理器 | 切换到文件树视图 |
+| `Alt+9` | `Alt+9` | 切换终端 | 显示/隐藏终端面板 |
+| `Cmd+G` | `Ctrl+G` | 跳转到行 | 输入行号快速跳转 |
+| `Cmd+Shift+F` | `Ctrl+Shift+F` | 全局搜索 | 在所有文件中搜索 |
+| `Cmd+E` | `Ctrl+E` | 最近文件 | 打开最近使用的文件列表 |
+| `Cmd+,` | `Ctrl+Alt+S` | 打开设置 | 打开 VS Code 设置 |
+| `Alt+3` | `Alt+3` | 打开搜索视图 | 切换到搜索面板 |
+| `Alt+5` | `Alt+5` | 打开调试视图 | 切换到调试面板 |
+| `Alt+6` | `Alt+6` | 打开版本控制 | 切换到 Git/SCM 面板 |
+| `Alt+7` | `Alt+7` | 打开扩展视图 | 切换到扩展管理面板 |
+| `F9` | `F9` | 切换断点 | 在当前行添加/删除断点 |
+| `F8` | `F8` | 调试步过 | 执行下一步（不进入函数） |
+| `F7` | `F7` | 调试步入 | 执行下一步（进入函数） |
+| `Shift+F8` | `Shift+F8` | 调试步出 | 跳出当前函数 |
+
+#### PHPStorm 风格快捷键（高级版本）
+
+**⚠️ 注意**：高级版本包含基础版本的所有快捷键，并额外添加以下快捷键（可能与 VS Code 默认快捷键冲突）
+
+| 快捷键 (Mac) | 快捷键 (Windows/Linux) | 功能 | 说明 |
+|-------------|----------------------|------|------|
+| `Cmd+O` | `Ctrl+N` | 快速打开文件 | 打开文件搜索框（覆盖默认行为） |
+| `Cmd+D` | `Ctrl+D` | 复制当前行 | 复制当前行到下一行 |
+| `Cmd+Backspace` | `Ctrl+Y` | 删除当前行 | 删除整行内容 |
+| `Cmd+Shift+↑` | `Ctrl+Shift+↑` | 向上移动行 | 将当前行向上移动 |
+| `Cmd+Shift+↓` | `Ctrl+Shift+↓` | 向下移动行 | 将当前行向下移动 |
+| `Cmd+/` | `Ctrl+/` | 行注释 | 添加/删除行注释 |
+| `Cmd+Shift+/` | `Ctrl+Shift+/` | 块注释 | 添加/删除块注释 |
+| `Cmd+F` | `Ctrl+F` | 当前文件查找 | 在当前文件中查找 |
+| `F3` | `F3` | 查找下一个 | 跳转到下一个匹配项 |
+| `Shift+F3` | `Shift+F3` | 查找上一个 | 跳转到上一个匹配项 |
+| `Cmd+Shift+F12` | `Ctrl+Shift+F12` | 最大化面板 | 切换面板最大化状态 |
+| `Cmd+Tab` | `Ctrl+Tab` | 切换最近文件 | 在最近文件间切换 |
+| `Option+Cmd+L` | `Alt+Ctrl+L` | 格式化代码 | 有选中时格式化选中内容，无选中时格式化整个文档 |
 
 ### 配置示例 / Configuration Example
 
