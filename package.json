@@ -2,7 +2,7 @@
   "name": "laravel-idea",
   "displayName": "Laravel Idea",
   "description": "Laravel通用跳转扩展 - 提供路由、中间件、命令的智能导航功能 / Laravel Idea extension - Provides intelligent navigation for routes, middleware, and commands",
-  "version": "1.1.52",
+  "version": "2.0.0",
   "publisher": "jlcodes",
   "icon": "icons/test.png",
   "repository": {
